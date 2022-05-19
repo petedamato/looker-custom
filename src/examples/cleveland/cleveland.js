@@ -57,11 +57,11 @@ looker.plugins.visualizations.add({
       .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
     )
 
-    // Throw some errors and exit if the shape of the data isn't what this chart needs
-    if (queryResponse.fields.dimensions.length == 0) {
-      this.addError({title: "No Dimensions", message: "This chart requires dimensions."});
-      return;
-    }
+    // // Throw some errors and exit if the shape of the data isn't what this chart needs
+    // if (queryResponse.fields.dimensions.length == 0) {
+    //   this.addError({title: "No Dimensions", message: "This chart requires dimensions."});
+    //   return;
+    // }
 
     // We are done rendering! Let Looker know.
     done()
