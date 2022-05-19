@@ -26,6 +26,12 @@ looker.plugins.visualizations.add({
         .cleveland-text-large {
           font-size: 18px;
         }
+        .dot {
+          fill:#27566b;
+        }
+        .lowdot {
+          fill:#ecd796;
+        }
       </style>`;
     element.style.fontFamily = `"Open Sans", "Helvetica", sans-serif`
 
@@ -67,7 +73,7 @@ looker.plugins.visualizations.add({
       .attr('width', '100%')
       .attr('height', '100%')
       .append('g')
-      .attr('transform', 'translate(0,' + height + ')')
+      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
     )
 
 
