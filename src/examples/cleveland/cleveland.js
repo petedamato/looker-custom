@@ -32,6 +32,9 @@ looker.plugins.visualizations.add({
         .lowdot {
           fill:#ecd796;
         }
+        .gridline {
+          opacity:.1;
+        }
       </style>`;
     element.style.fontFamily = `"Open Sans", "Helvetica", sans-serif`
 
@@ -107,11 +110,15 @@ looker.plugins.visualizations.add({
         .range([height,0]);
 
       const xAxis = d3.axisBottom(x).tickSize(0);
-      const yAxis = d3.axisLeft(y).tickSize(0);
+      const yAxis = d3.axisLeft(y).tickSize(0).ticks(5).tickFormat(d3.format("$,d"));
       const yGridlines = d3.axisLeft(y)
             .tickSize(-width,0,0)
             .tickFormat("");
-
+          // gridlines
+      svg.append("g")
+        .call(yGridlines)
+        .classed("gridline", true)
+        .attr("transform", "translate(0,0)")
       svg.selectAll(".gap")
       .data(data)
       .enter()
@@ -155,11 +162,6 @@ looker.plugins.visualizations.add({
         })
         .attr("r", 8);
 
-          // gridlines
-    svg.append("g")
-      .call(yGridlines)
-      .classed("gridline", true)
-      .attr("transform", "translate(0,0)")
       // axes
       svg.append("g")
         .classed("x axis", true)
