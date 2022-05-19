@@ -1,7 +1,6 @@
 import * as d3 from 'd3'
 import { formatType, handleErrors } from '../common/utils'
 
-
 looker.plugins.visualizations.add({
   // Id and Label are legacy properties that no longer have any function besides documenting
   // what the visualization used to have. The properties are now set via the manifest
@@ -26,8 +25,9 @@ looker.plugins.visualizations.add({
     element.style.fontFamily = `"Open Sans", "Helvetica", sans-serif`
 
     this.svg = d3.select(element).append('svg')
+      .classed("this-thee-svg")
 
-    this.svg.append("text").text("Test")
+    // this.svg.append("text").text("Test")
   },
   // Render in response to the data or settings changing
   updateAsync: function(data, element, config, queryResponse, details, done) {
