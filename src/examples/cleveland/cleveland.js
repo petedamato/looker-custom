@@ -47,7 +47,7 @@ looker.plugins.visualizations.add({
 
     // Clear any errors from previous updates
     this.clearErrors();
-
+    console.log(data, queryResponse)
     const svg = (
       this.svg
       .html('')
