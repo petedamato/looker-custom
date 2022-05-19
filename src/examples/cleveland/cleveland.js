@@ -88,9 +88,22 @@ looker.plugins.visualizations.add({
         .range([0, width]);
 
   const y = d3.scaleLinear()
-        .domain([0,d3.max(data, function(entry){
-          return entry[measures[1].name]["value"];
-        })])
+        .domain([d3.min([
+              d3.min(data, function(entry){
+                return entry[measures[0].name]["value"]
+              }),
+              d3.min(data, function(entry){
+                return entry[measures[1].name]["value"]
+              })
+              ]),
+              d3.max([
+                d3.max(data, function(entry){
+                  return entry[measures[0].name]["value"]
+                }), 
+                d3.max(data, function(entry){
+                  return entry[measures[1].name]["value"]
+                })])
+              ])
         .range([height,0]);
 
       svg.selectAll(".gap")
@@ -135,6 +148,28 @@ looker.plugins.visualizations.add({
           return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
         })
         .attr("r", 8);
+
+          // gridlines
+    svg.append("g")
+      .call(yGridlines)
+      .classed("gridline", true)
+      .attr("transform", "translate(0,0)")
+      // axes
+      svg.append("g")
+        .classed("x axis", true)
+        .attr("transform", "translate("+0+","+(height-1)+")")
+        .call(xAxis)
+        .selectAll("text")
+          .style("text-anchor", "end")
+          .attr("dx", -4)
+          .attr("dy",10)
+          .attr("transform", "rotate(-40)")
+          .style("font-size",10);
+
+      svg.append("g")
+        .classed("y axis", true)
+        .attr("transform", "translate("+0+","+0+")")
+        .call(yAxis);
 
     // // Throw some errors and exit if the shape of the data isn't what this chart needs
     // if (queryResponse.fields.dimensions.length == 0) {
