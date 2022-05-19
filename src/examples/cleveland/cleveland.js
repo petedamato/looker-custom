@@ -31,9 +31,26 @@ looker.plugins.visualizations.add({
   },
   // Render in response to the data or settings changing
   updateAsync: function(data, element, config, queryResponse, details, done) {
+    if (!handleErrors(this, queryResponse, {
+      min_pivots: 0, max_pivots: 0,
+      min_dimensions: 1, max_dimensions: undefined,
+      min_measures: 2, max_measures: 2
+    })) return
+
+    const width = element.clientWidth
+    const height = element.clientHeight
 
     // Clear any errors from previous updates
     this.clearErrors();
+
+    const svg = (
+      this.svg
+      .html('')
+      .attr('width', '100%')
+      .attr('height', '100%')
+      .append('g')
+      .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
+    )
 
     // Throw some errors and exit if the shape of the data isn't what this chart needs
     if (queryResponse.fields.dimensions.length == 0) {
