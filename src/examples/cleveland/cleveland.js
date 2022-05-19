@@ -74,19 +74,19 @@ looker.plugins.visualizations.add({
 
   const x = d3.scaleBand()
         .domain(data.map((entry)=>{
-          console.log("Test: ", entry , ", " , dimension, ", " , dimension.value , ", " , entry[dimension.value])
-          return entry[dimension.value];
+          console.log("Test: ", entry , ", " , dimension, ", " , dimension.name , ", " , entry[dimension.name])
+          return entry[dimension.name]["value"];
         }))
         .range([0, width]);
 
   const y = d3.scaleLinear()
         .domain([0,d3.max(data, function(entry){
-          return entry[measures[1].value];
+          return entry[measures[1].name]["value"];
         })])
         .range([height,0]);
 
    data.sort(function(a,b){
-      return (a[measures[0].value] - a[measures[1].value]) - (b[measures[0].value] - b[measures[1].value]);
+      return (a[measures[0].name]["value"] - a[measures[1].name]["value"]) - (b[measures[0].name]["value"] - b[measures[1].name]["value"]);
     })
 
 
@@ -97,16 +97,16 @@ looker.plugins.visualizations.add({
         .classed("gap", true)
         .style("stroke", "#91a1a8")
         .attr("x1", (d,i)=>{
-            return (x(d[dimension.value]) + (x.bandwidth()/2))
+            return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
           })     // x position of the first end of the line
           .attr("y1", (d,i)=>{
-            return (y(d[measures[0].value]))
+            return (y(d[measures[0].name]["value"]))
           })      // y position of the first end of the line
           .attr("x2", (d,i)=>{
-            return (x(d[dimension.value]) + (x.bandwidth()/2))
+            return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
           })     // x position of the second end of the line
           .attr("y2", (d,i)=>{
-            return (y(d[measures[1].value]))
+            return (y(d[measures[1].name]["value"]))
           });
     svg.selectAll(".dot")
       .data(data)
@@ -115,10 +115,10 @@ looker.plugins.visualizations.add({
         .classed("dot", true)
         .attr("r", 8)
         .attr("cy", (d,i) => {
-          return y(d[measures[0].value])
+          return y(d[measures[0].name]["value"])
         })
         .attr("cx", (d,i) => {
-          return (x(d[dimension.value]) + (x.bandwidth()/2))
+          return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
         })
     svg.selectAll(".lowdot")
       .data(data)
@@ -126,10 +126,10 @@ looker.plugins.visualizations.add({
         .append("circle")
         .classed("lowdot", true)
         .attr("cy", (d,i) => {
-          return y(d[measures[1].value])
+          return y(d[measures[1].name]["value"])
         })
         .attr("cx", (d,i) => {
-          return (x(d[dimension.value]) + (x.bandwidth()/2))
+          return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
         })
         .attr("r", 8);
 
