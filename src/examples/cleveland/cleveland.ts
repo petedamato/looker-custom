@@ -34,6 +34,8 @@ const vis: ClevelandVisualization = {
     console.log(element)
     element.style.fontFamily = `"Open Sans", "Helvetica", sans-serif`
     this.svg = d3.select(element).append('svg')
+
+    this.svg.append("text").text("Test")
   },
   // Render in response to the data or settings changing
   update(data, element, config, queryResponse) {
