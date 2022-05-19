@@ -16,7 +16,7 @@ var webpackConfig = {
     chord: './src/examples/chord/chord.ts',
     treemap: './src/examples/treemap/treemap.ts',
     subtotal: './src/examples/subtotal/subtotal.ts',
-    cleveland: './src/examples/cleveland/cleveland.ts',
+    cleveland: './src/examples/cleveland/cleveland.js',
     image_carousel: './src/examples/image_carousel/image_carousel.js'
   },
   output: {
