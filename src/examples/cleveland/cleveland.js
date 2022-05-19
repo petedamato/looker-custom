@@ -42,12 +42,25 @@ looker.plugins.visualizations.add({
       min_measures: 2, max_measures: 2
     })) return
 
-    const width = element.clientWidth
-    const height = element.clientHeight
+    const margin = {
+      top: 10,
+      bottom: 10,
+      left: 10,
+      right: 10
+    };
+
+    const width = element.clientWidth - margin.left - margin.right
+    const height = element.clientHeight - margin.top - margin.bottom
+
+    const dimension = queryResponse.fields.dimension_like[0]
+    const measures = queryResponse.fields.measure_like
+
 
     // Clear any errors from previous updates
     this.clearErrors();
+
     console.log(data, queryResponse)
+
     const svg = (
       this.svg
       .html('')
@@ -56,6 +69,69 @@ looker.plugins.visualizations.add({
       .append('g')
       .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
     )
+
+
+
+  const x = d3.scaleBand()
+        .domain(data.map((entry)=>{
+          return entry[dimension.name];
+        }))
+        .range([0, width]);
+
+  const y = d3.scaleLinear()
+        .domain([0,d3.max(data, function(entry){
+          return entry[measures[0].name];
+        })])
+        .range([height,0]);
+
+   data.sort(function(a,b){
+      return (a[measures[0].name] - a[measures[1].name]) - (b[measures[0].name] - b[measures[1].name]);
+    })
+
+
+      svg.selectAll(".gap")
+      .data(data)
+      .enter()
+        .append("line")
+        .classed("gap", true)
+        .style("stroke", "#91a1a8")
+        .attr("x1", (d,i)=>{
+            return (x(d[dimension.name]) + (x.bandwidth()/2))
+          })     // x position of the first end of the line
+          .attr("y1", (d,i)=>{
+            return (y(d[measures[0].name]))
+          })      // y position of the first end of the line
+          .attr("x2", (d,i)=>{
+            return (x(d[dimension.name]) + (x.bandwidth()/2))
+          })     // x position of the second end of the line
+          .attr("y2", (d,i)=>{
+            return (y(d[measures[1].name]))
+          });
+    svg.selectAll(".dot")
+      .data(data)
+      .enter()
+        .append("circle")
+        .classed("dot", true)
+        .attr("r", 8)
+        .attr("cy", (d,i) => {
+          return y(d[measures[0].name])
+        })
+        .attr("cx", (d,i) => {
+          return (x(d[dimension.name]) + (x.bandwidth()/2))
+        })
+    svg.selectAll(".lowdot")
+      .data(data)
+      .enter()
+        .append("circle")
+        .classed("lowdot", true)
+        .attr("cy", (d,i) => {
+          console.log(d)
+          return y(d[measures[1].name])
+        })
+        .attr("cx", (d,i) => {
+          return (x(d[dimension.name]) + (x.bandwidth()/2))
+        })
+        .attr("r", 8);
 
     // // Throw some errors and exit if the shape of the data isn't what this chart needs
     // if (queryResponse.fields.dimensions.length == 0) {
