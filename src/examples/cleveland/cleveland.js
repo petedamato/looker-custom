@@ -67,7 +67,7 @@ looker.plugins.visualizations.add({
       .attr('width', '100%')
       .attr('height', '100%')
       .append('g')
-      .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
+      .attr('transform', 'translate(0,' + height + ')')
     )
 
 
