@@ -74,6 +74,7 @@ looker.plugins.visualizations.add({
 
   const x = d3.scaleBand()
         .domain(data.map((entry)=>{
+          console.log("Test: ", entry , ", " , dimension, ", " , entry[dimension.name.value])
           return entry[dimension.name.value];
         }))
         .range([0, width]);
@@ -125,7 +126,6 @@ looker.plugins.visualizations.add({
         .append("circle")
         .classed("lowdot", true)
         .attr("cy", (d,i) => {
-          console.log(d)
           return y(d[measures[1].name.value])
         })
         .attr("cx", (d,i) => {
