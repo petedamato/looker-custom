@@ -20,7 +20,12 @@ looker.plugins.visualizations.add({
     // Insert a <style> tag with some styles we'll use later.
     element.innerHTML = `
       <style>
-
+        .cleveland-text-large {
+          font-size: 72px;
+        }
+        .cleveland-text-large {
+          font-size: 18px;
+        }
       </style>`;
     element.style.fontFamily = `"Open Sans", "Helvetica", sans-serif`
 
