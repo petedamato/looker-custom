@@ -50,8 +50,8 @@ looker.plugins.visualizations.add({
 
     const margin = {
       top: 10,
-      bottom: 10,
-      left: 10,
+      bottom: 50,
+      left: 40,
       right: 10
     };
 
@@ -105,6 +105,12 @@ looker.plugins.visualizations.add({
                 })])
               ])
         .range([height,0]);
+
+      const xAxis = d3.axisBottom(x).tickSize(0);
+      const yAxis = d3.axisLeft(y).tickSize(0);
+      const yGridlines = d3.axisLeft(y)
+            .tickSize(-width,0,0)
+            .tickFormat("");
 
       svg.selectAll(".gap")
       .data(data)
