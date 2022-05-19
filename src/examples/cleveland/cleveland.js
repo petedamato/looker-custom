@@ -25,7 +25,7 @@ looker.plugins.visualizations.add({
     element.style.fontFamily = `"Open Sans", "Helvetica", sans-serif`
 
     this.svg = d3.select(element).append('svg')
-      .classed("this-thee-svg")
+      .classed("this-thee-svg", true)
 
     // this.svg.append("text").text("Test")
   },
