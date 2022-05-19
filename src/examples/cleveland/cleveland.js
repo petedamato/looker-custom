@@ -76,7 +76,9 @@ looker.plugins.visualizations.add({
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
     )
 
-
+   data.sort(function(a,b){
+      return (a[measures[0].name]["value"] - a[measures[1].name]["value"]) - (b[measures[0].name]["value"] - b[measures[1].name]["value"]);
+    })
 
   const x = d3.scaleBand()
         .domain(data.map((entry)=>{
@@ -90,11 +92,6 @@ looker.plugins.visualizations.add({
           return entry[measures[1].name]["value"];
         })])
         .range([height,0]);
-
-   data.sort(function(a,b){
-      return (a[measures[0].name]["value"] - a[measures[1].name]["value"]) - (b[measures[0].name]["value"] - b[measures[1].name]["value"]);
-    })
-
 
       svg.selectAll(".gap")
       .data(data)
