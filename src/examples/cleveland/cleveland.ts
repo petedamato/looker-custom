@@ -31,11 +31,13 @@ const vis: ClevelandVisualization = {
   },
   // Set up the initial state of the visualization
   create(element, _config) {
+    console.log(element)
     element.style.fontFamily = `"Open Sans", "Helvetica", sans-serif`
     this.svg = d3.select(element).append('svg')
   },
   // Render in response to the data or settings changing
   update(data, element, config, queryResponse) {
+    console.log(data)
     if (!handleErrors(this, queryResponse, {
       min_pivots: 0, max_pivots: 0,
       min_dimensions: 1, max_dimensions: undefined,
@@ -96,7 +98,9 @@ const vis: ClevelandVisualization = {
         .classed("gap", true)
         .attr("x", 10)
         .attr("y", 10)
-        .text("Text")
+        .text((d:any)=>{
+          return d
+        })
           .style("fill", "black")
     
 
