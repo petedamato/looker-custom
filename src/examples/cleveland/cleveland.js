@@ -68,8 +68,6 @@ looker.plugins.visualizations.add({
     // Clear any errors from previous updates
     this.clearErrors();
 
-    console.log(data, queryResponse)
-
     const svg = (
       this.svg
       .html('')
@@ -79,13 +77,13 @@ looker.plugins.visualizations.add({
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
     )
 
-   data.sort(function(a,b){
-      return (a[measures[0].name]["value"] - a[measures[1].name]["value"]) - (b[measures[0].name]["value"] - b[measures[1].name]["value"]);
-    })
+   // TODO Add option to sort on gap between measures
+   // data.sort(function(a,b){
+   //    return (a[measures[0].name]["value"] - a[measures[1].name]["value"]) - (b[measures[0].name]["value"] - b[measures[1].name]["value"]);
+   //  })
 
   const x = d3.scaleBand()
         .domain(data.map((entry)=>{
-          console.log("Test: ", entry , ", " , dimension, ", " , dimension.name , ", " , entry[dimension.name])
           return entry[dimension.name]["value"];
         }))
         .range([0, width]);
