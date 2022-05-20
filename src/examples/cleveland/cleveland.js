@@ -131,18 +131,18 @@ looker.plugins.visualizations.add({
 
     const line1 = d3.area()
         .curve(d3.curveBasis)
-        .x(function(d) { return x(entry[dimension.name]["value"]); })
-        .y(function(d) { return y(entry[measures[0].name]["value"]); });
+        .x(function(d) { return x(d[dimension.name]["value"]); })
+        .y(function(d) { return y(d[measures[0].name]["value"]); });
 
     const line2 = d3.area()
         .curve(d3.curveBasis)
-        .x(function(d) { return x(entry[dimension.name]["value"]); })
-        .y(function(d) { return y(entry[measures[1].name]["value"]); });
+        .x(function(d) { return x(d[dimension.name]["value"]); })
+        .y(function(d) { return y(d[measures[1].name]["value"]); });
 
     const area = d3.area()
         .curve(d3.curveBasis)
-        .x(function(d) { return x(entry[dimension.name]["value"]); })
-        .y1(function(d) { return y(entry[measures[0].name]["value"]); });
+        .x(function(d) { return x(d[dimension.name]["value"]); })
+        .y1(function(d) { return y(d[measures[0].name]["value"]); });
 
       const xAxis = d3.axisBottom(x).tickSize(0);
       const yAxis = d3.axisLeft(y).tickSize(0).ticks(5).tickFormat(d3.format("$,d"));
@@ -150,7 +150,7 @@ looker.plugins.visualizations.add({
             .tickSize(-width,0,0)
             .tickFormat("");
 
-    if (config.chart_type == "area") {
+    if (config.chart_type == "dot") {
                 // gridlines
           svg.append("g")
               .call(yGridlines)
@@ -217,7 +217,7 @@ looker.plugins.visualizations.add({
               svg.append("path")
                   .attr("class", "area above")
                   .attr("clip-path", "url(#clip-above)")
-                  .attr("d", area.y0(function(d) { return y(entry[measures[1].name]["value"]); })).attr("transform", "translate(" + x.bandwidth()/2+ ",0)");
+                  .attr("d", area.y0(function(d) { return y(d[measures[1].name]["value"]); })).attr("transform", "translate(" + x.bandwidth()/2+ ",0)");
 
               svg.append("path")
                   .attr("class", "area below")
