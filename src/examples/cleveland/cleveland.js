@@ -266,7 +266,7 @@ looker.plugins.visualizations.add({
       .enter()
         .append("g")
           .attr("class", "legend")
-          .attr("transform", function(d, i) { return "translate(" + ((i * 120) - width/1.9) + "," + (height + 50) + ")"; });
+          .attr("transform", function(d, i) { return "translate(" + ((i * 180) - width/2.05) + "," + (height + 50) + ")"; });
     
         legend.append("circle")
             .attr("cx", width - 12)
@@ -281,6 +281,7 @@ looker.plugins.visualizations.add({
             .attr("y", 9)
             .attr("dy", ".35em")
             .style("text-anchor", "end")
+            .style("font-size",10)
             .text((d,i)=>{
               return measures[i].name
               });
