@@ -13,6 +13,26 @@ looker.plugins.visualizations.add({
       label: 'Color Range',
       display: 'colors',
       default: ['#27566b', '#ecd796']
+    },
+    color_reverse: {
+      type: "string",
+      label: "Reverse colors?",
+      values: [
+        {"Original": "original"},
+        {"Reversed": "reversed"}
+      ],
+      display: "radio",
+      default: "original"
+    },
+    chart_type: {
+      type: "string",
+      label: "Reverse colors?",
+      values: [
+        {"Dot":"dot"},
+        {"Area": "area"}
+      ],
+      display: "radio",
+      default: "dot"
     }
   },
   // Set up the initial state of the visualization
@@ -25,12 +45,6 @@ looker.plugins.visualizations.add({
         }
         .cleveland-text-large {
           font-size: 18px;
-        }
-        .dot {
-          fill:#27566b;
-        }
-        .lowdot {
-          fill:#ecd796;
         }
         .gridline {
           opacity:.1;
@@ -50,6 +64,14 @@ looker.plugins.visualizations.add({
       min_dimensions: 1, max_dimensions: undefined,
       min_measures: 2, max_measures: 2
     })) return
+
+    let colors; 
+
+    if (color_reverse == "reversed") {
+      colors = color_range.default.reverse();
+    } else {
+      colors = color_range.default;
+    }
 
     const margin = {
       top: 10,
@@ -147,6 +169,8 @@ looker.plugins.visualizations.add({
         .attr("cx", (d,i) => {
           return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
         })
+        .attr("fill", colors[0]);
+
     svg.selectAll(".lowdot")
       .data(data)
       .enter()
@@ -158,7 +182,8 @@ looker.plugins.visualizations.add({
         .attr("cx", (d,i) => {
           return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
         })
-        .attr("r", 8);
+        .attr("r", 8)
+        .attr("fill", colors[1]);
 
       // axes
       svg.append("g")
