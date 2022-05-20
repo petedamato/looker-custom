@@ -69,9 +69,9 @@ looker.plugins.visualizations.add({
     let colors; 
 
     if (config.color_reverse == "reversed") {
-      colors = config.color_range.default.reverse();
+      colors = config.color_range.reverse();
     } else {
-      colors = config.color_range.default;
+      colors = config.color_range;
     }
 
     const margin = {
