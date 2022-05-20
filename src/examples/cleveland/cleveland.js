@@ -12,7 +12,7 @@ looker.plugins.visualizations.add({
       type: 'array',
       label: 'Color Range',
       display: 'colors',
-      default: ['#27566b', '#ecd796']
+      default: [['#27566b', '#ecd796'],['#d4dde2','#fdf7eb']]
     },
     color_reverse: {
       type: "string",
@@ -67,11 +67,14 @@ looker.plugins.visualizations.add({
     })) return
 
     let colors; 
+    let fills;
 
     if (config.color_reverse == "reversed") {
-      colors = config.color_range.reverse();
+      colors = config.color_range[0].reverse();
+      fill = config.color_range[1].reverse();
     } else {
-      colors = config.color_range;
+      colors = config.color_range[0];
+      fill = config.color_range[1];
     }
 
     const margin = {
@@ -217,20 +220,28 @@ looker.plugins.visualizations.add({
               svg.append("path")
                   .attr("class", "area above")
                   .attr("clip-path", "url(#clip-above)")
-                  .attr("d", area.y0(function(d) { return y(d[measures[1].name]["value"]); })).attr("transform", "translate(" + x.bandwidth()/2+ ",0)");
+                  .attr("d", area.y0(function(d) { return y(d[measures[1].name]["value"]); })).attr("transform", "translate(" + x.bandwidth()/2+ ",0)")
+                  .attr("fill", fills[0])
 
               svg.append("path")
                   .attr("class", "area below")
                   .attr("clip-path", "url(#clip-below)")
-                  .attr("d", area).attr("transform", "translate(" + x.bandwidth()/2+ ",0)");
+                  .attr("d", area).attr("transform", "translate(" + x.bandwidth()/2+ ",0)")
+                  .attr("fill", fills[1]);
 
               svg.append("path")
                   .attr("class", "line1")
-                  .attr("d", line1).attr("transform", "translate(" + x.bandwidth()/2+ ",0)");
+                  .attr("d", line1).attr("transform", "translate(" + x.bandwidth()/2+ ",0)")
+                  .attr("fill", none)
+                  .attr("stroke", colors[0])
+                  .attr("stroke-width", 3);
 
               svg.append("path")
                   .attr("class", "line2")
-                  .attr("d", line2).attr("transform", "translate(" + x.bandwidth()/2+ ",0)");
+                  .attr("d", line2).attr("transform", "translate(" + x.bandwidth()/2+ ",0)")
+                  .attr("fill", none)
+                  .attr("stroke", colors[1])
+                  .attr("stroke-width", 3);
       }
 
 
