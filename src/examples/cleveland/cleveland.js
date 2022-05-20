@@ -232,14 +232,14 @@ looker.plugins.visualizations.add({
               svg.append("path")
                   .attr("class", "line1")
                   .attr("d", line1).attr("transform", "translate(" + x.bandwidth()/2+ ",0)")
-                  .attr("fill", none)
+                  .attr("fill", "none")
                   .attr("stroke", colors[0])
                   .attr("stroke-width", 3);
 
               svg.append("path")
                   .attr("class", "line2")
                   .attr("d", line2).attr("transform", "translate(" + x.bandwidth()/2+ ",0)")
-                  .attr("fill", none)
+                  .attr("fill", "none")
                   .attr("stroke", colors[1])
                   .attr("stroke-width", 3);
       }
