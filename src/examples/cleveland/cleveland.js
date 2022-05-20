@@ -16,7 +16,7 @@ looker.plugins.visualizations.add({
     },
     color_reverse: {
       type: "string",
-      label: "Reverse colors?",
+      label: "Reverse Colors?",
       values: [
         {"Original": "original"},
         {"Reversed": "reversed"}
@@ -26,7 +26,7 @@ looker.plugins.visualizations.add({
     },
     chart_type: {
       type: "string",
-      label: "Reverse colors?",
+      label: "Chart Type",
       values: [
         {"Dot":"dot"},
         {"Area": "area"}
@@ -67,10 +67,10 @@ looker.plugins.visualizations.add({
 
     let colors; 
 
-    if (color_reverse == "reversed") {
-      colors = color_range.default.reverse();
+    if (options.color_reverse == "reversed") {
+      colors = options.color_range.default.reverse();
     } else {
-      colors = color_range.default;
+      colors = options.color_range.default;
     }
 
     const margin = {
