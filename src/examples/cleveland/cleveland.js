@@ -12,7 +12,7 @@ looker.plugins.visualizations.add({
       type: 'array',
       label: 'Color Range',
       display: 'colors',
-      default: [['#27566b', '#ecd796'],['#d4dde2','#fdf7eb']]
+      default: ['#27566b', '#ecd796']
     },
     color_reverse: {
       type: "string",
@@ -67,14 +67,14 @@ looker.plugins.visualizations.add({
     })) return
 
     let colors; 
-    let fills;
+    let fills = ['#d4dde2','#fdf7eb']
 
     if (config.color_reverse == "reversed") {
-      colors = config.color_range[0].reverse();
-      fill = config.color_range[1].reverse();
+      colors = config.color_range.reverse();
+      fills = fills.reverse();
     } else {
-      colors = config.color_range[0];
-      fill = config.color_range[1];
+      colors = config.color_range;
+      fills = fills;
     }
 
     const margin = {
