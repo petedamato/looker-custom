@@ -87,7 +87,6 @@ looker.plugins.visualizations.add({
     const dimension = queryResponse.fields.dimension_like[0]
     const measures = queryResponse.fields.measure_like
 
-
     // Clear any errors from previous updates
     this.clearErrors();
 
@@ -130,61 +129,110 @@ looker.plugins.visualizations.add({
               ])
         .range([height,0]);
 
+    const line1 = d3.area()
+        .curve(d3.curveBasis)
+        .x(function(d) { return x(entry[dimension.name]["value"]); })
+        .y(function(d) { return y(entry[measures[0].name]["value"]); });
+
+    const line2 = d3.area()
+        .curve(d3.curveBasis)
+        .x(function(d) { return x(entry[dimension.name]["value"]); })
+        .y(function(d) { return y(entry[measures[1].name]["value"]); });
+
+    const area = d3.area()
+        .curve(d3.curveBasis)
+        .x(function(d) { return x(entry[dimension.name]["value"]); })
+        .y1(function(d) { return y(entry[measures[0].name]["value"]); });
+
       const xAxis = d3.axisBottom(x).tickSize(0);
       const yAxis = d3.axisLeft(y).tickSize(0).ticks(5).tickFormat(d3.format("$,d"));
       const yGridlines = d3.axisLeft(y)
             .tickSize(-width,0,0)
             .tickFormat("");
-          // gridlines
-      svg.append("g")
-        .call(yGridlines)
-        .classed("gridline", true)
-        .attr("transform", "translate(0,0)")
-      svg.selectAll(".gap")
-      .data(data)
-      .enter()
-        .append("line")
-        .classed("gap", true)
-        .style("stroke", "#91a1a8")
-        .attr("x1", (d,i)=>{
-            return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
-          })     // x position of the first end of the line
-          .attr("y1", (d,i)=>{
-            return (y(d[measures[0].name]["value"]))
-          })      // y position of the first end of the line
-          .attr("x2", (d,i)=>{
-            return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
-          })     // x position of the second end of the line
-          .attr("y2", (d,i)=>{
-            return (y(d[measures[1].name]["value"]))
-          });
-    svg.selectAll(".dot")
-      .data(data)
-      .enter()
-        .append("circle")
-        .classed("dot", true)
-        .attr("r", 8)
-        .attr("cy", (d,i) => {
-          return y(d[measures[0].name]["value"])
-        })
-        .attr("cx", (d,i) => {
-          return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
-        })
-        .attr("fill", colors[0]);
 
-    svg.selectAll(".lowdot")
-      .data(data)
-      .enter()
-        .append("circle")
-        .classed("lowdot", true)
-        .attr("cy", (d,i) => {
-          return y(d[measures[1].name]["value"])
-        })
-        .attr("cx", (d,i) => {
-          return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
-        })
-        .attr("r", 8)
-        .attr("fill", colors[1]);
+    if (config.chart_type == "area") {
+                // gridlines
+          svg.append("g")
+              .call(yGridlines)
+              .classed("gridline", true)
+              .attr("transform", "translate(0,0)")
+          svg.selectAll(".gap")
+            .data(data)
+            .enter()
+              .append("line")
+              .classed("gap", true)
+              .style("stroke", "#91a1a8")
+              .attr("x1", (d,i)=>{
+                  return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
+                })     // x position of the first end of the line
+                .attr("y1", (d,i)=>{
+                  return (y(d[measures[0].name]["value"]))
+                })      // y position of the first end of the line
+                .attr("x2", (d,i)=>{
+                  return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
+                })     // x position of the second end of the line
+                .attr("y2", (d,i)=>{
+                  return (y(d[measures[1].name]["value"]))
+                });
+          svg.selectAll(".dot")
+            .data(data)
+            .enter()
+              .append("circle")
+              .classed("dot", true)
+              .attr("r", 8)
+              .attr("cy", (d,i) => {
+                return y(d[measures[0].name]["value"])
+              })
+              .attr("cx", (d,i) => {
+                return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
+              })
+              .attr("fill", colors[0]);
+
+          svg.selectAll(".lowdot")
+            .data(data)
+            .enter()
+              .append("circle")
+              .classed("lowdot", true)
+              .attr("cy", (d,i) => {
+                return y(d[measures[1].name]["value"])
+              })
+              .attr("cx", (d,i) => {
+                return (x(d[dimension.name]["value"]) + (x.bandwidth()/2))
+              })
+              .attr("r", 8)
+              .attr("fill", colors[1]);
+      } else {
+              svg.datum(data);
+
+              svg.append("clipPath")
+                  .attr("id", "clip-below")
+                .append("path")
+                  .attr("d", area.y0(height));
+
+              svg.append("clipPath")
+                  .attr("id", "clip-above")
+                .append("path")
+                  .attr("d", area.y0(0));
+
+              svg.append("path")
+                  .attr("class", "area above")
+                  .attr("clip-path", "url(#clip-above)")
+                  .attr("d", area.y0(function(d) { return y(entry[measures[1].name]["value"]); })).attr("transform", "translate(" + x.bandwidth()/2+ ",0)");
+
+              svg.append("path")
+                  .attr("class", "area below")
+                  .attr("clip-path", "url(#clip-below)")
+                  .attr("d", area).attr("transform", "translate(" + x.bandwidth()/2+ ",0)");
+
+              svg.append("path")
+                  .attr("class", "line1")
+                  .attr("d", line1).attr("transform", "translate(" + x.bandwidth()/2+ ",0)");
+
+              svg.append("path")
+                  .attr("class", "line2")
+                  .attr("d", line2).attr("transform", "translate(" + x.bandwidth()/2+ ",0)");
+      }
+
 
       // axes
       svg.append("g")
