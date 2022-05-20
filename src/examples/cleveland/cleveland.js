@@ -59,7 +59,6 @@ looker.plugins.visualizations.add({
   },
   // Render in response to the data or settings changing
   updateAsync: function(data, element, config, queryResponse, details, done) {
-    console.log(config)
     if (!handleErrors(this, queryResponse, {
       min_pivots: 0, max_pivots: 0,
       min_dimensions: 1, max_dimensions: undefined,
@@ -79,7 +78,7 @@ looker.plugins.visualizations.add({
 
     const margin = {
       top: 10,
-      bottom: 50,
+      bottom: 70,
       left: 40,
       right: 10
     };
@@ -221,13 +220,13 @@ looker.plugins.visualizations.add({
                   .attr("class", "area above")
                   .attr("clip-path", "url(#clip-above)")
                   .attr("d", area.y0(function(d) { return y(d[measures[1].name]["value"]); })).attr("transform", "translate(" + x.bandwidth()/2+ ",0)")
-                  .attr("fill", fills[0])
+                  .attr("fill", fills[1])
 
               svg.append("path")
                   .attr("class", "area below")
                   .attr("clip-path", "url(#clip-below)")
                   .attr("d", area).attr("transform", "translate(" + x.bandwidth()/2+ ",0)")
-                  .attr("fill", fills[1]);
+                  .attr("fill", fills[0]);
 
               svg.append("path")
                   .attr("class", "line1")
@@ -261,6 +260,31 @@ looker.plugins.visualizations.add({
         .classed("y axis", true)
         .attr("transform", "translate("+0+","+0+")")
         .call(yAxis);
+
+        var legend = svg.selectAll(".legend")
+        .data(colors)
+      .enter()
+        .append("g")
+          .attr("class", "legend")
+          .attr("transform", function(d, i) { return "translate(" + ((i * 120) - width/1.9) + "," + (height + 50) + ")"; });
+    
+        legend.append("circle")
+            .attr("cx", width - 12)
+            .attr("cy", 9)
+            .attr("r", 7)
+            .style("fill", (d)=>{
+              return d 
+            });
+
+        legend.append("text")
+            .attr("x", width - 24)
+            .attr("y", 9)
+            .attr("dy", ".35em")
+            .style("text-anchor", "end")
+            .text((d,i)=>{
+              return measures[i].name
+              });
+
 
     // // Throw some errors and exit if the shape of the data isn't what this chart needs
     // if (queryResponse.fields.dimensions.length == 0) {
