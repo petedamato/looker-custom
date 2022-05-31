@@ -203,7 +203,7 @@ looker.plugins.visualizations.add({
               })
               .attr("r", 8)
               .attr("fill", colors[1]);
-      } else {
+      } else if (config.chart_type == "area") {
               svg.datum(data);
 
               svg.append("clipPath")
@@ -241,7 +241,7 @@ looker.plugins.visualizations.add({
                   .attr("fill", "none")
                   .attr("stroke", colors[1])
                   .attr("stroke-width", 3);
-      }
+      } 
 
 
       // axes
@@ -288,11 +288,17 @@ looker.plugins.visualizations.add({
 
 
     // // Throw some errors and exit if the shape of the data isn't what this chart needs
-    // if (queryResponse.fields.dimensions.length == 0) {
-    //   this.addError({title: "No Dimensions", message: "This chart requires dimensions."});
-    //   return;
-    // }
 
+        if (queryResponse.fields.dimensions.length == 0) {
+          this.addError({title: "No Dimensions", message: "This chart requires dimensions."});
+          return;
+        } else if (config.chart_type == "area" && config.chart_type == "dot") {
+          this.addError({title: "No Chart Type", message: "Select either Area or Dot from the options."});
+          return;
+        } else if (queryResponse.fields.measures.length < 2 || queryResponse.fields.measures.length > 2) {
+          this.addError({title: "Measure Error", message: "This chart type can only display two measures at a time."});
+          return;
+        } 
     // We are done rendering! Let Looker know.
     done()
   }
