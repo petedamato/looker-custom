@@ -5,19 +5,13 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 var webpackConfig = {
   mode: 'production',
   entry: {
-    advanced_table: './src/examples/advanced_table/advanced_table.js',
-    v1_common: './src/common/common-entry.js',
-    hello_world: './src/examples/hello_world/hello_world.js',
-    hello_world_react: './src/examples/hello_world_react/hello_world_react.js',
-    sankey: './src/examples/sankey/sankey.ts',
-    liquid_fill_gauge: './src/examples/liquid_fill_gauge/liquid_fill_gauge.ts',
-    sunburst: './src/examples/sunburst/sunburst.ts',
-    collapsible_tree: './src/examples/collapsible_tree/collapsible_tree.ts',
-    chord: './src/examples/chord/chord.ts',
-    treemap: './src/examples/treemap/treemap.ts',
-    subtotal: './src/examples/subtotal/subtotal.ts',
-    cleveland: './src/examples/cleveland/cleveland.js',
-    image_carousel: './src/examples/image_carousel/image_carousel.js'
+    cleveland: './src/integration/cleveland/cleveland.js',
+    groupedStackedAB: './src/integration/groupedStackedAB/groupedStackedAB.js',
+    groupedStacked: './src/integration/groupedStacked/groupedStacked.js',
+    violin: './src/integration/violin/violin.js',
+    test: './src/integration/test/test.js',
+    splitViolin: './src/integration/splitViolin/splitViolin.js',
+    bulletChart: './src/integration/bulletChart/bulletChart.js'
   },
   output: {
     filename: "[name].js",
