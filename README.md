@@ -1,6 +1,6 @@
-**A Note on Support**
+**Note on this directory**
 
-The visualizations provided in this repository are intended to serve as examples. Looker's support team does not troubleshoot issues relating to these example visualizations or your custom visualization code. Supported visualizations are downloadable through the [Looker Marketplace](https://docs.looker.com/data-modeling/marketplace). 
+This directory is a copy of the build I develop custom Looker charts on. The instructions for getting started fresh are below.
 
 ----
 
