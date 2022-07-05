@@ -91,20 +91,11 @@ try {
           return m > 4? m - 4 : m;
         }
 
-    // console.log(data, queryResponse)
-
-      // data.forEach(function(d) {
-      //       d.percToPlan = +d.actual / +d.plan 
-      //   })
-      console.log("hello")
-
 
     const parseTime = d3.timeParse("%Y-%m");
     const dimension = queryResponse.fields.dimension_like[0]
     const measures = queryResponse.fields.measure_like
     let bullet_measures = []
-
-    console.log(config)
 
     measures.forEach((d,i)=>{
         //Config index_start here
@@ -115,19 +106,19 @@ try {
         }
     })
 
-    console.log(config)
-
     let budget_forecast_dps = {}
 
     let data_remix = []
 
+    // Slice off only the current year into the chart and package into data_remix array
     data.forEach(function(d,i) {
         if (parseTime(data[i][dimension.name].value) >= parseTime("2022-01") && parseTime(data[i][dimension.name].value) < parseTime("2023-01")) {
             data_remix.push(d)
         }
     })
 
-    console.log("three")
+    // "Counters" in the for loops below allow you to roll up the data in the previous months 
+    // to show where TF must add up volume/margin/revenue to hit its current quarter or month's goals
     let month_dp_bg = 0;
     let quarter_dp_bg = 0;
     let year_dp_bg = 0;
@@ -141,7 +132,6 @@ try {
     data_remix.sort(function(a,b) {
         return parseTime(a[dimension.name].value) - parseTime(b[dimension.name].value)
     })
-console.log("four")
 
             for (let m = 0; m <= (getMonth(new Date()) - 1); m++) {
                 month_dp_bg += data_remix[m][bullet_measures[0]].value
@@ -175,7 +165,6 @@ console.log("four")
     // const pivots = queryResponse.fields.pivots
 
     // const legend_label = pivots[1].field_group_variant
-console.log("five")
     let dimensions = {
         margin: {
             top: 15,
@@ -206,7 +195,7 @@ console.log("five")
         .attr("height", ((dimensions.boundedHeight) + "px"))
             .classed("group", true)
 
-    // build scales
+    // Add a placeholder array since this is just one chart per tile
     const xMetrics = ["metric"]
 
     const xScale = d3.scaleLinear()
@@ -217,8 +206,8 @@ console.log("five")
         .domain(xMetrics.map(d => d))
         .range([0, dimensions.boundedHeight])
         .padding(0.45)
-console.log("six")
-    // fix this
+
+    // Since this is custom, we just pull off the two values. In another chart this should be done programmatically
 
     let stackedData = []
     for (let n = 0; n < 2; n++) {
@@ -233,23 +222,11 @@ console.log("six")
         }
         stackedData.push(dat)
     }
-console.log("seven")
-    // const stackedData = d3.stack()
-    //     .keys(['actual_spot_1','actual_contract_1'])
-    //     .value((obj, key)=>{
-    //         let return_val;
-    //         obj.forEach(function(d,i){
-    //             if (d.label == key) {
-    //                 return_val = d.value
-    //             }
-    //         })
-    //         return return_val
-    //     })(final_data)
-        // console.log(stackedData)
 
     const rects = group.append("g")
 
 
+    // Handle hover action to show values of labels
     rects.on('mouseover', function () {
               d3.selectAll(".hidden").transition()
                    .duration('100')
@@ -299,13 +276,13 @@ console.log("seven")
                     return yScale("metric") + bulletPadding
                 })
                 .attr("width", (d,i) => {
-                    console.log(d, i)
                     return xScale(parseInt(d[1])-parseInt(d[0]))
                 })
                 .attr("height", yScale.bandwidth() - bulletPadding*2)
                 .attr("stroke", "#5a5a5a")
                 .attr("stroke-width", 1)
 
+    // Handle positive/negative value signaling, or let user style bar fills
     if (config.bar_display == "yes") {
         innerRects.attr("fill", function(d,i){
                         if (+d["yearly-actual"] < +d["yearly-budget"]) {
@@ -383,7 +360,8 @@ console.log("seven")
             .attr("class", "inner-text")
 
 
-
+    // For each label, we assign a group, add a symbol, add text above and add hidden text in the same position. 
+    // Hover toggles the opacity for the "visible" and "hidden" label texts
     const yearTarget = rects
         .selectAll(".plan")
         .data([budget_forecast_dps])
