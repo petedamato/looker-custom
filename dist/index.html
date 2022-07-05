@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind&family=Montserrat&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Montserrat';
+            }
+            #viz-container {
+              z-index: 9;
+              position: relative;
+              background-color: none;
+              border: 1px solid #d3d3d3;
+              text-align: center;
+              width: 600px;
+              height: 360px;
+            }
+
+            #viz {
+              font-family: 'Open Sans', 'Helvetica', 'sans-serif;';
+              cursor: move;
+              z-index: 10;
+              background-color: none;
+              color: #fff;
+              height: 100%;
+              width: 100%;
+              fill: black;
+              color: black;
+            }
+            .only-line {
+                    fill: none;
+                    stroke: #27566b;
+                    stroke-width: 2px;
+                  }
+            .line {
+              fill: none;
+              stroke: #27566b;
+              stroke-width: 2px;
+              opacity: .2;
+            }
+            .budget-line {
+                    fill: none;
+                    stroke: #339f7b;
+                    stroke-width: 2px;
+                    stroke-dasharray:4;
+                  }
+            .forecast-line {
+                    fill: none;
+                    stroke: #8cbb61;
+                    stroke-width: 2px;
+                    stroke-dasharray:4;
+                  }
+            .moving {
+              fill: none;
+              stroke: #27566b;
+              stroke-width: 2px;
+            }
+            #viz {
+                pointer-events: none;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+            .resizer {
+                /* All resizers are positioned absolutely inside the element */
+                background-color: grey;
+                position: absolute;
+            }
+
+            /* Placed at the right side */
+            .resizer-r {
+                cursor: col-resize;
+                height: 100%;
+                right: 0;
+                top: 0;
+                width: 2px;
+            }
+
+            /* Placed at the bottom side */
+            .resizer-b {
+                bottom: 0;
+                cursor: row-resize;
+                height: 2px;
+                left: 0;
+                width: 100%;
+            }
+        </style>
+        <script
+          src="https://code.jquery.com/jquery-3.6.0.min.js"
+          integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+          crossorigin="anonymous"></script>
+        <meta charset="utf-8"/>
+        <!-- <link rel="stylesheet" href="./styles.css"></link> -->
+        <title>My Template Plot</title>
+        </head>
+        <body>
+
+            <script src="https://d3js.org/d3.v5.min.js"></script>
+            <!-- <script src="lodash.js"></script> -->
+
+            <h2 class = "title">
+                Looker Sandbox
+            </h2>
+
+            <div id="container-container">
+
+            <div id="viz-container">
+                <div class="resizer resizer-r"></div>
+                <div class="resizer resizer-b"></div>
+                <div id="viz">
+                    <svg></svg>
+                </div>
+
+                
+            </div>
+        </div>
+            <script src="./template.js"></script>
+        </body>
+        <script>
+            // Query the element
+            const ele = document.getElementById('viz-container');
+
+            // The current position of mouse
+            let x = 0;
+            let y = 0;
+
+            // The dimension of the element
+            let w = 0;
+            let h = 0;
+
+            // Handle the mousedown event
+            // that's triggered when user drags the resizer
+            const mouseDownHandler = function (e) {
+
+                // Get the current mouse position
+                x = e.clientX;
+                y = e.clientY;
+
+                // Calculate the dimension of element
+                const styles = window.getComputedStyle(ele);
+                w = parseInt(styles.width, 10);
+                h = parseInt(styles.height, 10);
+
+                
+
+                // Attach the listeners to `document`
+                document.addEventListener('mousemove', mouseMoveHandler);
+                document.addEventListener('mouseup', mouseUpHandler);
+            };
+
+            const mouseMoveHandler = function (e) {
+                // How far the mouse has been moved
+                const dx = e.clientX - x;
+                const dy = e.clientY - y;
+
+                // Adjust the dimension of element
+                ele.style.width = `${w + dx}px`;
+                ele.style.height = `${h + dy}px`;
+            };
+
+            const mouseUpHandler = function () {
+                // Remove the handlers of `mousemove` and `mouseup`
+                document.removeEventListener('mousemove', mouseMoveHandler);
+                document.removeEventListener('mouseup', mouseUpHandler);
+            };
+
+            // Query all resizers
+            const resizers = ele.querySelectorAll('.resizer');
+
+            // Loop over them
+            [].forEach.call(resizers, function (resizer) {
+                resizer.addEventListener('mousedown', mouseDownHandler);
+            });
+        </script>
+</html>

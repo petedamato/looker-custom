@@ -11,7 +11,13 @@ var webpackConfig = {
     violin: './src/integration/violin/violin.js',
     test: './src/integration/test/test.js',
     splitViolin: './src/integration/splitViolin/splitViolin.js',
-    bulletChart: './src/integration/bulletChart/bulletChart.js'
+    bulletChart: './src/integration/bulletChart/bulletChart.js',
+    bulletChart: './src/integration/bulletChart/bulletChart.js',
+    coloredBars: './src/integration/coloredBars/coloredBars.js',
+    coloredBarsPerc: './src/integration/coloredBarsPerc/coloredBarsPerc.js',
+    template: './src/integration/template/template.js',
+    line: './src/integration/line/line.js',
+    fever: './src/integration/fever/fever.js'
   },
   output: {
     filename: "[name].js",

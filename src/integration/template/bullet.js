@@ -1,8 +1,4 @@
-import * as d3 from 'd3'
-import * as d3Collection from 'd3-collection'
-import { formatType, handleErrors } from '../common/utils'
-
-looker.plugins.visualizations.add({
+export const object = {
     // Id and Label are legacy properties that no longer have any function besides documenting
     // what the visualization used to have. The properties are now set via the manifest
     // form within the admin/visualizations page of Looker.
@@ -75,8 +71,8 @@ looker.plugins.visualizations.add({
         if (environment == "prod") {
             if (!handleErrors(this, queryResponse, {
                 min_pivots: 0, max_pivots: 0,
-                min_dimensions: 0, max_dimensions: 22,
-                min_measures: 0, max_measures: 22
+                min_dimensions: 0, max_dimensions: 20,
+                min_measures: 0, max_measures: 20
             })) return
         }
 try {
@@ -96,26 +92,19 @@ try {
       // data.forEach(function(d) {
       //       d.percToPlan = +d.actual / +d.plan 
       //   })
-      console.log("hello")
-
-
     const parseTime = d3.timeParse("%Y-%m");
     const dimension = queryResponse.fields.dimension_like[0]
     const measures = queryResponse.fields.measure_like
     let bullet_measures = []
 
-    console.log(config)
-
     measures.forEach((d,i)=>{
         //Config index_start here
-        const num = i - config.index_start
+        const num = i + config.index_start
         if (num == 0 || num == 3 || num == 12 || num == 15 || num == 18) {
             
             bullet_measures.push(d.name)
         }
     })
-
-    console.log(config)
 
     let budget_forecast_dps = {}
 
@@ -127,7 +116,6 @@ try {
         }
     })
 
-    console.log("three")
     let month_dp_bg = 0;
     let quarter_dp_bg = 0;
     let year_dp_bg = 0;
@@ -137,24 +125,28 @@ try {
     let year_actual = 0;
     let spot_actual = 0;
     let contract_actual = 0;
+    let counter = 0;
 
     data_remix.sort(function(a,b) {
         return parseTime(a[dimension.name].value) - parseTime(b[dimension.name].value)
     })
-console.log("four")
+
 
             for (let m = 0; m <= (getMonth(new Date()) - 1); m++) {
+                counter += 1
                 month_dp_bg += data_remix[m][bullet_measures[0]].value
                 month_dp_fc += data_remix[m][bullet_measures[1]].value
             }
             // Quarter data
             for (let j = 0; j < ((getQuarter(new Date())*3) - 1); j++) {
+                counter += 1
                 quarter_dp_bg += data_remix[j][bullet_measures[0]].value
                 quarter_dp_fc += data_remix[j][bullet_measures[1]].value
             }
             // Year data
             for (let k = 0; k < 11; k++) {
 
+                counter += 1
                 year_dp_bg += data_remix[k][bullet_measures[0]].value
                 year_dp_fc += data_remix[k][bullet_measures[1]].value
                 year_actual += data_remix[k][bullet_measures[2]].value
@@ -172,10 +164,21 @@ console.log("four")
             budget_forecast_dps["yearly-actual-spot"] = spot_actual
             budget_forecast_dps["yearly-actual-contract"] = contract_actual
 
+    let final_data = []
+
+    measures.forEach(function(entry){
+        let data_pod = {}
+        data_pod["value"] = data[0][entry.name].value
+        data_pod["label"] = entry.name
+        final_data.push(data_pod)
+    })
+
+    final_data = [final_data]
+
     // const pivots = queryResponse.fields.pivots
 
     // const legend_label = pivots[1].field_group_variant
-console.log("five")
+
     let dimensions = {
         margin: {
             top: 15,
@@ -217,7 +220,7 @@ console.log("five")
         .domain(xMetrics.map(d => d))
         .range([0, dimensions.boundedHeight])
         .padding(0.45)
-console.log("six")
+
     // fix this
 
     let stackedData = []
@@ -233,7 +236,7 @@ console.log("six")
         }
         stackedData.push(dat)
     }
-console.log("seven")
+
     // const stackedData = d3.stack()
     //     .keys(['actual_spot_1','actual_contract_1'])
     //     .value((obj, key)=>{
@@ -251,6 +254,7 @@ console.log("seven")
 
 
     rects.on('mouseover', function () {
+        console.log("Mousing")
               d3.selectAll(".hidden").transition()
                    .duration('100')
                    .attr('opacity', '1')
@@ -800,4 +804,4 @@ console.log("seven")
         done()
     }
 }
-});
+}

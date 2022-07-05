@@ -1,0 +1,800 @@
+{"queryResponse": {
+    "parent_id": "3237698d5d7108c7314a32d10c834d58",
+    "sql_changed": false,
+    "aggregate_table_used_info": null,
+    "added_params": null,
+    "data": [
+        {
+            "shipments.dispatched_week": {
+                "value": "2022-06-27",
+                "filterable_value": "2022-06-27 for 7 days",
+                "links": [
+                    {
+                        "label": "by Dispatched Date",
+                        "label_prefix": "by",
+                        "label_value": "Dispatched Date",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_date,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-27+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                        "type": "drill",
+                        "type_label": "Drill into 2022-06-27",
+                        "type_label_prefix": "Drill into",
+                        "type_label_value": "2022-06-27"
+                    },
+                    {
+                        "label": "by Dispatched Time",
+                        "label_prefix": "by",
+                        "label_value": "Dispatched Time",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_time,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-27+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                        "type": "drill",
+                        "type_label": "Drill into 2022-06-27",
+                        "type_label_prefix": "Drill into",
+                        "type_label_value": "2022-06-27"
+                    }
+                ]
+            },
+            "shipments.shipment_count": {
+                "value": 1662,
+                "rendered": "1,662",
+                "links": [
+                    {
+                        "label": "Show All 1,662",
+                        "label_prefix": "Show All",
+                        "label_value": "1,662",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.id,shipments.state,shipments.created_date,shipments.assigned_date,equipment.parent_name,shipments.lane_city_state,carrier_manager_parent.name,driver_parent.name,driver_parent.phone,shipment_tracking_pings.is_tracking,first_pickup_appointment.appointment_end_local_time,first_pickup.late_reason,last_delivery_appointment.appointment_end_local_time,last_delivery.late_reason,shipments.shipper_total_rate,shipments.carrier_total_rate,shipments.total_margin,shipments.dat_rate,shipments.carrier_manager_target&f[shipments.dispatched_week]=2022-06-27+for+7+days&f[shipments.is_tonu]=No&query_timezone=America%2FNew_York&limit=500",
+                        "type": "measure_default"
+                    }
+                ]
+            }
+        },
+        {
+            "shipments.dispatched_week": {
+                "value": "2022-06-20",
+                "filterable_value": "2022-06-20 for 7 days",
+                "links": [
+                    {
+                        "label": "by Dispatched Date",
+                        "label_prefix": "by",
+                        "label_value": "Dispatched Date",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_date,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-20+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                        "type": "drill",
+                        "type_label": "Drill into 2022-06-20",
+                        "type_label_prefix": "Drill into",
+                        "type_label_value": "2022-06-20"
+                    },
+                    {
+                        "label": "by Dispatched Time",
+                        "label_prefix": "by",
+                        "label_value": "Dispatched Time",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_time,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-20+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                        "type": "drill",
+                        "type_label": "Drill into 2022-06-20",
+                        "type_label_prefix": "Drill into",
+                        "type_label_value": "2022-06-20"
+                    }
+                ]
+            },
+            "shipments.shipment_count": {
+                "value": 3065,
+                "rendered": "3,065",
+                "links": [
+                    {
+                        "label": "Show All 3,065",
+                        "label_prefix": "Show All",
+                        "label_value": "3,065",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.id,shipments.state,shipments.created_date,shipments.assigned_date,equipment.parent_name,shipments.lane_city_state,carrier_manager_parent.name,driver_parent.name,driver_parent.phone,shipment_tracking_pings.is_tracking,first_pickup_appointment.appointment_end_local_time,first_pickup.late_reason,last_delivery_appointment.appointment_end_local_time,last_delivery.late_reason,shipments.shipper_total_rate,shipments.carrier_total_rate,shipments.total_margin,shipments.dat_rate,shipments.carrier_manager_target&f[shipments.dispatched_week]=2022-06-20+for+7+days&f[shipments.is_tonu]=No&query_timezone=America%2FNew_York&limit=500",
+                        "type": "measure_default"
+                    }
+                ]
+            }
+        },
+        {
+            "shipments.dispatched_week": {
+                "value": "2022-06-13",
+                "filterable_value": "2022-06-13 for 7 days",
+                "links": [
+                    {
+                        "label": "by Dispatched Date",
+                        "label_prefix": "by",
+                        "label_value": "Dispatched Date",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_date,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-13+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                        "type": "drill",
+                        "type_label": "Drill into 2022-06-13",
+                        "type_label_prefix": "Drill into",
+                        "type_label_value": "2022-06-13"
+                    },
+                    {
+                        "label": "by Dispatched Time",
+                        "label_prefix": "by",
+                        "label_value": "Dispatched Time",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_time,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-13+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                        "type": "drill",
+                        "type_label": "Drill into 2022-06-13",
+                        "type_label_prefix": "Drill into",
+                        "type_label_value": "2022-06-13"
+                    }
+                ]
+            },
+            "shipments.shipment_count": {
+                "value": 2957,
+                "rendered": "2,957",
+                "links": [
+                    {
+                        "label": "Show All 2,957",
+                        "label_prefix": "Show All",
+                        "label_value": "2,957",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.id,shipments.state,shipments.created_date,shipments.assigned_date,equipment.parent_name,shipments.lane_city_state,carrier_manager_parent.name,driver_parent.name,driver_parent.phone,shipment_tracking_pings.is_tracking,first_pickup_appointment.appointment_end_local_time,first_pickup.late_reason,last_delivery_appointment.appointment_end_local_time,last_delivery.late_reason,shipments.shipper_total_rate,shipments.carrier_total_rate,shipments.total_margin,shipments.dat_rate,shipments.carrier_manager_target&f[shipments.dispatched_week]=2022-06-13+for+7+days&f[shipments.is_tonu]=No&query_timezone=America%2FNew_York&limit=500",
+                        "type": "measure_default"
+                    }
+                ]
+            }
+        },
+        {
+            "shipments.dispatched_week": {
+                "value": "2022-06-06",
+                "filterable_value": "2022-06-06 for 7 days",
+                "links": [
+                    {
+                        "label": "by Dispatched Date",
+                        "label_prefix": "by",
+                        "label_value": "Dispatched Date",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_date,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-06+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                        "type": "drill",
+                        "type_label": "Drill into 2022-06-06",
+                        "type_label_prefix": "Drill into",
+                        "type_label_value": "2022-06-06"
+                    },
+                    {
+                        "label": "by Dispatched Time",
+                        "label_prefix": "by",
+                        "label_value": "Dispatched Time",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_time,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-06+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                        "type": "drill",
+                        "type_label": "Drill into 2022-06-06",
+                        "type_label_prefix": "Drill into",
+                        "type_label_value": "2022-06-06"
+                    }
+                ]
+            },
+            "shipments.shipment_count": {
+                "value": 3028,
+                "rendered": "3,028",
+                "links": [
+                    {
+                        "label": "Show All 3,028",
+                        "label_prefix": "Show All",
+                        "label_value": "3,028",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.id,shipments.state,shipments.created_date,shipments.assigned_date,equipment.parent_name,shipments.lane_city_state,carrier_manager_parent.name,driver_parent.name,driver_parent.phone,shipment_tracking_pings.is_tracking,first_pickup_appointment.appointment_end_local_time,first_pickup.late_reason,last_delivery_appointment.appointment_end_local_time,last_delivery.late_reason,shipments.shipper_total_rate,shipments.carrier_total_rate,shipments.total_margin,shipments.dat_rate,shipments.carrier_manager_target&f[shipments.dispatched_week]=2022-06-06+for+7+days&f[shipments.is_tonu]=No&query_timezone=America%2FNew_York&limit=500",
+                        "type": "measure_default"
+                    }
+                ]
+            }
+        },
+        {
+            "shipments.dispatched_week": {
+                "value": "2022-05-30",
+                "filterable_value": "2022-05-30 for 7 days",
+                "links": [
+                    {
+                        "label": "by Dispatched Date",
+                        "label_prefix": "by",
+                        "label_value": "Dispatched Date",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_date,shipments.shipment_count&f[shipments.dispatched_week]=2022-05-30+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                        "type": "drill",
+                        "type_label": "Drill into 2022-05-30",
+                        "type_label_prefix": "Drill into",
+                        "type_label_value": "2022-05-30"
+                    },
+                    {
+                        "label": "by Dispatched Time",
+                        "label_prefix": "by",
+                        "label_value": "Dispatched Time",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_time,shipments.shipment_count&f[shipments.dispatched_week]=2022-05-30+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                        "type": "drill",
+                        "type_label": "Drill into 2022-05-30",
+                        "type_label_prefix": "Drill into",
+                        "type_label_value": "2022-05-30"
+                    }
+                ]
+            },
+            "shipments.shipment_count": {
+                "value": 2833,
+                "rendered": "2,833",
+                "links": [
+                    {
+                        "label": "Show All 2,833",
+                        "label_prefix": "Show All",
+                        "label_value": "2,833",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.id,shipments.state,shipments.created_date,shipments.assigned_date,equipment.parent_name,shipments.lane_city_state,carrier_manager_parent.name,driver_parent.name,driver_parent.phone,shipment_tracking_pings.is_tracking,first_pickup_appointment.appointment_end_local_time,first_pickup.late_reason,last_delivery_appointment.appointment_end_local_time,last_delivery.late_reason,shipments.shipper_total_rate,shipments.carrier_total_rate,shipments.total_margin,shipments.dat_rate,shipments.carrier_manager_target&f[shipments.dispatched_week]=2022-05-30+for+7+days&f[shipments.is_tonu]=No&query_timezone=America%2FNew_York&limit=500",
+                        "type": "measure_default"
+                    }
+                ]
+            }
+        },
+        {
+            "shipments.dispatched_week": {
+                "value": "2022-05-23",
+                "filterable_value": "2022-05-23 for 7 days",
+                "links": [
+                    {
+                        "label": "by Dispatched Date",
+                        "label_prefix": "by",
+                        "label_value": "Dispatched Date",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_date,shipments.shipment_count&f[shipments.dispatched_week]=2022-05-23+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                        "type": "drill",
+                        "type_label": "Drill into 2022-05-23",
+                        "type_label_prefix": "Drill into",
+                        "type_label_value": "2022-05-23"
+                    },
+                    {
+                        "label": "by Dispatched Time",
+                        "label_prefix": "by",
+                        "label_value": "Dispatched Time",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_time,shipments.shipment_count&f[shipments.dispatched_week]=2022-05-23+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                        "type": "drill",
+                        "type_label": "Drill into 2022-05-23",
+                        "type_label_prefix": "Drill into",
+                        "type_label_value": "2022-05-23"
+                    }
+                ]
+            },
+            "shipments.shipment_count": {
+                "value": 3612,
+                "rendered": "3,612",
+                "links": [
+                    {
+                        "label": "Show All 3,612",
+                        "label_prefix": "Show All",
+                        "label_value": "3,612",
+                        "url": "/explore/snowflake_marketplace/shipments?fields=shipments.id,shipments.state,shipments.created_date,shipments.assigned_date,equipment.parent_name,shipments.lane_city_state,carrier_manager_parent.name,driver_parent.name,driver_parent.phone,shipment_tracking_pings.is_tracking,first_pickup_appointment.appointment_end_local_time,first_pickup.late_reason,last_delivery_appointment.appointment_end_local_time,last_delivery.late_reason,shipments.shipper_total_rate,shipments.carrier_total_rate,shipments.total_margin,shipments.dat_rate,shipments.carrier_manager_target&f[shipments.dispatched_week]=2022-05-23+for+7+days&f[shipments.is_tonu]=No&query_timezone=America%2FNew_York&limit=500",
+                        "type": "measure_default"
+                    }
+                ]
+            }
+        }
+    ],
+    "drill_menu_build_time": 0.075644,
+    "expired": false,
+    "fields": {
+        "measures": [
+            {
+                "align": "right",
+                "can_filter": true,
+                "category": "measure",
+                "default_filter_value": null,
+                "description": "Count Unique Shipment ID. Does not Include TONUs",
+                "enumerations": null,
+                "field_group_label": "Counts",
+                "fill_style": null,
+                "fiscal_month_offset": 0,
+                "has_allowed_values": false,
+                "hidden": false,
+                "is_filter": false,
+                "is_numeric": true,
+                "label": "Shipments Count Shipments",
+                "label_from_parameter": null,
+                "label_short": "Count Shipments",
+                "map_layer": null,
+                "name": "shipments.shipment_count",
+                "strict_value_format": false,
+                "requires_refresh_on_sort": false,
+                "sortable": true,
+                "suggestions": null,
+                "tags": [],
+                "type": "count_distinct",
+                "user_attribute_filter_types": [
+                    "number",
+                    "advanced_filter_number"
+                ],
+                "value_format": null,
+                "view": "shipments",
+                "view_label": "Shipments",
+                "dynamic": false,
+                "week_start_day": "monday",
+                "original_view": "shipments",
+                "dimension_group": null,
+                "error": null,
+                "field_group_variant": "Count Shipments",
+                "measure": true,
+                "parameter": false,
+                "primary_key": false,
+                "project_name": "snowflake",
+                "scope": "shipments",
+                "suggest_dimension": "shipments.shipment_count",
+                "suggest_explore": "shipments",
+                "suggestable": false,
+                "is_fiscal": false,
+                "is_timeframe": false,
+                "can_time_filter": false,
+                "time_interval": null,
+                "lookml_link": "/projects/snowflake/files/MarketPlace%2FCore%2Fviews%2Fshipments.view.lkml?line=2585",
+                "permanent": null,
+                "source_file": "MarketPlace/Core/views/shipments.view.lkml",
+                "source_file_path": "snowflake/MarketPlace/Core/views/shipments.view.lkml",
+                "sql": "${id} ",
+                "sql_case": null,
+                "filters": [
+                    {
+                        "field": "shipments.is_tonu",
+                        "condition": "No"
+                    }
+                ],
+                "times_used": 0
+            }
+        ],
+        "dimensions": [
+            {
+                "align": "left",
+                "can_filter": true,
+                "category": "dimension",
+                "default_filter_value": null,
+                "description": "The time the shipment was dispatched.",
+                "enumerations": null,
+                "field_group_label": "Timestamps",
+                "fill_style": "range",
+                "fiscal_month_offset": 0,
+                "has_allowed_values": false,
+                "hidden": false,
+                "is_filter": false,
+                "is_numeric": false,
+                "label": "Shipments Dispatched Week",
+                "label_from_parameter": null,
+                "label_short": "Dispatched Week",
+                "map_layer": null,
+                "name": "shipments.dispatched_week",
+                "strict_value_format": false,
+                "requires_refresh_on_sort": false,
+                "sortable": true,
+                "suggestions": null,
+                "tags": [],
+                "type": "date_week",
+                "user_attribute_filter_types": [
+                    "datetime",
+                    "advanced_filter_datetime"
+                ],
+                "value_format": null,
+                "view": "shipments",
+                "view_label": "Shipments",
+                "dynamic": false,
+                "week_start_day": "monday",
+                "original_view": "shipments",
+                "dimension_group": "shipments.dispatched",
+                "error": null,
+                "field_group_variant": "Dispatched Week",
+                "measure": false,
+                "parameter": false,
+                "primary_key": false,
+                "project_name": "snowflake",
+                "scope": "shipments",
+                "suggest_dimension": "shipments.dispatched_week",
+                "suggest_explore": "shipments",
+                "suggestable": false,
+                "is_fiscal": false,
+                "is_timeframe": true,
+                "can_time_filter": false,
+                "time_interval": {
+                    "name": "week",
+                    "count": 1
+                },
+                "lookml_link": "/projects/snowflake/files/MarketPlace%2FCore%2Fviews%2Fshipments.view.lkml?line=807",
+                "permanent": null,
+                "source_file": "MarketPlace/Core/views/shipments.view.lkml",
+                "source_file_path": "snowflake/MarketPlace/Core/views/shipments.view.lkml",
+                "sql": "${TABLE}.dispatched_at ",
+                "sql_case": null,
+                "filters": null,
+                "times_used": 0,
+                "sorted": {
+                    "desc": true,
+                    "sort_index": 0
+                }
+            }
+        ],
+        "table_calculations": [],
+        "pivots": [],
+        "measure_like": [
+            {
+                "align": "right",
+                "can_filter": true,
+                "category": "measure",
+                "default_filter_value": null,
+                "description": "Count Unique Shipment ID. Does not Include TONUs",
+                "enumerations": null,
+                "field_group_label": "Counts",
+                "fill_style": null,
+                "fiscal_month_offset": 0,
+                "has_allowed_values": false,
+                "hidden": false,
+                "is_filter": false,
+                "is_numeric": true,
+                "label": "Shipments Count Shipments",
+                "label_from_parameter": null,
+                "label_short": "Count Shipments",
+                "map_layer": null,
+                "name": "shipments.shipment_count",
+                "strict_value_format": false,
+                "requires_refresh_on_sort": false,
+                "sortable": true,
+                "suggestions": null,
+                "tags": [],
+                "type": "count_distinct",
+                "user_attribute_filter_types": [
+                    "number",
+                    "advanced_filter_number"
+                ],
+                "value_format": null,
+                "view": "shipments",
+                "view_label": "Shipments",
+                "dynamic": false,
+                "week_start_day": "monday",
+                "original_view": "shipments",
+                "dimension_group": null,
+                "error": null,
+                "field_group_variant": "Count Shipments",
+                "measure": true,
+                "parameter": false,
+                "primary_key": false,
+                "project_name": "snowflake",
+                "scope": "shipments",
+                "suggest_dimension": "shipments.shipment_count",
+                "suggest_explore": "shipments",
+                "suggestable": false,
+                "is_fiscal": false,
+                "is_timeframe": false,
+                "can_time_filter": false,
+                "time_interval": null,
+                "lookml_link": "/projects/snowflake/files/MarketPlace%2FCore%2Fviews%2Fshipments.view.lkml?line=2585",
+                "permanent": null,
+                "source_file": "MarketPlace/Core/views/shipments.view.lkml",
+                "source_file_path": "snowflake/MarketPlace/Core/views/shipments.view.lkml",
+                "sql": "${id} ",
+                "sql_case": null,
+                "filters": [
+                    {
+                        "field": "shipments.is_tonu",
+                        "condition": "No"
+                    }
+                ],
+                "times_used": 0
+            }
+        ],
+        "dimension_like": [
+            {
+                "align": "left",
+                "can_filter": true,
+                "category": "dimension",
+                "default_filter_value": null,
+                "description": "The time the shipment was dispatched.",
+                "enumerations": null,
+                "field_group_label": "Timestamps",
+                "fill_style": "range",
+                "fiscal_month_offset": 0,
+                "has_allowed_values": false,
+                "hidden": false,
+                "is_filter": false,
+                "is_numeric": false,
+                "label": "Shipments Dispatched Week",
+                "label_from_parameter": null,
+                "label_short": "Dispatched Week",
+                "map_layer": null,
+                "name": "shipments.dispatched_week",
+                "strict_value_format": false,
+                "requires_refresh_on_sort": false,
+                "sortable": true,
+                "suggestions": null,
+                "tags": [],
+                "type": "date_week",
+                "user_attribute_filter_types": [
+                    "datetime",
+                    "advanced_filter_datetime"
+                ],
+                "value_format": null,
+                "view": "shipments",
+                "view_label": "Shipments",
+                "dynamic": false,
+                "week_start_day": "monday",
+                "original_view": "shipments",
+                "dimension_group": "shipments.dispatched",
+                "error": null,
+                "field_group_variant": "Dispatched Week",
+                "measure": false,
+                "parameter": false,
+                "primary_key": false,
+                "project_name": "snowflake",
+                "scope": "shipments",
+                "suggest_dimension": "shipments.dispatched_week",
+                "suggest_explore": "shipments",
+                "suggestable": false,
+                "is_fiscal": false,
+                "is_timeframe": true,
+                "can_time_filter": false,
+                "time_interval": {
+                    "name": "week",
+                    "count": 1
+                },
+                "lookml_link": "/projects/snowflake/files/MarketPlace%2FCore%2Fviews%2Fshipments.view.lkml?line=807",
+                "permanent": null,
+                "source_file": "MarketPlace/Core/views/shipments.view.lkml",
+                "source_file_path": "snowflake/MarketPlace/Core/views/shipments.view.lkml",
+                "sql": "${TABLE}.dispatched_at ",
+                "sql_case": null,
+                "filters": null,
+                "times_used": 0,
+                "sorted": {
+                    "desc": true,
+                    "sort_index": 0
+                }
+            }
+        ]
+    },
+    "fill_fields": [
+        "shipments.dispatched_week"
+    ],
+    "forecast_result": null,
+    "has_row_totals": false,
+    "has_totals": false,
+    "id": "query-result-33:{\"hidden_points_if_no\":[],\"hidden_fields\":[]}",
+    "null_sort_treatment": "high",
+    "number_format": "1,234.56",
+    "ran_at": "2022-06-29T19:01:54+00:00",
+    "sql": "-- raw sql results do not include filled-in values for 'shipments.dispatched_week'\n\n\nSELECT\n    (TO_CHAR(DATE_TRUNC('week', CONVERT_TIMEZONE('UTC', 'America/New_York', CAST(shipments.dispatched_at  AS TIMESTAMP_NTZ))), 'YYYY-MM-DD')) AS \"shipments.dispatched_week\",\n    COUNT(DISTINCT CASE WHEN (CASE WHEN shipments.is_tonu  THEN 1 ELSE 0 END\n) = 0 THEN shipments.id  ELSE NULL END) AS \"shipments.shipment_count\"\nFROM stark_prod.recreated_tables.shipments  AS shipments\nWHERE ((( shipments.dispatched_at  ) >= ((CONVERT_TIMEZONE('America/New_York', 'UTC', CAST(DATEADD('day', -35, DATE_TRUNC('week', DATE_TRUNC('day', CONVERT_TIMEZONE('UTC', 'America/New_York', CAST(CURRENT_TIMESTAMP() AS TIMESTAMP_NTZ))))) AS TIMESTAMP_NTZ)))) AND ( shipments.dispatched_at  ) < ((CONVERT_TIMEZONE('America/New_York', 'UTC', CAST(DATEADD('day', 42, DATEADD('day', -35, DATE_TRUNC('week', DATE_TRUNC('day', CONVERT_TIMEZONE('UTC', 'America/New_York', CAST(CURRENT_TIMESTAMP() AS TIMESTAMP_NTZ)))))) AS TIMESTAMP_NTZ))))))\nGROUP BY\n    (DATE_TRUNC('week', CONVERT_TIMEZONE('UTC', 'America/New_York', CAST(shipments.dispatched_at  AS TIMESTAMP_NTZ))))\nORDER BY\n    1 DESC\nFETCH NEXT 500 ROWS ONLY",
+    "sql_explain": "EXPLAIN SELECT\n    (TO_CHAR(DATE_TRUNC('week', CONVERT_TIMEZONE('UTC', 'America/New_York', CAST(shipments.dispatched_at  AS TIMESTAMP_NTZ))), 'YYYY-MM-DD')) AS \"shipments.dispatched_week\",\n    COUNT(DISTINCT CASE WHEN (CASE WHEN shipments.is_tonu  THEN 1 ELSE 0 END\n) = 0 THEN shipments.id  ELSE NULL END) AS \"shipments.shipment_count\"\nFROM stark_prod.recreated_tables.shipments  AS shipments\nWHERE ((( shipments.dispatched_at  ) >= ((CONVERT_TIMEZONE('America/New_York', 'UTC', CAST(DATEADD('day', -35, DATE_TRUNC('week', DATE_TRUNC('day', CONVERT_TIMEZONE('UTC', 'America/New_York', CAST(CURRENT_TIMESTAMP() AS TIMESTAMP_NTZ))))) AS TIMESTAMP_NTZ)))) AND ( shipments.dispatched_at  ) < ((CONVERT_TIMEZONE('America/New_York', 'UTC', CAST(DATEADD('day', 42, DATEADD('day', -35, DATE_TRUNC('week', DATE_TRUNC('day', CONVERT_TIMEZONE('UTC', 'America/New_York', CAST(CURRENT_TIMESTAMP() AS TIMESTAMP_NTZ)))))) AS TIMESTAMP_NTZ))))))\nGROUP BY\n    (DATE_TRUNC('week', CONVERT_TIMEZONE('UTC', 'America/New_York', CAST(shipments.dispatched_at  AS TIMESTAMP_NTZ))))\nORDER BY\n    1 DESC\nFETCH NEXT 500 ROWS ONLY",
+    "supports_pivot_in_db": true,
+    "timezone": "America/New_York",
+    "is_local": true,
+    "table_calcs_complete": true,
+    "tracked_attributes": {
+        "result.drill_menu_build_time": 0.075644,
+        "result.from_cache": true,
+        "result.sql.length": 1179,
+        "result.supports_pivot_in_db": true
+    },
+    "sorts": []
+},
+"data": [
+    {
+        "shipments.dispatched_week": {
+            "value": "2022-06-27",
+            "filterable_value": "2022-06-27 for 7 days",
+            "links": [
+                {
+                    "label": "by Dispatched Date",
+                    "label_prefix": "by",
+                    "label_value": "Dispatched Date",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_date,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-27+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                    "type": "drill",
+                    "type_label": "Drill into 2022-06-27",
+                    "type_label_prefix": "Drill into",
+                    "type_label_value": "2022-06-27"
+                },
+                {
+                    "label": "by Dispatched Time",
+                    "label_prefix": "by",
+                    "label_value": "Dispatched Time",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_time,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-27+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                    "type": "drill",
+                    "type_label": "Drill into 2022-06-27",
+                    "type_label_prefix": "Drill into",
+                    "type_label_value": "2022-06-27"
+                }
+            ]
+        },
+        "shipments.shipment_count": {
+            "value": 1662,
+            "rendered": "1,662",
+            "links": [
+                {
+                    "label": "Show All 1,662",
+                    "label_prefix": "Show All",
+                    "label_value": "1,662",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.id,shipments.state,shipments.created_date,shipments.assigned_date,equipment.parent_name,shipments.lane_city_state,carrier_manager_parent.name,driver_parent.name,driver_parent.phone,shipment_tracking_pings.is_tracking,first_pickup_appointment.appointment_end_local_time,first_pickup.late_reason,last_delivery_appointment.appointment_end_local_time,last_delivery.late_reason,shipments.shipper_total_rate,shipments.carrier_total_rate,shipments.total_margin,shipments.dat_rate,shipments.carrier_manager_target&f[shipments.dispatched_week]=2022-06-27+for+7+days&f[shipments.is_tonu]=No&query_timezone=America%2FNew_York&limit=500",
+                    "type": "measure_default"
+                }
+            ]
+        }
+    },
+    {
+        "shipments.dispatched_week": {
+            "value": "2022-06-20",
+            "filterable_value": "2022-06-20 for 7 days",
+            "links": [
+                {
+                    "label": "by Dispatched Date",
+                    "label_prefix": "by",
+                    "label_value": "Dispatched Date",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_date,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-20+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                    "type": "drill",
+                    "type_label": "Drill into 2022-06-20",
+                    "type_label_prefix": "Drill into",
+                    "type_label_value": "2022-06-20"
+                },
+                {
+                    "label": "by Dispatched Time",
+                    "label_prefix": "by",
+                    "label_value": "Dispatched Time",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_time,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-20+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                    "type": "drill",
+                    "type_label": "Drill into 2022-06-20",
+                    "type_label_prefix": "Drill into",
+                    "type_label_value": "2022-06-20"
+                }
+            ]
+        },
+        "shipments.shipment_count": {
+            "value": 3065,
+            "rendered": "3,065",
+            "links": [
+                {
+                    "label": "Show All 3,065",
+                    "label_prefix": "Show All",
+                    "label_value": "3,065",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.id,shipments.state,shipments.created_date,shipments.assigned_date,equipment.parent_name,shipments.lane_city_state,carrier_manager_parent.name,driver_parent.name,driver_parent.phone,shipment_tracking_pings.is_tracking,first_pickup_appointment.appointment_end_local_time,first_pickup.late_reason,last_delivery_appointment.appointment_end_local_time,last_delivery.late_reason,shipments.shipper_total_rate,shipments.carrier_total_rate,shipments.total_margin,shipments.dat_rate,shipments.carrier_manager_target&f[shipments.dispatched_week]=2022-06-20+for+7+days&f[shipments.is_tonu]=No&query_timezone=America%2FNew_York&limit=500",
+                    "type": "measure_default"
+                }
+            ]
+        }
+    },
+    {
+        "shipments.dispatched_week": {
+            "value": "2022-06-13",
+            "filterable_value": "2022-06-13 for 7 days",
+            "links": [
+                {
+                    "label": "by Dispatched Date",
+                    "label_prefix": "by",
+                    "label_value": "Dispatched Date",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_date,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-13+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                    "type": "drill",
+                    "type_label": "Drill into 2022-06-13",
+                    "type_label_prefix": "Drill into",
+                    "type_label_value": "2022-06-13"
+                },
+                {
+                    "label": "by Dispatched Time",
+                    "label_prefix": "by",
+                    "label_value": "Dispatched Time",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_time,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-13+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                    "type": "drill",
+                    "type_label": "Drill into 2022-06-13",
+                    "type_label_prefix": "Drill into",
+                    "type_label_value": "2022-06-13"
+                }
+            ]
+        },
+        "shipments.shipment_count": {
+            "value": 2957,
+            "rendered": "2,957",
+            "links": [
+                {
+                    "label": "Show All 2,957",
+                    "label_prefix": "Show All",
+                    "label_value": "2,957",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.id,shipments.state,shipments.created_date,shipments.assigned_date,equipment.parent_name,shipments.lane_city_state,carrier_manager_parent.name,driver_parent.name,driver_parent.phone,shipment_tracking_pings.is_tracking,first_pickup_appointment.appointment_end_local_time,first_pickup.late_reason,last_delivery_appointment.appointment_end_local_time,last_delivery.late_reason,shipments.shipper_total_rate,shipments.carrier_total_rate,shipments.total_margin,shipments.dat_rate,shipments.carrier_manager_target&f[shipments.dispatched_week]=2022-06-13+for+7+days&f[shipments.is_tonu]=No&query_timezone=America%2FNew_York&limit=500",
+                    "type": "measure_default"
+                }
+            ]
+        }
+    },
+    {
+        "shipments.dispatched_week": {
+            "value": "2022-06-06",
+            "filterable_value": "2022-06-06 for 7 days",
+            "links": [
+                {
+                    "label": "by Dispatched Date",
+                    "label_prefix": "by",
+                    "label_value": "Dispatched Date",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_date,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-06+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                    "type": "drill",
+                    "type_label": "Drill into 2022-06-06",
+                    "type_label_prefix": "Drill into",
+                    "type_label_value": "2022-06-06"
+                },
+                {
+                    "label": "by Dispatched Time",
+                    "label_prefix": "by",
+                    "label_value": "Dispatched Time",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_time,shipments.shipment_count&f[shipments.dispatched_week]=2022-06-06+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                    "type": "drill",
+                    "type_label": "Drill into 2022-06-06",
+                    "type_label_prefix": "Drill into",
+                    "type_label_value": "2022-06-06"
+                }
+            ]
+        },
+        "shipments.shipment_count": {
+            "value": 3028,
+            "rendered": "3,028",
+            "links": [
+                {
+                    "label": "Show All 3,028",
+                    "label_prefix": "Show All",
+                    "label_value": "3,028",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.id,shipments.state,shipments.created_date,shipments.assigned_date,equipment.parent_name,shipments.lane_city_state,carrier_manager_parent.name,driver_parent.name,driver_parent.phone,shipment_tracking_pings.is_tracking,first_pickup_appointment.appointment_end_local_time,first_pickup.late_reason,last_delivery_appointment.appointment_end_local_time,last_delivery.late_reason,shipments.shipper_total_rate,shipments.carrier_total_rate,shipments.total_margin,shipments.dat_rate,shipments.carrier_manager_target&f[shipments.dispatched_week]=2022-06-06+for+7+days&f[shipments.is_tonu]=No&query_timezone=America%2FNew_York&limit=500",
+                    "type": "measure_default"
+                }
+            ]
+        }
+    },
+    {
+        "shipments.dispatched_week": {
+            "value": "2022-05-30",
+            "filterable_value": "2022-05-30 for 7 days",
+            "links": [
+                {
+                    "label": "by Dispatched Date",
+                    "label_prefix": "by",
+                    "label_value": "Dispatched Date",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_date,shipments.shipment_count&f[shipments.dispatched_week]=2022-05-30+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                    "type": "drill",
+                    "type_label": "Drill into 2022-05-30",
+                    "type_label_prefix": "Drill into",
+                    "type_label_value": "2022-05-30"
+                },
+                {
+                    "label": "by Dispatched Time",
+                    "label_prefix": "by",
+                    "label_value": "Dispatched Time",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_time,shipments.shipment_count&f[shipments.dispatched_week]=2022-05-30+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                    "type": "drill",
+                    "type_label": "Drill into 2022-05-30",
+                    "type_label_prefix": "Drill into",
+                    "type_label_value": "2022-05-30"
+                }
+            ]
+        },
+        "shipments.shipment_count": {
+            "value": 2833,
+            "rendered": "2,833",
+            "links": [
+                {
+                    "label": "Show All 2,833",
+                    "label_prefix": "Show All",
+                    "label_value": "2,833",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.id,shipments.state,shipments.created_date,shipments.assigned_date,equipment.parent_name,shipments.lane_city_state,carrier_manager_parent.name,driver_parent.name,driver_parent.phone,shipment_tracking_pings.is_tracking,first_pickup_appointment.appointment_end_local_time,first_pickup.late_reason,last_delivery_appointment.appointment_end_local_time,last_delivery.late_reason,shipments.shipper_total_rate,shipments.carrier_total_rate,shipments.total_margin,shipments.dat_rate,shipments.carrier_manager_target&f[shipments.dispatched_week]=2022-05-30+for+7+days&f[shipments.is_tonu]=No&query_timezone=America%2FNew_York&limit=500",
+                    "type": "measure_default"
+                }
+            ]
+        }
+    },
+    {
+        "shipments.dispatched_week": {
+            "value": "2022-05-23",
+            "filterable_value": "2022-05-23 for 7 days",
+            "links": [
+                {
+                    "label": "by Dispatched Date",
+                    "label_prefix": "by",
+                    "label_value": "Dispatched Date",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_date,shipments.shipment_count&f[shipments.dispatched_week]=2022-05-23+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                    "type": "drill",
+                    "type_label": "Drill into 2022-05-23",
+                    "type_label_prefix": "Drill into",
+                    "type_label_value": "2022-05-23"
+                },
+                {
+                    "label": "by Dispatched Time",
+                    "label_prefix": "by",
+                    "label_value": "Dispatched Time",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.dispatched_time,shipments.shipment_count&f[shipments.dispatched_week]=2022-05-23+for+7+days&sorts=shipments.dispatched_week desc&limit=500&column_limit=50",
+                    "type": "drill",
+                    "type_label": "Drill into 2022-05-23",
+                    "type_label_prefix": "Drill into",
+                    "type_label_value": "2022-05-23"
+                }
+            ]
+        },
+        "shipments.shipment_count": {
+            "value": 3612,
+            "rendered": "3,612",
+            "links": [
+                {
+                    "label": "Show All 3,612",
+                    "label_prefix": "Show All",
+                    "label_value": "3,612",
+                    "url": "/explore/snowflake_marketplace/shipments?fields=shipments.id,shipments.state,shipments.created_date,shipments.assigned_date,equipment.parent_name,shipments.lane_city_state,carrier_manager_parent.name,driver_parent.name,driver_parent.phone,shipment_tracking_pings.is_tracking,first_pickup_appointment.appointment_end_local_time,first_pickup.late_reason,last_delivery_appointment.appointment_end_local_time,last_delivery.late_reason,shipments.shipper_total_rate,shipments.carrier_total_rate,shipments.total_margin,shipments.dat_rate,shipments.carrier_manager_target&f[shipments.dispatched_week]=2022-05-23+for+7+days&f[shipments.is_tonu]=No&query_timezone=America%2FNew_York&limit=500",
+                    "type": "measure_default"
+                }
+            ]
+        }
+    }
+]
+}
