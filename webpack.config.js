@@ -1,7 +1,9 @@
 var path = require('path')
 
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-
+var webpack = require('webpack');
+process.env.MY_APPLICATION_NAME_ARGS = JSON.stringify(process.argv)
+console.log(process.env)
 var webpackConfig = {
   mode: 'production',
   entry: {
@@ -29,7 +31,10 @@ var webpackConfig = {
     extensions: [".ts", ".js"]
   },
   plugins: [
-    new UglifyJSPlugin()
+    new UglifyJSPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.YOUR_UNIQUE_VARIABLE': JSON.stringify(process.env.YOUR_UNIQUE_VARIABLE)
+    })
   ],
   module: {
     rules: [

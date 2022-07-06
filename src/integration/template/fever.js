@@ -1,3 +1,7 @@
+import * as d3 from 'd3'
+import * as d3Collection from 'd3-collection'
+import { formatType, handleErrors } from '../common/utils'
+
 export const object = {
     // Id and Label are legacy properties that no longer have any function besides documenting
     // what the visualization used to have. The properties are now set via the manifest
@@ -121,7 +125,7 @@ export const object = {
         if (parseTime(d[dimensions_ordered[0].name].value) == null) {
           return
         }
-        const num = 0 + (+j)
+        const num = +config.index_start + (+j)
 
         data_pod["date"] = parseTime(d[dimensions_ordered[0].name].value);
 
@@ -177,6 +181,7 @@ export const object = {
           .y(function(d) {
               return y(d.value);
             })
+
     const POINTS_AVERAGE = 7;
 
     let movingData = []
@@ -225,7 +230,7 @@ export const object = {
 
 
       // Here we set the domains
-      x.domain([parseTime("2022-01-10"),d3.max(data1, function(d) { return d.date; })]);
+      x.domain(d3.extent(data1, function(d) { return d.date; }));
       y.domain(d3.extent(data1, function(d) { return d.value; }));
 
       const rawLine = group.append("path")
@@ -380,3 +385,7 @@ export const object = {
         done()
     }
 }
+
+const buildVariable = process.env.YOUR_UNIQUE_VARIABLE;
+
+console.log(process)

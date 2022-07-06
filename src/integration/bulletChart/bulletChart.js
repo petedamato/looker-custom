@@ -2,7 +2,7 @@ import * as d3 from 'd3'
 import * as d3Collection from 'd3-collection'
 import { formatType, handleErrors } from '../common/utils'
 
-looker.plugins.visualizations.add({
+export const viz = {
     // Id and Label are legacy properties that no longer have any function besides documenting
     // what the visualization used to have. The properties are now set via the manifest
     // form within the admin/visualizations page of Looker.
@@ -777,5 +777,10 @@ try {
         // Callback at the end of the rendering to let Looker know it's finished
         done()
     }
+  }
 }
-});
+if (something == "something") {
+  looker.plugins.visualizations.add(viz);
+} else {
+  console.log("development")
+}
