@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 import * as d3Collection from 'd3-collection'
 import { formatType, handleErrors } from '../common/utils'
-import { object } from './fever'
+import { object } from './sparklines'
 import * as $ from 'jquery'
 
 // Query the element
@@ -27,7 +27,7 @@ $("body").append(menuOptions)
 const keys = Object.keys(object.options)
 
 keys.forEach(function(entry, i) {
-	console.log()
+
 const array_name = object.options[entry].label
 	$("#menu-options").append("<p>" + array_name + "</p>")
 	var form = $('<form>', {
@@ -36,7 +36,6 @@ const array_name = object.options[entry].label
 	}).appendTo('#menu-options');
 
 	const array_values = object.options[entry].values;
-	console.log(Object.keys(object.options))
 
 	array_values.forEach(function(ent) {
 
@@ -57,7 +56,8 @@ const array_name = object.options[entry].label
 })
 
 
-d3.json("http://localhost:3001/dataBullet").then(function(data) {
+d3.json("http://localhost:3001/dataSparkline").then(function(data) {
+	console.log(data)
 	let todays_options = {}
 
 	$('input:radio:checked').each(function() {

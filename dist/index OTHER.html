@@ -29,48 +29,39 @@
               fill: black;
               color: black;
             }
+            .only-line {
+                    fill: none;
+                    stroke: #27566b;
+                    stroke-width: 2px;
+                  }
             .line {
               fill: none;
+              stroke: #27566b;
               stroke-width: 2px;
+              opacity: .2;
             }
-                        /* design */
-            table {
-               overflow-y:scroll;
-               height:100%;
-               font-size: 14px;
-               display:block;}
-            th {
-                background: #a9a9a9;
-                padding: 4px 0;
-            }
-            tr:nth-child(even) { background: #EEE; }
-              .value-down {
-                color: #D76106;
-                font-weight:500;
-                                display:flex;
-                justify-content: center;
-              }
-              .value-up {
-                color: #0072b5;
-                font-weight:500;
-                                display:flex;
-                justify-content: center;
-              }
-              .change-figure {
-                line-height: 36px;
-              }
-            .first-svg {
-                height: 50px!important;
-                width: 120px!important;
-            }
-            .second-svg {
-                height: 50px!important;
-                width: 120px!important;
+            .budget-line {
+                    fill: none;
+                    stroke: #339f7b;
+                    stroke-width: 2px;
+                    stroke-dasharray:4;
+                  }
+            .forecast-line {
+                    fill: none;
+                    stroke: #8cbb61;
+                    stroke-width: 2px;
+                    stroke-dasharray:4;
+                  }
+            .moving {
+              fill: none;
+              stroke: #27566b;
+              stroke-width: 2px;
             }
             #menu-options p {
                 font-weight: 500;
             }
             #viz {
+                pointer-events: none;
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -102,7 +93,6 @@
                 left: 0;
                 width: 100%;
             }
-
         </style>
         <script
           src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -127,6 +117,7 @@
                 <div class="resizer resizer-r"></div>
                 <div class="resizer resizer-b"></div>
                 <div id="viz">
+                    <svg></svg>
                 </div>
 
                 

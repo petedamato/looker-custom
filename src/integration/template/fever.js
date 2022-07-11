@@ -385,7 +385,3 @@ export const object = {
         done()
     }
 }
-
-const buildVariable = process.env.YOUR_UNIQUE_VARIABLE;
-
-console.log(process)

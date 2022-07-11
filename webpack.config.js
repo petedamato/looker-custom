@@ -1,9 +1,7 @@
 var path = require('path')
 
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-var webpack = require('webpack');
-process.env.MY_APPLICATION_NAME_ARGS = JSON.stringify(process.argv)
-console.log(process.env)
+
 var webpackConfig = {
   mode: 'production',
   entry: {
@@ -19,6 +17,7 @@ var webpackConfig = {
     coloredBarsPerc: './src/integration/coloredBarsPerc/coloredBarsPerc.js',
     template: './src/integration/template/template.js',
     line: './src/integration/line/line.js',
+    sparklines: './src/integration/sparklines/sparklines.js',
     fever: './src/integration/fever/fever.js'
   },
   output: {
@@ -31,10 +30,7 @@ var webpackConfig = {
     extensions: [".ts", ".js"]
   },
   plugins: [
-    new UglifyJSPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.YOUR_UNIQUE_VARIABLE': JSON.stringify(process.env.YOUR_UNIQUE_VARIABLE)
-    })
+    new UglifyJSPlugin()
   ],
   module: {
     rules: [
