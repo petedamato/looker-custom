@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 import * as d3Collection from 'd3-collection'
 import { formatType, handleErrors } from '../common/utils'
-import { object } from './sparklines'
+import { object } from './coloredBar'
 import * as $ from 'jquery'
 
 // Query the element
@@ -28,36 +28,43 @@ const keys = Object.keys(object.options)
 
 keys.forEach(function(entry, i) {
 
-const array_name = object.options[entry].label
+	const array_name = object.options[entry].label
+
 	$("#menu-options").append("<p>" + array_name + "</p>")
+
 	var form = $('<form>', {
-	    id: 'id-1',
-	    class: 'menu-options-entry'
+		id: 'id-1',
+		class: 'menu-options-entry'
 	}).appendTo('#menu-options');
 
-	const array_values = object.options[entry].values;
+	// console.log("display", object.options[entry].display, ["radio","select"].includes(object.options[entry].display))
 
-	array_values.forEach(function(ent) {
+	if (["radio","select"].includes(object.options[entry].display)) {
+		const array_values = object.options[entry].values;
 
-		// console.log(ent, JSON.stringify(Object.keys(ent)[0]),)
+		array_values.forEach(function(ent) {
+			let str;
+
+			if (ent[Object.keys(ent)[0]] == object.options[entry]["default"]) {
+				str = "<input type='radio' internal_cat='" + keys[i] + "' internal_value='" + ent[Object.keys(ent)] + "' id='" + Object.keys(ent)[0] + "' name='" + array_name + "' value='" + Object.keys(ent)[0] + "' checked></input><label class='form-label' for='" + Object.keys(ent)[0] + "'>" + Object.keys(ent)[0] + "</label>"
+			} else {
+				str = "<input type='radio' internal_cat='" + keys[i] + "' internal_value='" + ent[Object.keys(ent)] + "' id='" + Object.keys(ent)[0] + "' name='" + array_name + "' value='" + Object.keys(ent)[0] + "'></input><label class='form-label' for='" + Object.keys(ent)[0] + "'>" + Object.keys(ent)[0] + "</label>"
+			}
+			form.append(str)
+		})
+	} else if (object.options[entry].display == "number") {
 		let str;
-
-
-
-		if (ent[Object.keys(ent)[0]] == object.options[entry]["default"]) {
-			str = "<input type='radio' internal_cat='" + keys[i] + "' internal_value='" + ent[Object.keys(ent)] + "' id='" + Object.keys(ent)[0] + "' name='" + array_name + "' value='" + Object.keys(ent)[0] + "' checked></input><label class='form-label' for='" + Object.keys(ent)[0] + "'>" + Object.keys(ent)[0] + "</label>"
-		} else {
-			str = "<input type='radio' internal_cat='" + keys[i] + "' internal_value='" + ent[Object.keys(ent)] + "' id='" + Object.keys(ent)[0] + "' name='" + array_name + "' value='" + Object.keys(ent)[0] + "'></input><label class='form-label' for='" + Object.keys(ent)[0] + "'>" + Object.keys(ent)[0] + "</label>"
-		}
+		str = "<input type='number' internal_cat='" + keys[i] + "' internal_value='" + object.options[entry]["default"] + "' id='" + object.options[entry]["default"] + "' min='0' name='" + object.options[entry]["label"] + "' value='" + object.options[entry]["default"] + "'></input><label class='form-label' for='" + object.options[entry]["label"] + "'>" + object.options[entry]["label"] + "</label>"
 		form.append(str)
-	})
-	
-
+	} else if (object.options[entry].display == "text") {
+		let str;
+		str = "<input type='text' internal_cat='" + keys[i] + "' internal_value='" + object.options[entry]["default"] + "' id='" + object.options[entry]["default"] + "' name='" + object.options[entry]["label"] + "' value='" + object.options[entry]["default"] + "'></input><label class='form-label' for='" + object.options[entry]["label"] + "'>" + object.options[entry]["label"] + "</label>"
+		form.append(str)
+	}
 })
 
 
-d3.json("http://localhost:3001/dataSparkline").then(function(data) {
-	console.log(data)
+d3.json("http://localhost:3001/dataColoredBar").then(function(data) {
 	let todays_options = {}
 
 	$('input:radio:checked').each(function() {
@@ -66,6 +73,7 @@ d3.json("http://localhost:3001/dataSparkline").then(function(data) {
 
 	const details = ""
 	// Fire first instance of chart
+	console.log("viz div", d3.select("#viz"))
 	object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
 	
 	// On change to options, loop through selections and then redraw chart
@@ -90,7 +98,6 @@ d3.json("http://localhost:3001/dataSparkline").then(function(data) {
 	    h = parseInt(styles.height, 10);
 
 	    
-
 	    // Attach the listeners to `document`
 	    document.addEventListener('mousemove', mouseMoveHandler);
 	    document.addEventListener('mouseup', mouseUpHandler);
