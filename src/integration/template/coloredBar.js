@@ -104,7 +104,7 @@ export const object = {
             const boundedHeight = height - margin.top - margin.bottom
 
             const svg = (
-                d3.select(element).select("svg")
+                d3.select(element).append("svg")
                     .html("")
                     .attr("width", "100%")
                     .attr("height", "100%")
