@@ -58,7 +58,7 @@ keys.forEach(function(entry, i) {
 		form.append(str)
 	} else if (object.options[entry].display == "text") {
 		let str;
-		str = "<input type='text' internal_cat='" + keys[i] + "' internal_value='" + object.options[entry]["default"] + "' id='" + object.options[entry]["default"] + "' name='" + object.options[entry]["label"] + "' value='" + object.options[entry]["default"] + "'></input><label class='form-label' for='" + object.options[entry]["label"] + "'>" + object.options[entry]["label"] + "</label>"
+		str = "<input type='text' internal_cat='" + keys[i] + "' internal_value='" + object.options[entry]["default"] + "' id='" + "textInput" + "' name='" + object.options[entry]["label"] + "' value='" + object.options[entry]["default"] + "'></input><label class='form-label' for='" + object.options[entry]["label"] + "'>" + object.options[entry]["label"] + "</label>"
 		form.append(str)
 	}
 })
@@ -90,15 +90,14 @@ d3.json("http://localhost:3001/dataColoredBar").then(function(data) {
 		object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
 	});
 	$('input[type=number]').on("input", function() {
-		$('input[type=number]').each(function() {
-			todays_options[this.attributes.internal_cat.value] = this.attributes.internal_value.value
-		});
+		todays_options[this.attributes.internal_cat.value] = this.attributes.internal_value.value
+		console.log(this, this.attributes, todays_options, this.attributes.internal_cat.value, this.attributes.internal_value.value)
 		object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
 	});
 	$('input[type=text]').on("input", function() {
-		$('input[type=text]').each(function() {
-			todays_options[this.attributes.internal_cat.value] = this.attributes.internal_value.value
-		});
+		let str = $("#textInput").val()
+		todays_options[this.attributes.internal_cat.value] = str
+		console.log(this, this.attributes, str, todays_options, this.attributes.internal_cat.value, todays_options[this.attributes.internal_cat.value], this.attributes.internal_value.value)
 		object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
 	});
 
