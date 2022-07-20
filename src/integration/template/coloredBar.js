@@ -110,13 +110,15 @@ export const object = {
                     .attr("height", "100%")
             )
 
-            console.log("SVG", svg, d3.select(element).select("svg"))
+            console.log("here1")
 
             const group = svg.append("g")
                 .attr("transform", `translate(${margin.left}, ${margin.top})`)
                 .attr("width", "100%")
                 .attr("height", (height + "px"))
                 .classed("group", true)
+
+            console.log("here2")
             
             // load the data
             const parseTime = d3.timeParse("%Y-%m")
@@ -153,8 +155,7 @@ export const object = {
             const backDate = firstDayOfMonth.setMonth(firstDayOfMonth.getMonth() - config.months_shown);
 
             console.log("data", data)
-            console.log("backdate", backDate, new Date(backdate))
-            
+            console.log("backdate", backDate, new Date(backDate))
             
             let data_ready = []
             
@@ -370,11 +371,12 @@ export const object = {
                     .attr("font-family", "sans-serif")
     } catch(error) {
         if (environment == "prod") {
-        if (queryResponse.fields.dimensions.length != 1 || 
-            queryResponse.fields.measures.length < 1) {
-                this.addError({title: "Dimension/Pivot Error", message: "This chart takes 1 dimension and 1 measure."});
-                return;
-            }
+            console.log("somehow got in here")
+            if (queryResponse.fields.dimensions.length != 1 || 
+                queryResponse.fields.measures.length < 1) {
+                    this.addError({title: "Dimension/Pivot Error", message: "This chart takes 1 dimension and 1 measure."});
+                    return;
+                }
         }
     }
 

@@ -70,6 +70,12 @@ d3.json("http://localhost:3001/dataColoredBar").then(function(data) {
 	$('input:radio:checked').each(function() {
 		todays_options[this.attributes.internal_cat.value] = this.attributes.internal_value.value
 	});
+	$('input[type=number]').each(function() {
+		todays_options[this.attributes.internal_cat.value] = this.attributes.internal_value.value
+	})
+	$('input[type=text]').each(function() {
+		todays_options[this.attributes.internal_cat.value] = this.attributes.internal_value.value
+	})
 
 	const details = ""
 	// Fire first instance of chart
@@ -77,8 +83,20 @@ d3.json("http://localhost:3001/dataColoredBar").then(function(data) {
 	object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
 	
 	// On change to options, loop through selections and then redraw chart
-	$('input:radio').click(function() {
+	$('input:radio').on("click", function() {
 		$('input:radio:checked').each(function() {
+			todays_options[this.attributes.internal_cat.value] = this.attributes.internal_value.value
+		});
+		object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
+	});
+	$('input[type=number]').on("click", function() {
+		$('input[type=number]').each(function() {
+			todays_options[this.attributes.internal_cat.value] = this.attributes.internal_value.value
+		});
+		object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
+	});
+	$('input[type=text]').on("click", function() {
+		$('input[type=text]').each(function() {
 			todays_options[this.attributes.internal_cat.value] = this.attributes.internal_value.value
 		});
 		object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
