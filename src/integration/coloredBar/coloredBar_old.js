@@ -83,14 +83,12 @@ looker.plugins.visualizations.add({
         element.style.fontFamily = `"Open Sans", "Helvetica", sans-serif`
     },
 
-    updateAsync: function(data, element, config, queryResponse, details, done, environment = "prod") {
-        if (environment == "prod") {
-            if (!handleErrors(this, queryResponse, {
-                min_pivots: 0, max_pivots: 0,
-                min_dimensions: 1, max_dimensions: 1,
-                min_measures: 1, max_measures: 2
-            })) return
-        }
+    updateAsync: function(data, element, config, queryResponse, details, done) {
+        if (!handleErrors(this, queryResponse, {
+            min_pivots: 0, max_pivots: 0,
+            min_dimensions: 1, max_dimensions: 1,
+            min_measures: 1, max_measures: 2
+        })) return
 
         try {
 
@@ -99,7 +97,7 @@ looker.plugins.visualizations.add({
                 top: 20,
                 right: 10,
                 bottom: 80,
-                left: 60
+                left: 50
             }
             
             const width = element.clientWidth 
@@ -114,15 +112,11 @@ looker.plugins.visualizations.add({
                     .attr("height", "100%")
             )
 
-            console.log("here1")
-
             const group = svg.append("g")
                 .attr("transform", `translate(${margin.left}, ${margin.top})`)
                 .attr("width", "100%")
                 .attr("height", (height + "px"))
                 .classed("group", true)
-
-            console.log("here2")
             
             // load the data
             const parseTime = d3.timeParse("%Y-%m")
@@ -131,7 +125,6 @@ looker.plugins.visualizations.add({
             const measures = queryResponse.fields.measure_like
             
             // console.log(data)
-            console.log("measures", measures)
             
             let measure = null
             measures.forEach((m,i) => {
@@ -157,9 +150,7 @@ looker.plugins.visualizations.add({
             const today = new Date()
             const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const backDate = firstDayOfMonth.setMonth(firstDayOfMonth.getMonth() - config.months_shown);
-
-            console.log("data", data)
-            console.log("backdate", backDate, new Date(backDate))
+            
             
             let data_ready = []
             
@@ -174,9 +165,13 @@ looker.plugins.visualizations.add({
             
             })
             
+            console.log(data_ready)
+            
             data_ready = data_ready.sort(function(a,b) {
                 return new Date(groupAccessor(a)) - new Date(groupAccessor(b))
             })
+            
+            console.log(data_ready)
             
             // scales
             const xScale = d3.scaleBand()
@@ -370,14 +365,11 @@ looker.plugins.visualizations.add({
                     .attr("font-size", "0.75em")
                     .attr("font-family", "sans-serif")
     } catch(error) {
-        if (environment == "prod") {
-            console.log("somehow got in here")
-            if (queryResponse.fields.dimensions.length != 1 || 
-                queryResponse.fields.measures.length < 1) {
-                    this.addError({title: "Dimension/Pivot Error", message: "This chart takes 1 dimension and 1 measure."});
-                    return;
-                }
-        }
+        if (queryResponse.fields.dimensions.length != 1 || 
+            queryResponse.fields.measures.length < 1) {
+                this.addError({title: "Dimension/Pivot Error", message: "This chart takes 1 dimension and 1 measure."});
+                return;
+            }
     }
 
     // callback at the end of the rendering to let Looker know it's finished
