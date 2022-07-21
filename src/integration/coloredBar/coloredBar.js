@@ -135,7 +135,7 @@ looker.plugins.visualizations.add({
             
             let measure = null
             measures.forEach((m,i) => {
-                if (m.value_format && m.value_format.includes("%")) {
+                if (m.value_format) {
                     measure = measures[i]
                 } else {
                     return

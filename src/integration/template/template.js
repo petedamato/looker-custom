@@ -79,7 +79,6 @@ d3.json("http://localhost:3001/dataColoredBar").then(function(data) {
 
 	const details = ""
 	// Fire first instance of chart
-	console.log("viz div", d3.select("#viz"))
 	object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
 	
 	// On change to options, loop through selections and then redraw chart
@@ -94,14 +93,12 @@ d3.json("http://localhost:3001/dataColoredBar").then(function(data) {
 		const id = this.attributes.id.value
 		let num = $("#" + id).val()
 		todays_options[this.attributes.internal_cat.value] = num
-		console.log(this, this.attributes, num, todays_options)
 		object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
 	});
 	$('input[type=text]').on("input", function() {
 		const id = this.attributes.id.value
 		let str = $("#" + id).val()
 		todays_options[this.attributes.internal_cat.value] = str
-		console.log(this, this.attributes, str, todays_options)
 		object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
 	});
 
