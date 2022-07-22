@@ -18,8 +18,8 @@ var webpackConfig = {
     // line: './src/integration/line/line.js',
     // sparklines: './src/integration/sparklines/sparklines.js',
     // fever: './src/integration/fever/fever.js'
-    coloredBar: './src/integration/coloredBar/coloredBar.js',
-    // template: './src/integration/template/template.js',
+    // coloredBar: './src/integration/coloredBar/coloredBar.js',
+    template: './src/integration/template/template.js',
   },
   output: {
     filename: "[name].js",

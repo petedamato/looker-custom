@@ -60,7 +60,82 @@ export const object = {
             display: "text",
             default: "",
             section: "Axes"
-        }
+        },
+        show_yaxis: {
+            type: "string",
+            label: "Show Y-Axis Ticks",
+            display: "radio",
+            values: [
+                {"Yes": "yes"},
+                {"No": "no"}
+            ],
+            default: "yes",
+            section: "Axes"
+        },
+        show_xaxis: {
+            type: "string",
+            label: "Show X-Axis Ticks",
+            display: "radio",
+            values: [
+                {"Yes": "yes"},
+                {"No": "no"}
+            ],
+            default: "yes",
+            section: "Axes"
+        },
+        label_format: {
+            type: "string",
+            label: "Y Value Format",
+            display: "text",
+            default: "%b",
+            section: "Data Options"
+        },
+        bar_color: {
+            type: "string",
+            label: "Bar Color",
+            display: "radio",
+            values: [
+                {"Bright Blue": "#0072B5"},
+                {"Dark Blue": "#27566b"},
+                {"Med. Blue": "#007b82"}
+            ],
+            default: "#0072B5",
+            section: "Plot Options"
+        },
+        negative_color: {
+            type: "string",
+            label: "Negative/Decrease Color",
+            display: "radio",
+            values: [
+                {"Orange": "#D76106"},
+                {"Light Green": "#8cbb61"},
+                {"Yellow": "#f1cc56"}
+            ],
+            default: "#D76106",
+            section: "Plot Options"
+        },
+        yaxis_gridlines: {
+            type: "string",
+            label: "Show Y-Axis Gridlines",
+            display: "radio",
+            values: [
+                {"Yes": "yes"},
+                {"No": "no"}
+            ],
+            default: "no",
+            section: "Axes"
+        },
+        xaxis_gridlines: {
+            type: "string",
+            label: "Show X-Axis Gridlines",
+            display: "radio",
+            values: [
+                {"Yes": "yes"},
+                {"No": "no"}
+            ],
+            default: "no",
+            section: "Axes"
+        },
       },
     
   
@@ -73,6 +148,24 @@ export const object = {
                     font-family: Arial;
                     font-size: 12px;
                 }
+
+                .axis {
+                    color: green;
+                }
+
+                .axis path {
+                    fill: none;
+                }
+
+                .axis .tick line {
+                    stroke: red; 
+                }
+
+                .axis .tick text {
+                    color: orange;
+                }
+                
+
             </style>
             <svg>
             </svg>`;
@@ -95,7 +188,7 @@ export const object = {
                 top: 20,
                 right: 10,
                 bottom: 80,
-                left: 50
+                left: 60
             }
             
             const width = element.clientWidth 
@@ -149,7 +242,7 @@ export const object = {
             }
             
             
-            // DATE STUF
+            // DATE STUFF
             const today = new Date()
             const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const backDate = firstDayOfMonth.setMonth(firstDayOfMonth.getMonth() - config.months_shown);
@@ -169,16 +262,13 @@ export const object = {
                 }
             
             })
-            
-            console.log("data2", data_ready)
+        
             
             data_ready = data_ready.sort(function(a,b) {
                 return new Date(groupAccessor(a)) - new Date(groupAccessor(b))
             })
             
-            console.log("data3", data_ready)
-            
-            // scales
+            // SCALES
             const xScale = d3.scaleBand()
                 .domain(data_ready.map(d => groupAccessor(d)))
                 .range([0, boundedWidth])
@@ -190,7 +280,107 @@ export const object = {
                     d3.max(data_ready, d => valueAccessor(d))
                 ])
                 .range([boundedHeight, 0])
+
+
+            // INPUT OPTION: SHOW TICKS        
+            if (config.show_xaxis == "yes") {
+                const xAxisGenerator = d3.axisBottom()
+                    .scale(xScale)
+                    .tickPadding(10)
+                    .tickFormat(d3.timeFormat(config.label_format))
+                    .tickSizeOuter(0)
+                    
+                if (config.xaxis_gridlines == "yes") {
+                    xAxisGenerator  
+                        .tickSize(-boundedHeight)
+                } else {
+                    xAxisGenerator 
+                        .tickSize(5)
+                }
             
+                const xAxis = group.append("g")
+                    .call(xAxisGenerator)
+                        .classed("axis", true)
+                        .attr("id", "xAxis")
+                        .style("transform", `translateY(${boundedHeight + 22}px)`)
+                        .attr("font-size", "1.05em")
+                        .attr("font-family", "sans-serif")
+
+                if (config.xaxis_gridlines == "yes") {
+                    d3.select("#xAxis path")._groups[0][0].style.opacity = "0.0"
+                }
+            }
+
+        
+            if (config.show_yaxis == "yes") {
+                const yAxisGenerator = d3.axisLeft()
+                    .scale(yScale)
+                    .tickPadding(10)
+                    .tickSizeOuter(0)
+                    .tickFormat((d)=>{
+                        if (config.number_type == "percentage") {
+                            return (d*100) + "%"
+                        } else if (config.number_type == "USD") {
+                            if (d.value>=1000000) {
+                                return d3.format("$,")(d/1000000) + "M"
+                            } else {
+                                return d3.format("$,")(d)
+                            }
+                        } else {
+                            return d3.format(",")(d)
+                        }
+            
+                    })   
+
+                if (config.yaxis_gridlines == "yes") {
+                    yAxisGenerator
+                        .tickSize(-boundedWidth)
+                } else {
+                    yAxisGenerator 
+                        .tickSize(5)
+                }
+            
+                const yAxis = group.append("g")
+                    .call(yAxisGenerator)
+                        .classed("axis", true)
+                        .attr("id", "yAxis")
+                        .style("transform", `translate(10,0)`)
+                        .attr("font-size", "1.05em")
+                        .attr("font-family", "sans-serif")
+
+                if (config.yaxis_gridlines == "yes") {
+                    d3.select("#yAxis path")._groups[0][0].style.opacity = "0.0"
+                }
+            }
+
+
+            // INPUT OPTION: SHOW AXIS LABELS
+            if (config.xaxis_label != "") {
+                const xAxisLabel = group.append("text")
+                    .attr("x", (boundedWidth)/2)
+                    .attr("y", (boundedHeight + 75))
+                    .attr("fill", "black")
+                    .style("font-size", "1.1em")
+                    .text((d) => {
+                        return config.xaxis_label
+                    })
+                    .style("text-anchor", "middle")
+            }
+            
+            if (config.yaxis_label != "") {
+                const yAxisLabel = group.append("text")
+                    .attr("x", -boundedHeight/2)
+                    .attr("y", -margin.left + 15)
+                    .attr("fill", "black")
+                    .style("font-size", "1.1em")
+                    .text((d) => {
+                        return config.yaxis_label
+                    })
+                    .style("text-anchor", "middle")
+                    .attr("transform", "rotate(-90)")
+            
+            }
+
             // draw data
             const bars = group.selectAll("rect")
                 .data(data_ready)
@@ -215,96 +405,31 @@ export const object = {
             
             if (config.color_drops_decreases == "no") {
                 bars
-                    .attr("fill", "#0072B5")
+                    .attr("fill", config.bar_color)
             } else {
                 bars
                     .attr("fill", (d,i) => {
                         if (config.number_type == "percentage") {
                             if (valueAccessor(d) < 0) {
-                                return "#D76106"
+                                return config.negative_color
                             } else {
-                                return "#0072B5"
+                                return config.bar_color
                             }
                         } else {
                             if (i == 0) {
-                                return "#0072b5"
+                                return config.bar_color
                             } else {
                                 const priorVal = valueAccessor(data_ready[i-1])
                                 const currVal = valueAccessor(d)
             
                                 if (currVal < priorVal) {
-                                    return "#D76106"
+                                    return config.negative_color
                                 } else {
-                                    return "#0072B5"
+                                    return config.bar_color
                                 }
                             }
                         }
                     })
-                }
-            
-                const xAxisGenerator = d3.axisBottom()
-                    .scale(xScale)
-                    .tickSize(0)
-                    .tickPadding([10])
-                    .tickFormat(d3.timeFormat("%b"))    
-            
-                const xAxis = group.append("g")
-                    .call(xAxisGenerator)
-                        .style("transform", `translateY(${boundedHeight + 22}px)`)
-                        .attr("stroke-opacity", 0.0)
-                        .attr("font-size", "1em")
-                        .attr("font-family", "sans-serif")
-            
-                const yAxisGenerator = d3.axisLeft()
-                    .scale(yScale)
-                    .tickSize(0)
-                    .ticks(8)
-                    .tickFormat((d)=>{
-                        if (config.number_type == "percentage") {
-                            return (d*100) + "%"
-                        } else if (config.number_type == "USD") {
-                            if (d.value>=1000000) {
-                                return d3.format("$,")(d/1000000) + "M"
-                            } else {
-                                return d3.format("$,")(d)
-                            }
-                        } else {
-                            return d3.format(",")(d)
-                        }
-            
-                    })   
-            
-                const yAxis = group.append("g")
-                    .call(yAxisGenerator)
-                        .style("transform", `translate(10,0)`)
-                        .attr("stroke-opacity", 0.0)
-                        .attr("font-size", "1em")
-                        .attr("font-family", "sans-serif")
-
-                if (config.xaxis_label != "") {
-                    const xAxisLabel = group.append("text")
-                        .attr("x", (boundedWidth)/2)
-                        .attr("y", (boundedHeight + 75))
-                        .attr("fill", "black")
-                        .style("font-size", "1.4em")
-                        .text((d) => {
-                            return config.xaxis_label
-                        })
-                        .style("text-anchor", "middle")
-                }
-                
-                if (config.yaxis_label != "") {
-                    const yAxisLabel = group.append("text")
-                        .attr("x", -boundedHeight/2)
-                        .attr("y", -margin.left + 20)
-                        .attr("fill", "black")
-                        .style("font-size", "1.4em")
-                        .text((d) => {
-                            return config.yaxis_label
-                        })
-                        .style("text-anchor", "middle")
-                        .attr("transform", "rotate(-90)")
-                
                 }
             
             const minVal = d3.min(data_ready, d => valueAccessor(d))
@@ -328,12 +453,12 @@ export const object = {
                     .text((d) => {
                         if (config.bar_labels == "all" && config.number_type == "percentage") {
             
-                            return Math.round(d.value * 100, 1) + "%"
+                            return d3.format(",")(Math.round(d.value * 100, 1)) + "%"
             
                         } else if (config.bar_labels == "extremes" && config.number_type == "percentage") {
             
                             if (labelVals.includes(d.value)) {
-                                return Math.round(d.value * 100, 1) + "%"
+                                return d3.format(",")(Math.round(d.value * 100, 1)) + "%"
                             }                 
             
                         } else if (config.bar_labels == "all" && config.number_type == "raw") {
@@ -367,7 +492,7 @@ export const object = {
                     })
                     .style("text-anchor", "middle")
                     .attr("fill", "#323232")
-                    .attr("font-size", "0.75em")
+                    .attr("font-size", "1.0em")
                     .attr("font-family", "sans-serif")
     } catch(error) {
         if (environment == "prod") {
