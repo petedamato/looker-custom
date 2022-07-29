@@ -118,6 +118,19 @@ looker.plugins.visualizations.add({
             default: "#D76106",
             section: "Plot Options"
         },
+        test_boolean: {
+            type: "boolean",
+            label: "test boolean",
+            default: true,
+            section: "test"
+        },
+        test_color: {
+            type: "array",
+            label: "test color",
+            default: ["#27566b", "#8cbb61", "#007b82", "#f1cc56", "#339f7b"],
+            display: "colors",
+            section: "test"
+        },
       },
     
   
