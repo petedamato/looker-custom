@@ -15,11 +15,11 @@ var webpackConfig = {
     // bulletChart: './src/integration/bulletChart/bulletChart.js',
     // coloredBars: './src/integration/coloredBars/coloredBars.js',
     // coloredBarsPerc: './src/integration/coloredBarsPerc/coloredBarsPerc.js',
-    // line: './src/integration/line/line.js',
+    line: './src/integration/line/line.js',
     // sparklines: './src/integration/sparklines/sparklines.js',
     // fever: './src/integration/fever/fever.js'
     // coloredBar: './src/integration/coloredBar/coloredBar.js',
-    template: './src/integration/template/template.js',
+    // template: './src/integration/template/template.js',
   },
   output: {
     filename: "[name].js",
