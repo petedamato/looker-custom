@@ -563,7 +563,14 @@ looker.plugins.visualizations.add({
           .append("div")
           .style("color", "#323232")
           .style("font-size", 12)
-          .html(d => titleCase(d.name) + ':&nbsp' + '<span style="float:right;">' + d3.format(",.0f")(d.info[0].value) + '</span>')
+          // .html(d => titleCase(d.name) + ':&nbsp' + '<span style="float:right;">' + d3.format(",.0f")(d.info[0].value) + '</span>')
+          .html(d => {
+            if (config.currency_type == "dollar") {
+                return (titleCase(d.name) + ':&nbsp' + '<span style="float:right;">' + d3.format("$,.0f")(d.info[0].value) + '</span>')
+            } else {
+                return (titleCase(d.name) + ':&nbsp' + '<span style="float:right;">' + d3.format(",.0f")(d.info[0].value) + '</span>')
+            }
+        })
 
         // if mouse is past 85% of x width, move the tooltip text box to the left of the line
         if (d3.event.pageX > width*.85) {
