@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 import * as d3Collection from 'd3-collection'
 import { formatType, handleErrors } from '../common/utils'
-import { object } from './coloredBar'
+import { object } from './violin'
 import * as $ from 'jquery'
 
 // Query the element
@@ -25,6 +25,10 @@ const menuOptions = "<div id='menu'><h1><strong>Menu</strong></h1><div id='menu-
 $("body").append(menuOptions)
 
 const keys = Object.keys(object.options)
+
+console.log("object.options", object.options)
+console.log("Object", Object.keys(object.options))
+console.log("keys", keys)
 
 keys.forEach(function(entry, i) {
 
@@ -60,11 +64,36 @@ keys.forEach(function(entry, i) {
 		let str;
 		str = "<input type='text' internal_cat='" + keys[i] + "' internal_value='" + object.options[entry]["default"] + "' id='" + keys[i] + "' name='" + object.options[entry]["label"] + "' value='" + object.options[entry]["default"] + "'></input><label class='form-label' for='" + object.options[entry]["label"] + "'>" + object.options[entry]["label"] + "</label>"
 		form.append(str)
-	}
+	} else if (object.options[entry].type == "boolean") {
+		const array_values = ["true", "false"]
+
+		array_values.forEach(function(ent) {
+			let str;
+
+			if (ent == object.options[entry]["default"]) {
+				console.log("adding default")
+				str = "<input type='radio' internal_cat='" + keys[i] + "' internal_value='" + ent + "' id='" + keys[i] + "' name='" + array_name + "' value='" + ent + "' checked></input><label class='form-label' for ='" + ent + "'>" + ent + "</label>"
+			} else {
+				console.log("not default")
+				str = "<input type='radio' internal_cat='" + keys[i] + "' internal_value='" + ent + "' id='" + keys[i] + "' name='" + array_name + "' value='" + ent + "'></input><label class='form-label' for ='" + ent + "'>" + ent + "</label>"
+			}
+			form.append(str)
+		})
+	} // else if (object.options[entry].display == "colors") {
+	// 	const array_values = object.options[entry].default;
+
+	// 	array_values.forEach(function(ent) {
+	// 		let str;
+
+	// 		if (ent == array_values[0]) {
+
+	// 		}
+	// 	})
+	// }
 })
 
 
-d3.json("http://localhost:3001/dataColoredBar").then(function(data) {
+d3.json("http://localhost:3001/dataViolin").then(function(data) {
 	let todays_options = {}
 
 	$('input:radio:checked').each(function() {
@@ -76,10 +105,15 @@ d3.json("http://localhost:3001/dataColoredBar").then(function(data) {
 	$('input[type=text]').each(function() {
 		todays_options[this.attributes.internal_cat.value] = this.attributes.internal_value.value
 	})
+	$('input[type=boolean]').each(function() {
+		todays_options[this.attributes.internal_cat.value] = this.attributes.internal_value.value
+	})
+	// $('input[type=array]').each(function() {
+	// 	todays_options[this.attributes.internal_cat.value] = this.attributes.internal_value.value
+	// })
 
 	const details = ""
 	// Fire first instance of chart
-	console.log("viz div", d3.select("#viz"))
 	object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
 	
 	// On change to options, loop through selections and then redraw chart
@@ -94,16 +128,15 @@ d3.json("http://localhost:3001/dataColoredBar").then(function(data) {
 		const id = this.attributes.id.value
 		let num = $("#" + id).val()
 		todays_options[this.attributes.internal_cat.value] = num
-		console.log(this, this.attributes, num, todays_options)
 		object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
 	});
 	$('input[type=text]').on("input", function() {
 		const id = this.attributes.id.value
 		let str = $("#" + id).val()
 		todays_options[this.attributes.internal_cat.value] = str
-		console.log(this, this.attributes, str, todays_options)
 		object.updateAsync(data.data, d3.select("#viz")._groups[0][0], todays_options, data.queryResponse, details, done, this_environment)
 	});
+
 
 	// Handle the mousedown event
 	// that's triggered when user drags the resizer

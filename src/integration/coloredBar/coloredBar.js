@@ -64,7 +64,73 @@ looker.plugins.visualizations.add({
             display: "text",
             default: "",
             section: "Axes"
-        }
+        },
+        show_yaxis: {
+            type: "string",
+            label: "Show Y-Axis",
+            display: "radio",
+            values: [
+                {"Yes": "yes"},
+                {"No": "no"}
+            ],
+            default: "yes",
+            section: "Axes"
+        },
+        show_xaxis: {
+            type: "string",
+            label: "Show X-Axis",
+            display: "radio",
+            values: [
+                {"Yes": "yes"},
+                {"No": "no"}
+            ],
+            default: "yes",
+            section: "Axes"
+        },
+        label_format: {
+            type: "string",
+            label: "Y Value Format",
+            display: "text",
+            default: "%b",
+            section: "Data Options"
+        },
+        bar_color: {
+            type: "string",
+            label: "Bar Color",
+            display: "radio",
+            values: [
+                {"Bright Blue": "#0072B5"},
+                {"Dark Blue": "#27566b"},
+                {"Med. Blue": "#007b82"}
+            ],
+            default: "#0072B5",
+            section: "Plot Options"
+        },
+        negative_color: {
+            type: "string",
+            label: "Negative/Decrease Color",
+            display: "radio",
+            values: [
+                {"Orange": "#D76106"},
+                {"Light Green": "#8cbb61"},
+                {"Yellow": "#f1cc56"}
+            ],
+            default: "#D76106",
+            section: "Plot Options"
+        },
+        test_boolean: {
+            type: "boolean",
+            label: "test boolean",
+            default: true,
+            section: "test"
+        },
+        test_color: {
+            type: "array",
+            label: "test color",
+            default: ["#27566b", "#8cbb61", "#007b82", "#f1cc56", "#339f7b"],
+            display: "colors",
+            section: "test"
+        },
       },
     
   
@@ -135,7 +201,7 @@ looker.plugins.visualizations.add({
             
             let measure = null
             measures.forEach((m,i) => {
-                if (m.value_format && m.value_format.includes("%")) {
+                if (m.value_format) {
                     measure = measures[i]
                 } else {
                     return
@@ -153,7 +219,7 @@ looker.plugins.visualizations.add({
             }
             
             
-            // DATE STUF
+            // DATE STUFF
             const today = new Date()
             const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const backDate = firstDayOfMonth.setMonth(firstDayOfMonth.getMonth() - config.months_shown);
@@ -215,46 +281,50 @@ looker.plugins.visualizations.add({
             
             if (config.color_drops_decreases == "no") {
                 bars
-                    .attr("fill", "#0072B5")
+                    .attr("fill", config.bar_color)
             } else {
                 bars
                     .attr("fill", (d,i) => {
                         if (config.number_type == "percentage") {
                             if (valueAccessor(d) < 0) {
-                                return "#D76106"
+                                return config.negative_color
                             } else {
-                                return "#0072B5"
+                                return config.bar_color
                             }
                         } else {
                             if (i == 0) {
-                                return "#0072b5"
+                                return config.bar_color
                             } else {
                                 const priorVal = valueAccessor(data_ready[i-1])
                                 const currVal = valueAccessor(d)
             
                                 if (currVal < priorVal) {
-                                    return "#D76106"
+                                    return config.negative_color
                                 } else {
-                                    return "#0072B5"
+                                    return config.bar_color
                                 }
                             }
                         }
                     })
                 }
             
+            if (config.show_xaxis == "yes") {
                 const xAxisGenerator = d3.axisBottom()
                     .scale(xScale)
                     .tickSize(0)
                     .tickPadding([10])
-                    .tickFormat(d3.timeFormat("%b"))    
+                    .tickFormat(d3.timeFormat(config.label_format))    
             
                 const xAxis = group.append("g")
                     .call(xAxisGenerator)
                         .style("transform", `translateY(${boundedHeight + 22}px)`)
-                        .attr("stroke-opacity", 0.0)
-                        .attr("font-size", "1em")
+                        .attr("stroke-opacity", 1.0)
+                        .attr("stroke", "#606060")
+                        .attr("font-size", "1.05em")
                         .attr("font-family", "sans-serif")
+            }
             
+            if (config.show_yaxis == "yes") {
                 const yAxisGenerator = d3.axisLeft()
                     .scale(yScale)
                     .tickSize(0)
@@ -277,35 +347,37 @@ looker.plugins.visualizations.add({
                 const yAxis = group.append("g")
                     .call(yAxisGenerator)
                         .style("transform", `translate(10,0)`)
-                        .attr("stroke-opacity", 0.0)
-                        .attr("font-size", "1em")
+                        .attr("stroke-opacity", 1.0)
+                        .attr("stroke", "#606060")
+                        .attr("font-size", "1.05em")
                         .attr("font-family", "sans-serif")
+            }
 
-                if (config.xaxis_label != "") {
-                    const xAxisLabel = group.append("text")
-                        .attr("x", (boundedWidth)/2)
-                        .attr("y", (boundedHeight + 75))
-                        .attr("fill", "black")
-                        .style("font-size", "1.4em")
-                        .text((d) => {
-                            return config.xaxis_label
-                        })
-                        .style("text-anchor", "middle")
-                }
-                
-                if (config.yaxis_label != "") {
-                    const yAxisLabel = group.append("text")
-                        .attr("x", -boundedHeight/2)
-                        .attr("y", -margin.left + 20)
-                        .attr("fill", "black")
-                        .style("font-size", "1.4em")
-                        .text((d) => {
-                            return config.yaxis_label
-                        })
-                        .style("text-anchor", "middle")
-                        .attr("transform", "rotate(-90)")
-                
-                }
+            if (config.xaxis_label != "") {
+                const xAxisLabel = group.append("text")
+                    .attr("x", (boundedWidth)/2)
+                    .attr("y", (boundedHeight + 75))
+                    .attr("fill", "black")
+                    .style("font-size", "1.1em")
+                    .text((d) => {
+                        return config.xaxis_label
+                    })
+                    .style("text-anchor", "middle")
+            }
+            
+            if (config.yaxis_label != "") {
+                const yAxisLabel = group.append("text")
+                    .attr("x", -boundedHeight/2)
+                    .attr("y", -margin.left + 20)
+                    .attr("fill", "black")
+                    .style("font-size", "1.1em")
+                    .text((d) => {
+                        return config.yaxis_label
+                    })
+                    .style("text-anchor", "middle")
+                    .attr("transform", "rotate(-90)")
+            
+            }
             
             const minVal = d3.min(data_ready, d => valueAccessor(d))
             const maxVal = d3.max(data_ready, d => valueAccessor(d))
@@ -328,12 +400,12 @@ looker.plugins.visualizations.add({
                     .text((d) => {
                         if (config.bar_labels == "all" && config.number_type == "percentage") {
             
-                            return Math.round(d.value * 100, 1) + "%"
+                            return d3.format(",")(Math.round(d.value * 100, 1)) + "%"
             
                         } else if (config.bar_labels == "extremes" && config.number_type == "percentage") {
             
                             if (labelVals.includes(d.value)) {
-                                return Math.round(d.value * 100, 1) + "%"
+                                return d3.format(",")(Math.round(d.value * 100, 1)) + "%"
                             }                 
             
                         } else if (config.bar_labels == "all" && config.number_type == "raw") {
@@ -367,7 +439,7 @@ looker.plugins.visualizations.add({
                     })
                     .style("text-anchor", "middle")
                     .attr("fill", "#323232")
-                    .attr("font-size", "0.75em")
+                    .attr("font-size", "1.0em")
                     .attr("font-family", "sans-serif")
     } catch(error) {
         if (environment == "prod") {
