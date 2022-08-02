@@ -88,6 +88,7 @@ looker.plugins.visualizations.add({
     
     try {
     // console.log(config)
+    console.log("ELEMENT", element)
 
     // first we set the dimensions and margins of the graphic
     const margin = {top: 40, right: 20, bottom: 66, left: 60};
@@ -421,7 +422,7 @@ looker.plugins.visualizations.add({
       // tooltip div outside of svg to house the information and form the tooltip text box
       const tooltip = d3.select(element)
         .append("div")
-        .attr("id", "tooltip")
+        .attr("id", "tooltip-custom-viz")
         .style("position", "absolute")
         .style("padding", "5px")
         .style("background-color", "#ffffff")
