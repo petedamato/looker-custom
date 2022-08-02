@@ -283,7 +283,8 @@ export const object = {
           .attr("d", line)
           .attr("fill", "none")
           .attr("stroke", "#27566b")
-          .attr("stroke-width", "2px");
+          .attr("stroke-width", "2px")
+          .attr("pointer-events", "none");
 
       const budgetLine = group.append("path")
           .data([data1])
@@ -292,7 +293,8 @@ export const object = {
           .attr("fill", "none")
           .attr("stroke", "#339f7b")
           .attr("stroke-width", "2px")
-          .attr("stroke-dasharray", 4);
+          .attr("stroke-dasharray", 4)
+          .attr("pointer-events", "none");
 
       const forecastLine = group.append("path")
           .data([data2])
@@ -301,7 +303,8 @@ export const object = {
           .attr("fill", "none")
           .attr("stroke", "#8cbb61")
           .attr("stroke-width", "2px")
-          .attr("stroke-dasharray", 4);
+          .attr("stroke-dasharray", 4)
+          .attr("pointer-events", "none");
 
       if (config.moving_average == "yes") {
           group.append("path")
@@ -310,13 +313,15 @@ export const object = {
             .attr("d", movingLine)
             .attr("fill", "none")
             .attr("stroke", "#27566b")
-            .attr("stroke-width", "2px");
+            .attr("stroke-width", "2px")
+            .attr("pointer-events", "none");
 
           rawLine.attr("class", "line")
             .attr("fill", "none")
             .attr("stroke", "#27566b")
             .attr("stroke-width", "2px")
-            .attr("opacity", 0.2);
+            .attr("opacity", 0.2)
+            .attr("pointer-events", "none");
 
       } else {
         const newRawLine = group.append("path")
@@ -325,7 +330,8 @@ export const object = {
           .attr("d", line)
           .attr("fill", "none")
           .attr("stroke", "#27566b")
-          .attr("stroke-width", "2px");
+          .attr("stroke-width", "2px")
+          .attr("pointer-events", "none");
 
       }
 
@@ -453,6 +459,7 @@ export const object = {
         .style("border-color", "lightgrey")
         .style("border-width", ".5px")
         .attr("class", "tooltip")
+        .attr("pointer-events", "none")
 
   
       // group element to house all the tooltip things in svg

@@ -41,39 +41,52 @@ looker.plugins.visualizations.add({
                   font-family: Arial;
                   font-size: 12px;
               }
-                  .only-line {
-                    fill: none;
-                    stroke: #27566b;
-                    stroke-width: 2px;
-                  }
-                  .line {
-                    fill: none;
-                    stroke: #27566b;
-                    stroke-width: 2px;
-                    opacity: .2;
-                  }
-                  .budget-line {
-                          fill: none;
-                          stroke: #339f7b;
-                          stroke-width: 2px;
-                          stroke-dasharray:4;
-                        }
-                  .forecast-line {
-                          fill: none;
-                          stroke: #8cbb61;
-                          stroke-width: 2px;
-                          stroke-dasharray:4;
-                        }
-                  .moving {
-                    fill: none;
-                    stroke: #27566b;
-                    stroke-width: 2px;
-                  }
+
+              path {
+                pointer-events: none;
+              }
+
+              .only-line {
+                fill: none;
+                stroke: #27566b;
+                stroke-width: 2px;
+              }
+
+              .line {
+                fill: none;
+                stroke: #27566b;
+                stroke-width: 2px;
+                opacity: .2;
+              }
+
+              .budget-line {
+                      fill: none;
+                      stroke: #339f7b;
+                      stroke-width: 2px;
+                      stroke-dasharray:4;
+                    }
+
+              .forecast-line {
+                      fill: none;
+                      stroke: #8cbb61;
+                      stroke-width: 2px;
+                      stroke-dasharray:4;
+                    }
+
+              .moving {
+                fill: none;
+                stroke: #27566b;
+                stroke-width: 2px;
+              }
+
+              .tooltip-textbox {
+                pointer-events: none;
+              }
 
             </style>
             <svg>
             </svg>
-            <div id='tooltip'>
+            <div id='tooltip-div'>
             </div>`;
         element.style.fontFamily = `"Open Sans", "Helvetica", sans-serif`
     },
@@ -422,14 +435,16 @@ looker.plugins.visualizations.add({
       // TOOLTIPS
 
       // tooltip div outside of svg to house the information and form the tooltip text box
-      const tooltip = d3.select("#tooltip")
+      console.log("tooltip-div", d3.select("#tooltip-div"))
+
+      const tooltip = d3.select("#tooltip-div")
         .style("position", "absolute")
         .style("padding", "5px")
         .style("background-color", "#ffffff")
         .style("border", "solid")
         .style("border-color", "lightgrey")
         .style("border-width", ".5px")
-        .attr("class", "tooltip")
+        .attr("class", "tooltip-textbox")
 
   
       // group element to house all the tooltip things in svg
@@ -442,6 +457,7 @@ looker.plugins.visualizations.add({
 
       // box that covers entire plot area and is see-through
       const tooltipBox = tt.append("rect")
+        .attr("class", "tooltip-area-rect")
         .attr("width", width)
         .attr("height", height)
         .attr("opacity", 0)
