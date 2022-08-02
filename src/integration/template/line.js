@@ -2,7 +2,7 @@ import * as d3 from 'd3'
 import * as d3Collection from 'd3-collection'
 import { formatType, handleErrors } from '../common/utils'
 
-looker.plugins.visualizations.add({
+export const object = {
     // Id and Label are legacy properties that no longer have any function besides documenting
     // what the visualization used to have. The properties are now set via the manifest
     // form within the admin/visualizations page of Looker.
@@ -280,35 +280,54 @@ looker.plugins.visualizations.add({
       const rawLine = group.append("path")
           .data([data3])
           .attr("class", "only-line")
-          .attr("d", line);
+          .attr("d", line)
+          .attr("fill", "none")
+          .attr("stroke", "#27566b")
+          .attr("stroke-width", "2px");
 
       const budgetLine = group.append("path")
           .data([data1])
           .attr("class", "budget-line")
-          .attr("d", line);
+          .attr("d", line)
+          .attr("fill", "none")
+          .attr("stroke", "#339f7b")
+          .attr("stroke-width", "2px")
+          .attr("stroke-dasharray", 4);
 
       const forecastLine = group.append("path")
           .data([data2])
           .attr("class", "forecast-line")
-          .attr("d", line);
+          .attr("d", line)
+          .attr("fill", "none")
+          .attr("stroke", "#8cbb61")
+          .attr("stroke-width", "2px")
+          .attr("stroke-dasharray", 4);
 
       if (config.moving_average == "yes") {
           group.append("path")
             .data([movingData])
             .attr("class", "moving")
-            .attr("d", movingLine);
+            .attr("d", movingLine)
+            .attr("fill", "none")
+            .attr("stroke", "#27566b")
+            .attr("stroke-width", "2px");
 
-          rawLine.attr("class", "line");
+          rawLine.attr("class", "line")
+            .attr("fill", "none")
+            .attr("stroke", "#27566b")
+            .attr("stroke-width", "2px")
+            .attr("opacity", 0.2);
 
       } else {
         const newRawLine = group.append("path")
           .data([data3])
           .attr("class", "only-line")
-          .attr("d", line);
+          .attr("d", line)
+          .attr("fill", "none")
+          .attr("stroke", "#27566b")
+          .attr("stroke-width", "2px");
 
       }
-
-      // console.log("drew lines")
 
       var legend = group.selectAll(".legend")
         .data(colors)
@@ -422,7 +441,11 @@ looker.plugins.visualizations.add({
       // TOOLTIPS
 
       // tooltip div outside of svg to house the information and form the tooltip text box
-      const tooltip = d3.select("#tooltip")
+      // HAD TO USE D3.SELECT(ELEMENT) BECAUSE SANDBOX DOESN'T READ THE CREATE FUNCTION HTML
+      const tooltip = d3.select(element)
+        .append("div")
+        .attr("id", "tooltip")
+    //   const tooltip = d3.select("#tooltip")
         .style("position", "absolute")
         .style("padding", "5px")
         .style("background-color", "#ffffff")
@@ -576,4 +599,4 @@ looker.plugins.visualizations.add({
         // Callback at the end of the rendering to let Looker know it's finished
         done()
     }
-})
+}
