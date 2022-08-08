@@ -221,10 +221,8 @@ looker.plugins.visualizations.add({
         }
     })
 
-    // console.log("dateCutoff", dateCutoff)
-
     data3 = data3.filter(d => d.date < dateCutoff) // actuals
-    data2 = data2.filter(d => d.date >= d3.max(data3, d => d.date)) // forecast
+    // data2 = data2.filter(d => d.date >= d3.max(data3, d => d.date)) // forecast
 
     console.log("cutoff data2, data3", data2, data3)
 
@@ -441,9 +439,9 @@ looker.plugins.visualizations.add({
         .style("position", "absolute")
         .style("padding", "5px")
         .style("background-color", "#ffffff")
-        .style("border", "solid")
-        .style("border-color", "lightgrey")
-        .style("border-width", ".5px")
+        // .style("border", "solid")
+        // .style("border-color", "lightgrey")
+        // .style("border-width", ".5px")
         .attr("class", "tooltip-textbox")
 
   
@@ -554,6 +552,9 @@ looker.plugins.visualizations.add({
 
         tooltip.html(d3.timeFormat("%b %-d, %Y")(wkdt) + "<hr>")
           .style("display", "block")
+          .style("border", "solid")
+          .style("border-color", "lightgrey")
+          .style("border-width", ".5px")
           .style("font-size", 12)
           // .style("left", d3.event.pageX + 15 + "px")
           .style("top", d3.event.pageY - 10 + "px")
