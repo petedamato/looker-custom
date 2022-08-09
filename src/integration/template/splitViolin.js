@@ -43,7 +43,7 @@ export const object = {
         right_color: {
             type: "array",
             label: "Right Color",
-            default: ["#339f7b"],
+            default: ["#f1cc56"], //"#339f7b"],
             display: "color",
             section: "Custom Options"
         },
@@ -220,7 +220,7 @@ export const object = {
             </style>
             <svg>
             </svg>`;
-        element.style.fontFamily = `"Open Sans", "Helvetica", sans-serif`
+        element.style.fontFamily = `"Open Sans", "Helvetica", "sans-serif"`
     },
 
     // Render in response to the data or settings changing
@@ -262,7 +262,7 @@ export const object = {
           }
   
           const margin = {
-              top: 10, 
+              top: 20, 
               right: 10, 
               bottom: bottom_margin, 
               left: left_margin
@@ -294,6 +294,15 @@ export const object = {
             console.log("dimension", dimension)
             console.log("measure", measure)
             console.log("pivots", pivots)
+
+            // let dimensionFormat;
+            // if (dimension.value_format.includes("$")) {
+            //     dimensionFormat = "USD"
+            // } else if (dimension.value_format.includes("%")) {
+            //     dimensionFormat = "Percentage"
+            // } else {
+            //     dimensionFormat = null
+            // }
 
             // determine how to format the time pivot (if there is one)
             const dateDict = {
@@ -525,6 +534,10 @@ export const object = {
 
             // -------------------------------------------------------
             // DRAW PERIPHERALS
+
+            console.log("xticklabel format", config.xticklabel_format)
+            console.log("yticklabel format", config.yticklabel_format)
+
             // X axis
             const xAxisGenerator = d3.axisBottom()
                 .scale(xScale)
@@ -532,7 +545,7 @@ export const object = {
 
             // x ticklabels
             if (config.xticklabels_show == "true") {
-                if (pivotDate) {
+                if (pivotDate[0]) {
                 xAxisGenerator
                     .tickFormat(d3.timeFormat(config.xticklabel_format))
                 }
@@ -556,7 +569,7 @@ export const object = {
             const xAxis = group.append("g")
                 .call(xAxisGenerator)
                     .style("transform", `translateY(${height}px)`)
-                    .attr("class", "axis")
+                    .attr("class", "x-axis")
 
             if (config.xticklabels_show == "false") {
                 d3.selectAll(".x-axis text")
@@ -594,7 +607,7 @@ export const object = {
 
             const yAxis = group.append("g")
                 .call(yAxisGenerator)
-                .attr("class", "axis")
+                .attr("class", "y-axis")
 
             if (config.yticklabels_show == "false") {
                 d3.selectAll(".y-axis text")
@@ -759,42 +772,51 @@ export const object = {
             
             // -------------------------------------------------------
             // DRAW LEGEND
-            // const legendContainer = group.append('g')
-            //     .attr("transform", "translate(0, 0)")
-            //         .classed("legendContainer", true)
+            const legendContainer = group.append('g')
+                .attr("transform", "translate(0, 0)")
+                .classed("legendContainer", true)
 
-            // const legend = legendContainer.selectAll(".legend")
-            //         .data(buckets.lower_pivot)
-            //     .enter()
-            //         .append("g")
-            //         .attr("class", "legend")
-            //         .attr("transform", function(d, i) { return "translate(" + (-40 + (i * 110) - width/2.05) + "," + (-margin.top/2) + ")"; });
+            const legend = legendContainer.selectAll(".legend")
+                .data(buckets.lower_pivot)
+                .enter()
+                .append("g")
+                .attr("class", "legend")
+                .attr("transform", function(d, i) { 
+                    console.log("d, i", d, i)
+                    // console.log("translate", (i+1) * 10)
+                    return `translate(6, ${-3 + (i * 17)})`
+                    // return "translate(" + (-40 + (i * 110) - width/2.05) + "," + (-margin.top/2) + ")"; 
+                });                
 
-            // legendContainer.append("text")
-            //     .attr("x", (width - margin.left)/2)
-            //     .attr("y", -margin.top/2)
-            //     .attr("dy", "-0.2em")
-            //     .style("text-anchor", "middle")
-            //     .style("font-size",10)
-            //     .text(legend_label);
+            legendContainer.append("text")
+                .attr("x", 10) //(width - margin.left)/2)
+                .attr("y", -8)
+                // .attr("dy", "-0.2em")
+                .style("text-anchor", "start")
+                .style("font-size",10)
+                .text(legend_label);
 
-            // legend.append("circle")
-            //     .attr("cx", width - 12)
-            //     .attr("cy", 9)
-            //     .attr("r", 7)
-            //     .style("fill", (d,i)=>{
-            //     return colors[i] 
-            //     });
+            legend.append("circle")
+                .attr("cx", 10)
+                .attr("cy", 9)
+                .attr("r", 6)
+                .style("fill", (d,i)=>{
+                    if (i==0) {
+                        return config.left_color
+                    } else {
+                        return config.right_color
+                    }
+                });
 
-            // legend.append("text")
-            //     .attr("x", width - 24)
-            //     .attr("y", 9)
-            //     .attr("dy", ".35em")
-            //     .style("text-anchor", "end")
-            //     .style("font-size",10)
-            //     .text((d,i)=>{
-            //     return d
-            //     });
+            legend.append("text")
+                .attr("x", 20)
+                .attr("y", 9)
+                .attr("dy", ".4em")
+                .style("text-anchor", "start")
+                .style("font-size",10)
+                .text((d,i)=>{
+                    return d
+                });
 
         } catch(error) {
             if (queryResponse.fields.dimensions.length > 1 ||
