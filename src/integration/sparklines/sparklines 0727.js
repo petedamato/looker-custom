@@ -9,7 +9,7 @@ looker.plugins.visualizations.add({
     // form within the admin/visualizations page of Looker.
 
     id: "sparkline-table",
-    label: "Sparkline Table",
+    label: "ZDev Sparkline Table",
     options: {
 
         first_chart_type: {
@@ -45,7 +45,7 @@ looker.plugins.visualizations.add({
           display: "text",
           label: "Measure(s) to draw from (see docs)",
           placeholder: "Comma separated",
-          default:"0"
+          default:""
         },
         where_chart: {
           section: "Setup",
@@ -54,14 +54,7 @@ looker.plugins.visualizations.add({
           display: "text",
           label: "Chart column(s) placement (see docs)",
           placeholder: "Comma separated",
-          default:"1"
-        },
-        ignore_last_week:{
-          section: "Setup",
-          order:5,
-          type: "boolean",
-          label: "Disable last period display",
-          default:false
+          default:""
         },
         y_axis_lower_first: {
           section: "Y",
@@ -102,22 +95,32 @@ looker.plugins.visualizations.add({
         directionality: {
           section: 'Formatting',
           order:4,
-          type: 'boolean',
+          type: 'string',
           label: 'Color negative trends',
-          default: false
+          display: "radio",
+          values: [
+            {"Yes": "yes"},
+            {"No": "no"}
+          ],
+          default: "yes"
         },
         display_values: {
           section: 'Formatting',
           order:3,
-          type: 'boolean',
+          type: 'string',
           label: 'Display max/min values',
-          default: false
+          display: "radio",
+          values: [
+            {"Yes": "yes"},
+            {"No": "no"}
+          ],
+          default: "yes"
         },
         change_label_second: {
           section: 'Labels',
           order:4,
           type: 'string',
-          label: 'Last period (column 2) label',
+          label: 'Change column 2 label',
           display: "text",
           default: ""
         },
@@ -125,7 +128,7 @@ looker.plugins.visualizations.add({
           section: 'Labels',
           order:2,
           type: 'string',
-          label: 'Last period (column 1) label',
+          label: 'Change column 1 label',
           display: "text",
           default: ""
         },
@@ -133,7 +136,7 @@ looker.plugins.visualizations.add({
           section: 'Labels',
           order:1,
           type: 'string',
-          label: 'Chart (column 1) label',
+          label: 'Chart column 1 label',
           display: "text",
           default: ""
         },
@@ -141,7 +144,7 @@ looker.plugins.visualizations.add({
           section: 'Labels',
           order:3,
           type: 'string',
-          label: 'Chart (column 2) label',
+          label: 'Chart column 2 label',
           display: "text",
           default: ""
         },
@@ -150,13 +153,12 @@ looker.plugins.visualizations.add({
           order:1,
           type: 'boolean',
           label: 'Freeze header row',
-          default: false
+          default: true
         }
       },
 
     // Set up the initial state of the visualization
     create: function(element, config) {
-      this.trigger("updateConfig", [{directionality: true, display_values:true,freeze_header:true}])
         // Insert a <style> tag with some styles we'll use later
         element.innerHTML = `
             <style>
@@ -287,12 +289,6 @@ looker.plugins.visualizations.add({
                 display:flex;
                 justify-content: center;
               }
-              .value-up.color-off {
-                color: black;
-              }
-              .value-down.color-off {
-                color: black;
-              }
               .change-figure {
                 line-height: 36px;
               }
@@ -308,25 +304,19 @@ looker.plugins.visualizations.add({
       if (environment == "prod") {
             if (!handleErrors(this, queryResponse, {
                 min_pivots: 1, max_pivots: 1,
-                min_dimensions: 1, max_dimensions: 40,
-                min_measures: 1, max_measures: 40
+                min_dimensions: 1, max_dimensions: 10,
+                min_measures: 1, max_measures: 10
             })) return
         }
-
-    // Custom error handling
-    if (typeof config.where_values == 'undefined' || typeof config.where_chart == 'undefined') {
+    if (config.where_values.split(",") && config.where_values.split(",").length > 2) {
       $('#vis').contents(':not(style)').remove();
-      const error = '<div class="error-container"><div class="error-header">Loading</div><div class="error">Wait until chart type is fully loaded.</div></div>'
+      const error = '<div class="error-container"><div class="error-header">Too many charted measures</div><div class="error">Sparklines cannot currently handle more than two chart columns.</div></div>'
       $('#vis').append(error);
-    } else if (queryResponse.has_row_totals == false) {
-      $('#vis').contents(':not(style)').remove();
-      const error = '<div class="error-container"><div class="error-header">Row totals required</div><div class="error">Sparklines requires row totals. Check row totals box and re-run.</div></div>'
-      $('#vis').append(error);
-    } else if ((config.where_chart == "" && config.where_values != "") || (config.where_values == "" && config.where_chart != "") || ((config.where_values || config.where_chart) && config.where_chart.split(",").length != config.where_values.split(",").length)) {
+    } else if (config.where_values.split(",") && config.where_chart.split(",").length != config.where_values.split(",").length) {
       $('#vis').contents(':not(style)').remove();
       const error = '<div class="error-container"><div class="error-header">Options mismatch</div><div class="error">Number of measures charted and chart columns must be equal.</div></div>'
       $('#vis').append(error);
-    } else if (config.where_values && config.where_values.split(",") && parseInt(config.where_values.split(",")[0]) > queryResponse.fields.measure_like.length - 1 || parseInt(config.where_values.split(",")[1]) > queryResponse.fields.measure_like.length - 1 || parseInt(config.where_values.split(",")[2]) > queryResponse.fields.measure_like.length - 1 ) {
+    } else if (config.where_values.split(",") && parseInt(config.where_values.split(",")[0]) > queryResponse.fields.measure_like.length - 1 || parseInt(config.where_values.split(",")[1]) > queryResponse.fields.measure_like.length - 1 || parseInt(config.where_values.split(",")[2]) > queryResponse.fields.measure_like.length - 1 ) {
       $('#vis').contents(':not(style)').remove();
       const error = '<div class="error-container"><div class="error-header">Index out of range</div><div class="error">That value is out of the range of possible measures.</div></div>'
       $('#vis').append(error);
@@ -336,8 +326,6 @@ looker.plugins.visualizations.add({
       // d3.select(element).html('')
       var parseTimeDay = d3.timeParse("%Y-%m-%d");
       var parseTimeMonth = d3.timeParse("%Y-%m");
-      var parseTimeYear = d3.timeParse("%Y");
-      var parseTimeSecond = d3.timeParse("%Y-%m-%d %H:%M:%S");
 
       var parseTime;
 
@@ -345,26 +333,7 @@ looker.plugins.visualizations.add({
       const measures = queryResponse.fields.measure_like;
       const pivots = queryResponse.fields.pivots;
 
-      if (pivots[0].time_interval.name == "day") {
-        parseTime = parseTimeDay;
-      } else if (pivots[0].time_interval.name == "month") {
-        parseTime = parseTimeMonth;
-      } else if (pivots[0].time_interval.name == "year") {
-        parseTime = parseTimeYear;
-      } else if (pivots[0].time_interval.name == "second") {
-        parseTime = parseTimeSecond;
-      } else {
-        if (parseTimeDay(Object.keys(data[0][measures[0].name])[0])){ 
-          parseTime = parseTimeDay;
-        } else {
-          if (parseTimeMonth(Object.keys(data[0][measures[0].name])[0])){ 
-            parseTime = parseTimeMonth;
-          }
-          else {
-            parseTime = parseTimeDay;
-          }
-        }
-      }
+      parseTime = parseTimeDay;
 
       let where_chart = []; 
 
@@ -390,53 +359,55 @@ looker.plugins.visualizations.add({
       
       let row_totals = [];
 
-      let column_headers = [];
+      let final_dimensions = [];
       let final_measures = [];
 
-      // Get the header names for the dimensions
+      let measures_start = dimensions.length - 1; 
+
       dimensions.forEach(function(entry,i){
-        column_headers.push(entry.name)
+        final_dimensions.push(entry.name)
       })
 
-      // If there are leftover measures, push them into the dimensions 
       if (where_values.length < measures.length) {
         measures.forEach(function(entry,i) {
           if (where_values.includes(i)) {
             return
           } else {
             row_totals.push(entry.name)
-            column_headers.push(("row_total_heading-" + i));
+            final_dimensions.push(("row_total_heading-" + i));
           }
         })
       }
 
       if (where_chart.length > 1) {
-        if (config.ignore_last_week == false) {
-          column_headers.splice(where_chart[1],0,"second_last_week_column")
-        }
-        column_headers.splice(where_chart[1],0,"second_chart_column")
+        final_dimensions.splice(where_chart[1],0,"second_last_week_column")
+        final_dimensions.splice(where_chart[1],0,"second_chart_column")
       }
       if (where_chart.length > 0) {
-        if (config.ignore_last_week == false) {
-          column_headers.splice(where_chart[0],0,"last_week_column")
-        }
-        column_headers.splice(where_chart[0],0,"chart_column")
+        final_dimensions.splice(where_chart[0],0,"last_week_column")
+        final_dimensions.splice(where_chart[0],0,"chart_column")
       }
 
       measures.forEach(function(entry){
         final_measures.push(entry.name)
       })
 
-  const margin = {
-    top:12,
-    bottom:12,
-    left:2,
-    right:2
-  }
+  // TODO error reporting
+  // TODO responsive widths
+  const w = 120
+  const h = 70
 
-  const x = d3.scaleTime().range([0, 116]);
-  const y = d3.scaleLinear().range([46, 0]);
-  const y2 = d3.scaleLinear().range([46, 0]);
+  const margin = {
+    top:16,
+    bottom:16,
+    left:0,
+    right:0
+  }
+  const width = w - margin.left - margin.right
+  const height = (h - margin.top - margin.bottom) / 2
+  const x = d3.scaleTime().range([0, width]);
+  const y = d3.scaleLinear().range([height, 0]);
+  const y2 = d3.scaleLinear().range([height, 0]);
 
   const line = d3.line()
       .defined(function(d) {
@@ -461,9 +432,9 @@ looker.plugins.visualizations.add({
   function createTable(data_insert,element) {
       // Clear out the previous charts/code if not removed to see the table
       $('#vis').contents(':not(style)').remove();
-      const headings_dim = data_insert;
+      var headings_dim = data_insert;
 
-      let html = '<table>';
+      var html = '<table>';
 
       html += '<thead><tr><th class="table-index"></th>';
       $.each(headings_dim, function () {
@@ -515,8 +486,6 @@ looker.plugins.visualizations.add({
         html += '<tr><td class="table-index">' + (i + 1) + '</td>';
         // build each cell using the heading's ith element
         $.each(headings_dim, function () {
-
-          // Add the chart columns
           if (this == "chart_column") {
             const chart_id = "chart_column-" + i
             
@@ -528,8 +497,6 @@ looker.plugins.visualizations.add({
             html += '<td class="no-padding"><div class="second_chart_column" id=' + chart_id + '></div></td>';
 
           } else if (this == "last_week_column") {
-            // Add section for triangle up/down trends
-
             const last_week_id = "last_week_column-" + i
             let last_week_class;
             let direction_icon;
@@ -541,15 +508,14 @@ looker.plugins.visualizations.add({
             let last_week_data;
 
             if (data[i][measures[where_values[0]].name][date_keys[date_keys.length-1]]["value"] != null) {
-              if (data[i][measures[where_values[0]].name][date_keys[date_keys.length-1]]["rendered"]) {
+
                 last_week_data = data[i][measures[where_values[0]].name][date_keys[date_keys.length-1]]["rendered"]
-              } else {
-                last_week_data = data[i][measures[where_values[0]].name][date_keys[date_keys.length-1]]["value"]
-              }
 
             } else {
               last_week_data = "<span class='null-val'>∅</span>"
             }
+
+            // Can change this but for now, check if it's up or down from prev week
 
             if (data[i][measures[where_values[0]].name][date_keys[date_keys.length-1]]["value"] != null && data[i][measures[where_values[0]].name][date_keys[date_keys.length-2]]["value"] != null && data[i][measures[where_values[0]].name][date_keys[date_keys.length-1]]["value"] < data[i][measures[where_values[0]].name][date_keys[date_keys.length-2]]["value"]) {
               last_week_class = "value-down"
@@ -578,15 +544,12 @@ looker.plugins.visualizations.add({
             let last_week_data;
 
             if (data[i][measures[where_values[1]].name][date_keys[date_keys.length-1]]["value"] != null) {
-              if (data[i][measures[where_values[1]].name][date_keys[date_keys.length-1]]["rendered"]) {
                 last_week_data = data[i][measures[where_values[1]].name][date_keys[date_keys.length-1]]["rendered"]
-              } else {
-                last_week_data = data[i][measures[where_values[1]].name][date_keys[date_keys.length-1]]["value"]
-              }
             } else {
               last_week_data = "<span class='null-val'>∅</span>"
             }
 
+            // Can change this but for now, check if it's up or down from prev week
             if (data[i][measures[where_values[1]].name][date_keys[date_keys.length-1]]["value"] != null && data[i][measures[where_values[1]].name][date_keys[date_keys.length-2]]["value"] != null && data[i][measures[where_values[1]].name][date_keys[date_keys.length-1]]["value"] < data[i][measures[where_values[1]].name][date_keys[date_keys.length-2]]["value"]) {
               last_week_class = "value-down"
               direction_icon = '<div id="second-chart-triangle-' + i + '"></div>'
@@ -615,7 +578,7 @@ looker.plugins.visualizations.add({
             if (data[i][this]["rendered"]) {
               html += '<td>' + data[i][this]["rendered"] + '</td>';
             } else if (data[i][this]["value"] == null) {
-              html += '<td>' + "<span class='null-val'>∅</span>" + '</td>';
+              html += '<td>' + "<i>null</i>" + '</td>';
             } else {
               html += '<td>' + data[i][this]["value"] + '</td>';
             }
@@ -633,17 +596,10 @@ looker.plugins.visualizations.add({
       } else {
         $('th').removeClass('stuck')
       }
-      if (config.directionality == false) {
-        $('.value-down').addClass('color-off')
-        $('.value-up').addClass('color-off')
-      } else {
-        $('.value-down').removeClass('color-off')
-        $('.value-up').removeClass('color-off')
-      }
     }
 
     function drawOnTable(data_insert,element) {
-      // Check on element height and width to test responsiveness using getBoundingClientRect
+      // Find extent for all charted values
       let width_first;
       let height_first;
       if (config.where_chart.length > 0){ 
@@ -672,7 +628,6 @@ looker.plugins.visualizations.add({
         height_second = new_node_height_2.node().getBoundingClientRect().height
       } 
 
-      // Get max and min for both the first and second chart columns
       let col_one_max
       let col_one_min
       let col_two_max
@@ -765,18 +720,12 @@ looker.plugins.visualizations.add({
           .append('path')
           .attr("d", d3.symbol().type(d3.symbolTriangle).size(30))
 
-        if (config.directionality == true) {
-          if (dataset_one[dataset_one.length-1].value < dataset_one[dataset_one.length-2].value) {
-            tri.attr("transform",  "rotate(180)")
-            .style("fill", "#D76106");
-          } else if (dataset_one[dataset_one.length-1].value > dataset_one[dataset_one.length-2].value) {
-            tri
-              .style("fill", "#0072b5");
-          }
+        if (dataset_one[dataset_one.length-1].value < dataset_one[dataset_one.length-2].value) {
+          tri.attr("transform",  "rotate(180)")
+          .style("fill", "#D76106");
         } else {
-          if (dataset_one[dataset_one.length-1].value < dataset_one[dataset_one.length-2].value) {
-            tri.attr("transform",  "rotate(180)");
-          }
+          tri
+            .style("fill", "#0072b5");
         }
 
 
@@ -786,68 +735,38 @@ looker.plugins.visualizations.add({
               .attr("class", "line")
               .attr("d", line)
               .attr("stroke", (d)=>{
-                if (config.directionality == true) {
+                if (config.directionality == "yes") {
                   if (dataset_one[dataset_one.length-1].value != null && dataset_one[0].value > dataset_one[dataset_one.length-1].value) {
                     return "#D76106"
-                  } else if (dataset_one[dataset_one.length-1].value != null && dataset_one[0].value < dataset_one[dataset_one.length-1].value) {
-                    return "#0072b5"
                   } else {
-                    return "#c2c2c2"
+                    return "#0072b5"
                   }
                 } else {
                   return ["#27566b","#007b82"][i%2]
                 }
               });
-
-          group.selectAll(".dot")
-              .data(dataset_one.filter(function(d, i) {
-                  return d.value !== null
-              }))
-            .enter().append("circle")
-              .attr("class", "dot")
-              .attr("cx", line.x())
-              .attr("cy", line.y())
-              .attr("r", 1)
-              .attr("fill", (d)=>{
-                if (config.directionality == true) {
-                  if (dataset_one[dataset_one.length-1].value != null && dataset_one[0].value > dataset_one[dataset_one.length-1].value) {
-                    return "#D76106"
-                  } else if (dataset_one[dataset_one.length-1].value != null && dataset_one[0].value < dataset_one[dataset_one.length-1].value) {
-                    return "#0072b5"
-                  } else {
-                    return "#c2c2c2"
-                  }
-                } else {
-                  return ["#27566b","#007b82"][i%2]
-                }
-              });
-
             } else if (config.first_chart_type == "area") {
               group.append("path")
               .data([dataset_one])
               .attr("class", "area")
               .attr("d", area)
               .attr("stroke", (d)=>{
-                if (config.directionality == true) {
+                if (config.directionality == "yes") {
                   if (dataset_one[dataset_one.length-1].value != null && dataset_one[0].value > dataset_one[dataset_one.length-1].value) {
                     return "#D76106"
-                  } else if (dataset_one[dataset_one.length-1].value != null && dataset_one[0].value < dataset_one[dataset_one.length-1].value) {
-                    return "#0072b5"
                   } else {
-                    return "#c2c2c2"
+                    return "#0072b5"
                   }
                 } else {
                   return ["#27566b","#007b82"][i%2]
                 }
               })
               .attr("fill", (d)=>{
-                if (config.directionality == true) {
+                if (config.directionality == "yes") {
                   if (dataset_one[dataset_one.length-1].value != null && dataset_one[0].value > dataset_one[dataset_one.length-1].value) {
                     return "#D76106"
-                  } else if (dataset_one[dataset_one.length-1].value != null && dataset_one[0].value < dataset_one[dataset_one.length-1].value) {
-                    return "#0072b5"
                   } else {
-                    return "#c2c2c2"
+                    return "#0072b5"
                   }
                 } else {
                   return ["#27566b","#007b82"][i%2]
@@ -868,20 +787,17 @@ looker.plugins.visualizations.add({
                   return xBar(d.date)
                 })
                 .attr("y", (d)=>{
-                    return y(Math.max(0, d.value));                  
+                  return y(d.value)
                 })
                 .attr("width", xBar.bandwidth())
                 .attr("height", (d)=>{ 
-                    return Math.abs(y(d.value) - y(0));
-                })
+                  return height_first - y(d.value) })
                 .attr("fill", (d)=>{
-                  if (config.directionality == true) {
+                  if (config.directionality == "yes") {
                     if (dataset_one[dataset_one.length-1].value != null && dataset_one[0].value > dataset_one[dataset_one.length-1].value) {
                       return "#D76106"
-                    } else if (dataset_one[dataset_one.length-1].value != null && dataset_one[0].value < dataset_one[dataset_one.length-1].value) {
-                      return "#0072b5"
                     } else {
-                      return "#c2c2c2"
+                      return "#0072b5"
                     }
                   } else {
                     return ["#27566b","#007b82"][i%2]
@@ -909,12 +825,12 @@ looker.plugins.visualizations.add({
          }
        })
        if (isNaN(+val_extent[0])) {
-        return
+        console.log("No max/min")
        } else {
         arr_text.push({"value":val_extent[1],"date":maxValValues["date"],"rendered":maxValValues["rendered"]})
         arr_text.push({"value":val_extent[0],"date":minValValues["date"],"rendered":minValValues["rendered"]})
 
-       if (config.display_values == true) {
+       if (config.display_values == "yes") {
          var filter = group.append("defs")
             .append("filter")
             .attr("id", "blur")
@@ -927,11 +843,7 @@ looker.plugins.visualizations.add({
               .append("text")
               .attr("class", "min-max-text-background")
               .attr("x", (d,i)=>{
-                if (pivots[0].time_interval.name == "month" && x(parseTime(d.date))>20) {
-                  return x(parseTime(d.date))
-                } else {
-                  return x(parseTime(d.date))
-                }
+                return x(parseTime(d.date))
               })
               .attr("y", (d,i)=>{
                 if (i == 1) {
@@ -942,11 +854,7 @@ looker.plugins.visualizations.add({
                 
               })
               .text((d)=>{
-                if (d.rendered == undefined) {
-                  return d.value
-                } else {
-                  return d.rendered
-                }
+                return d.rendered
               })
               .attr("font-size", 8)
               .attr("font-family", "Roboto")
@@ -969,11 +877,7 @@ looker.plugins.visualizations.add({
               .append("text")
               .attr("class", "min-max-text")
               .attr("x", (d,i)=>{
-                if (pivots[0].time_interval.name == "month" && x(parseTime(d.date))>20) {
-                  return x(parseTime(d.date))
-                } else {
-                  return x(parseTime(d.date))
-                }
+                return x(parseTime(d.date))
               })
               .attr("y", (d,i)=>{
                 if (i == 1) {
@@ -984,11 +888,7 @@ looker.plugins.visualizations.add({
                 
               })
               .text((d)=>{
-                if (d.rendered == undefined) {
-                  return d.value
-                } else {
-                  return d.rendered
-                }
+                return d.rendered
               })
               .attr("font-size", 8)
               .attr("font-weight", 700)
@@ -1027,7 +927,7 @@ looker.plugins.visualizations.add({
               y2.domain([col_two_min,config.y_axis_upper_second])
             }
         x.domain([parseTime(dataset_two[0].date), parseTime(dataset_two[dataset_two.length-1].date)]).range([0,width_first - margin.left - margin.right])
-        y2.range([height_second - margin.top - margin.bottom,0])
+        y2.range([height_first - margin.top - margin.bottom,0])
       const line2 = d3.line()
           .defined(function(d) {
             return d.value != null
@@ -1072,18 +972,12 @@ looker.plugins.visualizations.add({
           .append('path')
           .attr("d", d3.symbol().type(d3.symbolTriangle).size(30))
 
-        if (config.directionality == true) {  
-            if (dataset_two[dataset_two.length-1].value < dataset_two[dataset_two.length-2].value) {
-              tri_two.attr("transform",  "rotate(180)")
-              .style("fill", "#D76106");
-            } else if (dataset_two[dataset_two.length-1].value > dataset_two[dataset_two.length-2].value) {
-              tri_two
-                .style("fill", "#0072b5");
-            }
-          } else {
-          if (dataset_two[dataset_two.length-1].value < dataset_two[dataset_two.length-2].value) {
-            tri_two.attr("transform",  "rotate(180)");
-          }
+        if (dataset_two[dataset_two.length-1].value < dataset_two[dataset_two.length-2].value) {
+          tri_two.attr("transform",  "rotate(180)")
+          .style("fill", "#D76106");
+        } else {
+          tri_two
+            .style("fill", "#0072b5");
         }
 
 
@@ -1093,68 +987,38 @@ looker.plugins.visualizations.add({
               .attr("class", "line")
               .attr("d", line2)
               .attr("stroke", (d)=>{
-                if (config.directionality == true) {
+                if (config.directionality == "yes") {
                   if (dataset_two[dataset_two.length-1].value != null && dataset_two[0].value > dataset_two[dataset_two.length-1].value) {
                     return "#D76106"
-                  } else if (dataset_two[dataset_two.length-1].value != null && dataset_two[0].value < dataset_two[dataset_two.length-1].value) {
-                    return "#0072b5"
                   } else {
-                    return "#c2c2c2"
+                    return "#0072b5"
                   }
                 } else {
                   return ["#27566b","#007b82"][i%2]
                 }
               });
-
-          group_two.selectAll(".dot-two")
-              .data(dataset_two.filter(function(d, i) {
-                  return d.value !== null
-              }))
-            .enter().append("circle")
-              .attr("class", "dot-two")
-              .attr("cx", line2.x())
-              .attr("cy", line2.y())
-              .attr("r", 1)
-              .attr("fill", (d)=>{
-                if (config.directionality == true) {
-                  if (dataset_two[dataset_two.length-1].value != null && dataset_two[0].value > dataset_two[dataset_two.length-1].value) {
-                    return "#D76106"
-                  } else if (dataset_two[dataset_two.length-1].value != null && dataset_two[0].value < dataset_two[dataset_two.length-1].value) {
-                    return "#0072b5"
-                  } else {
-                    return "#c2c2c2"
-                  }
-                } else {
-                  return ["#27566b","#007b82"][i%2]
-                }
-              });
-
             } else if (config.second_chart_type == "area") {
               group_two.append("path")
               .data([dataset_two])
               .attr("class", "area")
               .attr("d", area2)
               .attr("stroke", (d)=>{
-                if (config.directionality == true) {
+                if (config.directionality == "yes") {
                   if (dataset_two[dataset_two.length-1].value != null && dataset_two[0].value > dataset_two[dataset_two.length-1].value) {
                     return "#D76106"
-                  } else if (dataset_two[dataset_two.length-1].value != null && dataset_two[0].value < dataset_two[dataset_two.length-1].value) {
-                    return "#0072b5"
                   } else {
-                    return "#c2c2c2"
+                    return "#0072b5"
                   }
                 } else {
                   return ["#27566b","#007b82"][i%2]
                 }
               })
               .attr("fill", (d)=>{
-                if (config.directionality == true) {
+                if (config.directionality == "yes") {
                   if (dataset_two[dataset_two.length-1].value != null && dataset_two[0].value > dataset_two[dataset_two.length-1].value) {
                     return "#D76106"
-                  } else if (dataset_two[dataset_two.length-1].value != null && dataset_two[0].value < dataset_two[dataset_two.length-1].value) {
-                    return "#0072b5"
                   } else {
-                    return "#c2c2c2"
+                    return "#0072b5"
                   }
                 } else {
                   return ["#27566b","#007b82"][i%2]
@@ -1175,20 +1039,17 @@ looker.plugins.visualizations.add({
                   return xBar(d.date)
                 })
                 .attr("y", (d)=>{
-                    return y2(Math.max(0, d.value));                  
+                  return y2(d.value)
                 })
                 .attr("width", xBar.bandwidth())
                 .attr("height", (d)=>{ 
-                    return Math.abs(y2(d.value) - y2(0));
-                })
+                  return height_second - y2(d.value) })
                 .attr("fill", (d)=>{
-                  if (config.directionality == true) {
+                  if (config.directionality == "yes") {
                     if (dataset_two[dataset_two.length-1].value != null && dataset_two[0].value > dataset_two[dataset_two.length-1].value) {
                       return "#D76106"
-                    } else if (dataset_two[dataset_two.length-1].value != null && dataset_two[0].value < dataset_two[dataset_two.length-1].value) {
-                      return "#0072b5"
                     } else {
-                      return "#c2c2c2"
+                      return "#0072b5"
                     }
                   } else {
                     return ["#27566b","#007b82"][i%2]
@@ -1216,12 +1077,12 @@ looker.plugins.visualizations.add({
          }
        })
        if (isNaN(+val_extent_two[0])) {
-        return
+        console.log("")
        } else {
         arr_text_two.push({"value":val_extent_two[1],"date":maxValValues_two["date"],"rendered":maxValValues_two["rendered"]})
         arr_text_two.push({"value":val_extent_two[0],"date":minValValues_two["date"],"rendered":minValValues_two["rendered"]})
 
-       if (config.display_values == true) {
+       if (config.display_values == "yes") {
          var filter_two = group_two.append("defs")
             .append("filter")
             .attr("id", "blur_two")
@@ -1234,11 +1095,7 @@ looker.plugins.visualizations.add({
               .append("text")
               .attr("class", "min-max-text-background_two")
               .attr("x", (d,i)=>{
-                if (pivots[0].time_interval.name == "month" && x(parseTime(d.date))>20) {
-                  return x(parseTime(d.date))
-                } else {
-                  return x(parseTime(d.date))
-                }
+                return x(parseTime(d.date))
               })
               .attr("y", (d,i)=>{
                 if (i == 1) {
@@ -1249,11 +1106,7 @@ looker.plugins.visualizations.add({
                 
               })
               .text((d)=>{
-                if (d.rendered == undefined) {
-                  return d.value
-                } else {
-                  return d.rendered
-                }
+                return d.rendered
               })
               .attr("font-size", 8)
               .attr("font-weight", 700)
@@ -1275,11 +1128,7 @@ looker.plugins.visualizations.add({
               .append("text")
               .attr("class", "min-max-text_two")
               .attr("x", (d,i)=>{
-                if (pivots[0].time_interval.name == "month" && x(parseTime(d.date))>20) {
-                  return x(parseTime(d.date))
-                } else {
-                  return x(parseTime(d.date))
-                }
+                return x(parseTime(d.date))
               })
               .attr("y", (d,i)=>{
                 if (i == 1) {
@@ -1290,11 +1139,7 @@ looker.plugins.visualizations.add({
                 
               })
               .text((d)=>{
-                if (d.rendered == undefined) {
-                  return d.value
-                } else {
-                  return d.rendered
-                }
+                return d.rendered
               })
               .attr("font-size", 8)
               .attr("font-weight", 700)
@@ -1315,12 +1160,17 @@ looker.plugins.visualizations.add({
 
       }
     }
-      createTable(column_headers)
+      createTable(final_dimensions)
 
-      drawOnTable(column_headers)
+      drawOnTable(final_dimensions)
  
         } catch(error) {
+            if (environment == "prod") {
+              console.log(error)
+            } else {
                 console.log(error)
+            }
+            
         }
       }
 

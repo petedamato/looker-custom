@@ -12,12 +12,13 @@ var webpackConfig = {
     test: './src/integration/test/test.js',
     splitViolin: './src/integration/splitViolin/splitViolin.js',
     bulletChart: './src/integration/bulletChart/bulletChart.js',
-    bulletChart: './src/integration/bulletChart/bulletChart.js',
+    heatmap: './src/integration/heatmap/heatmap.js',
     coloredBars: './src/integration/coloredBars/coloredBars.js',
     coloredBarsPerc: './src/integration/coloredBarsPerc/coloredBarsPerc.js',
     template: './src/integration/template/template.js',
     line: './src/integration/line/line.js',
     sparklines: './src/integration/sparklines/sparklines.js',
+    liquid_fill_gauge:'./src/integration/liquid_fill_gauge/liquid_fill_gauge.ts',
     fever: './src/integration/fever/fever.js'
   },
   output: {

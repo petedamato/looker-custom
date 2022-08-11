@@ -1,18 +1,22 @@
 import * as d3 from 'd3'
-import * as $ from 'jquery'
 import { formatType, handleErrors } from '../common/utils'
 
 looker.plugins.visualizations.add({
-  // Id and Label are legacy properties that no longer have any function besides documenting
-  // what the visualization used to have. The properties are now set via the manifest
-  // form within the admin/visualizations page of Looker
+
   id: "test",
-  label: "ZDev Test",
+  label: "Test",
   options: {
+    directionality: {
+          section: 'Formatting',
+          order:1,
+          type: 'boolean',
+          label: 'Color negative trends',
+          default: true
+    },
   },
-  // Set up the initial state of the visualization
+
   create: function(element, config) {
-    // Insert a <style> tag with some styles we'll use later.
+    console.log(config)
     element.innerHTML = `
       <style>
         body {
@@ -25,11 +29,14 @@ looker.plugins.visualizations.add({
     element.style.fontFamily = `"Open Sans", "Helvetica", sans-serif`
 
   },
-  // Render in response to the data or settings changing
-  updateAsync: function(data, element, config, queryResponse, details, done) {  
-    console.log(data, queryResponse)
 
-    
+  updateAsync: function(data, element, config, queryResponse, details, done) { 
+    console.log(config, data, queryResponse)
+    if (queryResponse.fields.dimensions.length == 0) {
+      this.addError({title: "No Dimensions", message: "This chart requires dimensions."});
+      return;
+    }
+
     done()
   }
 });
