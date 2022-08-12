@@ -58,7 +58,7 @@ looker.plugins.visualizations.add({
           label: 'Binning method',
           display: "select",
           values: [
-              {"Equal width quantiles": "0"},
+              {"Equal width binning": "0"},
               {"Set breakpoints": "1"},
               {"Equal frequency binning": "2"}
           ],
@@ -68,7 +68,7 @@ looker.plugins.visualizations.add({
           section: 'Binning',
           order:2,
           type:'string',
-          label: 'Number of quantiles',
+          label: 'Number of bins',
           display: "select",
           values: [
               {"Four": "4"},
