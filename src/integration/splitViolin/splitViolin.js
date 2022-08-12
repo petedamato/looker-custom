@@ -383,15 +383,15 @@ looker.plugins.visualizations.add({
 
             // sort 2nd pivot first and then 1st pivot
             if (pivotSort[1]) {
-                data_ready.sort((a,b) => a.side - b.side)
-            } else {
                 data_ready.sort((a,b) => b.side - a.side)
+            } else {
+                data_ready.sort((a,b) => a.side - b.side)
             }
 
             if (pivotSort[0]) {
-                data_ready.sort((a,b) => a.group - b.group)
-            } else {
                 data_ready.sort((a,b) => b.group - a.group)
+            } else {
+                data_ready.sort((a,b) => a.group - b.group)
             }
 
             console.log("data_ready", data_ready)
