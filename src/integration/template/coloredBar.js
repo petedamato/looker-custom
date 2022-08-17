@@ -222,8 +222,13 @@ export const object = {
             stroke-width: 1;
             }
 
+            .zero-line {
+                stroke: #ccd6eb;
+                stroke-width: 0.5;
+            }
+
             .y-axis .domain {
-            stroke: none;
+                stroke: none;
             }
 
             .x-axis text, .y-axis text {
@@ -489,6 +494,8 @@ export const object = {
                     ])
                     .range([boundedHeight, 0])
             }        
+
+            console.log(yScale.domain()[0])
             
             // -------------------------------------------------------
             // DRAW PERIPHERALS
@@ -502,7 +509,10 @@ export const object = {
             if (config.xticklabels_show == "true") {
                 xAxisGenerator
                     .tickFormat(d3.timeFormat(config.xticklabel_format))
-            } // can't account for non-time x axis data
+            }  else { // can't account for non-time x axis data
+                xAxisGenerator
+                    .tickFormat("")
+            }
 
             // x gridlines
             if (config.x_gridlines == "true") {
@@ -604,6 +614,18 @@ export const object = {
                             }
                         }
                     })
+            }
+
+            // -------------------------------------------------------
+            // Add zero line
+            if (yScale.domain()[0] < 0) {
+                console.log("add zero line")
+                group.append("line")
+                    .attr("class", "zero-line")
+                    .attr("x1", 0)
+                    .attr("x2", boundedWidth)
+                    .attr("y1", yScale(0))
+                    .attr("y2", yScale(0))
             }
 
             // -------------------------------------------------------
