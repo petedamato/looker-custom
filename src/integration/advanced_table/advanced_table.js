@@ -1071,6 +1071,11 @@ looker.plugins.visualizations.add({
   },
 
   updateAsync(data, element, config, queryResponse, details, done) {
+    if (!handleErrors(this, queryResponse, {
+        min_pivots: 0, max_pivots: null,
+        min_dimensions: 1, max_dimensions: 1,
+        min_measures: 0, max_measures: 1
+    })) return
     hideOverlay(this, element, config);
     this.clearErrors();
 
