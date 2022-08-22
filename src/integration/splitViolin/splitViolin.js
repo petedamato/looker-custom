@@ -333,10 +333,15 @@ looker.plugins.visualizations.add({
             let pivotSort = []
 
             pivots.forEach((element, index) => {
-                if (pivots[index].sorted.desc) {
-                    pivotSort.push(true)
+                console.log("PIVOT", pivots[index], "sorted" in pivots[index])
+                if ("sorted" in pivots[index]) {
+                    if (pivots[index].sorted.desc) {
+                        pivotSort.push(true)
+                    } else {
+                        pivotSort.push(false)
+                    }
                 } else {
-                    pivotSort.push(false)
+                    pivotSort.push(null)
                 }
             })
 
@@ -382,16 +387,20 @@ looker.plugins.visualizations.add({
             })
 
             // sort 2nd pivot first and then 1st pivot
-            if (pivotSort[1]) {
-                data_ready.sort((a,b) => a.side - b.side)
-            } else {
-                data_ready.sort((a,b) => b.side - a.side)
+            if (pivotSort[1] !== null) {
+                if (pivotSort[1]) {
+                    data_ready.sort((a,b) => b.side - a.side)
+                } else {
+                    data_ready.sort((a,b) => a.side - b.side)
+                }
             }
-
-            if (pivotSort[0]) {
-                data_ready.sort((a,b) => a.group - b.group)
-            } else {
-                data_ready.sort((a,b) => b.group - a.group)
+            
+            if (pivotSort[0] !== null) {
+                if (pivotSort[0]) {
+                    data_ready.sort((a,b) => b.group - a.group)
+                } else {
+                    data_ready.sort((a,b) => a.group - b.group)
+                }
             }
 
             console.log("data_ready", data_ready)
