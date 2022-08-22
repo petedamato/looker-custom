@@ -2,7 +2,7 @@ import * as d3 from 'd3'
 import * as d3Collection from 'd3-collection'
 import { formatType, handleErrors } from '../common/utils'
 
-looker.plugins.visualizations.add({
+export const object = {
     // Id and Label are legacy properties that no longer have any function besides documenting
     // what the visualization used to have. The properties are now set via the manifest
     // form within the admin/visualizations page of Looker.
@@ -41,52 +41,39 @@ looker.plugins.visualizations.add({
                   font-family: Arial;
                   font-size: 12px;
               }
-
-              path {
-                pointer-events: none;
-              }
-
-              .only-line {
-                fill: none;
-                stroke: #27566b;
-                stroke-width: 2px;
-              }
-
-              .line {
-                fill: none;
-                stroke: #27566b;
-                stroke-width: 2px;
-                opacity: .2;
-              }
-
-              .budget-line {
-                      fill: none;
-                      stroke: #339f7b;
-                      stroke-width: 2px;
-                      stroke-dasharray:4;
-                    }
-
-              .forecast-line {
-                      fill: none;
-                      stroke: #8cbb61;
-                      stroke-width: 2px;
-                      stroke-dasharray:4;
-                    }
-
-              .moving {
-                fill: none;
-                stroke: #27566b;
-                stroke-width: 2px;
-              }
-
-              .tooltip-textbox {
-                pointer-events: none;
-              }
+                  .only-line {
+                    fill: none;
+                    stroke: #27566b;
+                    stroke-width: 2px;
+                  }
+                  .line {
+                    fill: none;
+                    stroke: #27566b;
+                    stroke-width: 2px;
+                    opacity: .2;
+                  }
+                  .budget-line {
+                          fill: none;
+                          stroke: #339f7b;
+                          stroke-width: 2px;
+                          stroke-dasharray:4;
+                        }
+                  .forecast-line {
+                          fill: none;
+                          stroke: #8cbb61;
+                          stroke-width: 2px;
+                          stroke-dasharray:4;
+                        }
+                  .moving {
+                    fill: none;
+                    stroke: #27566b;
+                    stroke-width: 2px;
+                  }
 
             </style>
             <svg>
             </svg>
-            <div id='tooltip-div'>
+            <div id='tooltip'>
             </div>`;
         element.style.fontFamily = `"Open Sans", "Helvetica", sans-serif`
     },
@@ -221,11 +208,11 @@ looker.plugins.visualizations.add({
         }
     })
 
+
     data3 = data3.filter(d => d.date < dateCutoff) // actuals
     // data2 = data2.filter(d => d.date >= d3.max(data3, d => d.date)) // forecast
 
-    console.log("cutoff data2, data3", data2, data3)
-
+    // console.log("cutoff data2, data3", data2, data3)
 
     // ------------------------------
 
@@ -291,35 +278,60 @@ looker.plugins.visualizations.add({
       const rawLine = group.append("path")
           .data([data3])
           .attr("class", "only-line")
-          .attr("d", line);
+          .attr("d", line)
+          .attr("fill", "none")
+          .attr("stroke", "#27566b")
+          .attr("stroke-width", "2px")
+          .attr("pointer-events", "none");
 
       const budgetLine = group.append("path")
           .data([data1])
           .attr("class", "budget-line")
-          .attr("d", line);
+          .attr("d", line)
+          .attr("fill", "none")
+          .attr("stroke", "#339f7b")
+          .attr("stroke-width", "2px")
+          .attr("stroke-dasharray", 4)
+          .attr("pointer-events", "none");
 
       const forecastLine = group.append("path")
           .data([data2])
           .attr("class", "forecast-line")
-          .attr("d", line);
+          .attr("d", line)
+          .attr("fill", "none")
+          .attr("stroke", "#8cbb61")
+          .attr("stroke-width", "2px")
+          .attr("stroke-dasharray", 4)
+          .attr("pointer-events", "none");
 
       if (config.moving_average == "yes") {
           group.append("path")
             .data([movingData])
             .attr("class", "moving")
-            .attr("d", movingLine);
+            .attr("d", movingLine)
+            .attr("fill", "none")
+            .attr("stroke", "#27566b")
+            .attr("stroke-width", "2px")
+            .attr("pointer-events", "none");
 
-          rawLine.attr("class", "line");
+          rawLine.attr("class", "line")
+            .attr("fill", "none")
+            .attr("stroke", "#27566b")
+            .attr("stroke-width", "2px")
+            .attr("opacity", 0.2)
+            .attr("pointer-events", "none");
 
       } else {
         const newRawLine = group.append("path")
           .data([data3])
           .attr("class", "only-line")
-          .attr("d", line);
+          .attr("d", line)
+          .attr("fill", "none")
+          .attr("stroke", "#27566b")
+          .attr("stroke-width", "2px")
+          .attr("pointer-events", "none");
 
       }
-
-      // console.log("drew lines")
 
       var legend = group.selectAll(".legend")
         .data(colors)
@@ -433,16 +445,19 @@ looker.plugins.visualizations.add({
       // TOOLTIPS
 
       // tooltip div outside of svg to house the information and form the tooltip text box
-      console.log("tooltip-div", d3.select("#tooltip-div"))
-
-      const tooltip = d3.select("#tooltip-div")
+      // HAD TO USE D3.SELECT(ELEMENT) BECAUSE SANDBOX DOESN'T READ THE CREATE FUNCTION HTML
+      const tooltip = d3.select(element)
+        .append("div")
+        .attr("id", "tooltip")
+    //   const tooltip = d3.select("#tooltip")
         .style("position", "absolute")
         .style("padding", "5px")
         .style("background-color", "#ffffff")
         // .style("border", "solid")
         // .style("border-color", "lightgrey")
         // .style("border-width", ".5px")
-        .attr("class", "tooltip-textbox")
+        .attr("class", "tooltip")
+        .attr("pointer-events", "none")
 
   
       // group element to house all the tooltip things in svg
@@ -455,7 +470,6 @@ looker.plugins.visualizations.add({
 
       // box that covers entire plot area and is see-through
       const tooltipBox = tt.append("rect")
-        .attr("class", "tooltip-area-rect")
         .attr("width", width)
         .attr("height", height)
         .attr("opacity", 0)
@@ -564,14 +578,28 @@ looker.plugins.visualizations.add({
           .append("div")
           .style("color", "#323232")
           .style("font-size", 12)
-          // .html(d => titleCase(d.name) + ':&nbsp' + '<span style="float:right;">' + d3.format(",.0f")(d.info[0].value) + '</span>')
+        //   .html(d => titleCase(d.name) + ':&nbsp' + '<span style="float:right;">' + d3.format(",.0f")(d.info[0].value) + '</span>')
           .html(d => {
-            if (config.currency_type == "dollar") {
-                return (titleCase(d.name) + ':&nbsp' + '<span style="float:right;">' + d3.format("$,.0f")(d.info[0].value) + '</span>')
-            } else {
-                return (titleCase(d.name) + ':&nbsp' + '<span style="float:right;">' + d3.format(",.0f")(d.info[0].value) + '</span>')
-            }
-        })
+              if (config.currency_type == "dollar") {
+                  return (titleCase(d.name) + ':&nbsp' + '<span style="float:right;">' + d3.format("$,.0f")(d.info[0].value) + '</span>')
+              } else {
+                  return (titleCase(d.name) + ':&nbsp' + '<span style="float:right;">' + d3.format(",.0f")(d.info[0].value) + '</span>')
+              }
+          })
+
+          
+
+        //   if (d>=1000000) {
+        //     return d3.format("$,")(d/1000000) + "M"
+        //   } else {
+        //     return d3.format("$,")(d)
+        //   }
+
+        //   if (d>=1000000) {
+        //     return d3.format(",")(d/1000000) + "M"
+        //   } else {
+        //     return d3.format(",")(d)
+        //   }
 
         // if mouse is past 85% of x width, move the tooltip text box to the left of the line
         if (d3.event.pageX > width*.85) {
@@ -600,4 +628,4 @@ looker.plugins.visualizations.add({
         // Callback at the end of the rendering to let Looker know it's finished
         done()
     }
-})
+}

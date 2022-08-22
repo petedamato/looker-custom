@@ -36,16 +36,11 @@ looker.plugins.visualizations.add({
         default: "mean",
         section: "Custom Options",
       },
-      // one_color: {
-      //     type: "boolean",
-      //     label: "Use 1 Color",
-      //     default: true,
-      //     section: "Custom Options"
-      // },
       colors: {
           type: "array",
-          label: "Color Palette",
-          default: ["#27566b", "#8cbb61", "#007b82", "#f1cc56", "#339f7b", "#d3d3d3"],
+          label: "Violin Color",
+          default: ["#27566b"],
+        //   default: ["#27566b", "#8cbb61", "#007b82", "#f1cc56", "#339f7b", "#d3d3d3"],
           display: "color",
           section: "Custom Options"
       },
@@ -81,17 +76,6 @@ looker.plugins.visualizations.add({
           default: false,
           section: "X"
       },
-      // show_yaxis: {
-      //     type: "string",
-      //     label: "Show Y-Axis",
-      //     display: "radio",
-      //     values: [
-      //         {"Yes": "yes"},
-      //         {"No": "no"}
-      //     ],
-      //     default: "yes",
-      //     section: "Axes"
-      // },
       show_yaxis_name: {
           type: "boolean",
           label: "Show Y-Axis Name",
@@ -137,10 +121,98 @@ looker.plugins.visualizations.add({
       // Insert a <style> tag with some styles we'll use later.
       element.innerHTML = `
         <style>
+            @font-face {
+                font-family: Roboto;
+                font-weight: 300;
+                font-style: normal;
+                src: url('https://static-a.lookercdn.com/fonts/vendor/roboto/Roboto-Light-d6f2f0b9bd.woff') format('woff'),url('/fonts/vendor/roboto/Roboto-Light-d6f2f0b9bd.woff') format('woff');
+            }
+            @font-face { font-family: Roboto; font-weight: 400; font-style: normal;
+                src: url('https://static-b.lookercdn.com/fonts/vendor/roboto/Roboto-Regular-5997dd0407.woff') format('woff'),url('/fonts/vendor/roboto/Roboto-Regular-5997dd0407.woff') format('woff');
+            }
+                @font-face { font-family: Roboto; font-weight: 500; font-style: normal;
+                src: url('https://static-b.lookercdn.com/fonts/vendor/roboto/Roboto-Medium-e153a64ccc.woff') format('woff'),url('/fonts/vendor/roboto/Roboto-Medium-e153a64ccc.woff') format('woff');
+            }
+            @font-face { font-family: Roboto; font-weight: 700; font-style: normal;
+                src: url('https://static-b.lookercdn.com/fonts/vendor/roboto/Roboto-Bold-d919b27e93.woff') format('woff'),url('/fonts/vendor/roboto/Roboto-Bold-d919b27e93.woff') format('woff');
+            }
+
           body {
-            font-family: Arial;
+            font-family: 'Roboto';
             font-size: 12px;
           }
+
+        #viz-container {
+          z-index: 9;
+          position: relative;
+          background-color: none;
+          border: 1px solid #d3d3d3;
+          text-align: center;
+          width: 600px;
+          height: 360px;
+        }
+
+        #viz {
+          font-family: 'Open Sans', 'Helvetica', 'sans-serif;';
+          cursor: move;
+          z-index: 10;
+          background-color: none;
+          color: #fff;
+          height: 100%;
+          width: 100%;
+          fill: black;
+          color: black;
+        }
+
+        .line {
+          fill: none;
+          stroke-width: 2px;
+        }
+
+        /* ---AXIS OPTIONS: START--- */
+
+        .axis-label {
+          fill: #3a4245;
+          font-size: 12px;
+          font-family: 'Roboto';
+          text-anchor: middle;
+        }
+
+        .y-axis, .x-axis {
+          font-family: "Roboto";
+        }
+
+        .x-axis .domain {
+          stroke: #ccd6eb;
+          stroke-width: 1;
+        }
+
+        .y-axis .domain {
+          stroke: none;
+        }
+
+        .x-axis text, .y-axis text {
+          font-size: 12px;
+          color: #3a4245;
+          visibility: visible;
+        }
+
+        .x-axis text .hide, .y-axis text .hide {
+          visibility: hidden;
+        }
+
+        .x-axis line, .y-axis line {
+          stroke: #e6e6e6;
+          stroke-width: 1;
+          opacity: 1;
+        }
+
+        .x-axis line .hide, .y-axis line .hide {
+          opacity: 0;
+        }
+
+        /* ---AXIS OPTIONS: END--- */
+
         </style>
         <svg>
         </svg>`;
@@ -175,6 +247,8 @@ looker.plugins.visualizations.add({
   
           if (config.show_yaxis_name == true) {
               left_margin = 80
+          } else if (config.yticklabels_show == false) {
+              left_margin = 30
           } else {
               left_margin = 60
           }
@@ -223,6 +297,13 @@ looker.plugins.visualizations.add({
               null: null
           }
   
+          let pivotSort;
+          if (pivots[0].sorted.desc) {
+              pivotSort = true
+          } else {
+              pivotSort = false
+          }
+  
           let pivotDate;
           if (pivots[0].time_interval) {
               if (["day", "week", "month", "year"].includes(pivots[0].time_interval.name)) {
@@ -233,6 +314,9 @@ looker.plugins.visualizations.add({
           } else {
               pivotDate = null
           }
+
+          console.log("pivotSort", pivotSort)
+          console.log("pivotDate", pivotDate)
   
           const parseTime = d3.timeParse(dateDict[pivotDate])
   
@@ -260,10 +344,22 @@ looker.plugins.visualizations.add({
                   })
                   
               });
-  
-          if (pivotDate) {
-              data_ready.sort((a,b) => a.group - b.group)
-          }
+
+            // sorting the data based on how user sorted
+            if (pivots[0].time_interval) {
+                if (pivotSort) {
+                    data_ready.sort((a,b) => b.group - a.group)
+                } else if (pivotSort == false) {
+                    data_ready.sort((a,b) => a.group - b.group)
+                }
+            } else {
+                if (pivotSort) {
+                    data_ready.sort((a,b) => (b.group > a.group) ? 1 : ((a.group > b.group) ? -1: 0))
+                } else {
+                    data_ready.sort((a,b) => (a.group > b.group) ? 1 : ((b.group > a.group) ? -1: 0))
+                }
+            }
+            
       
           console.log("data ready sorted", data_ready)
   
@@ -367,44 +463,46 @@ looker.plugins.visualizations.add({
   
           // x ticklabels
           if (config.xticklabels_show == true) {
-              xAxisGenerator
+            if (pivotDate) {
+                console.log("xticklabels & pivotDate is true", config.xticklabel_format)
+                xAxisGenerator
                   .tickFormat(d3.timeFormat(config.xticklabel_format))
+            } else {
+                console.log("show xticklabels, but not dates")
+            }
           } else {
-              xAxisGenerator
+              console.log("don't show xticklabels")
+                xAxisGenerator
                   .tickFormat("")
           }
   
           // x gridlines
           if (config.x_gridlines == true) {
               xAxisGenerator
-                  .tickSize(-height)
+                  .tickSizeInner(-height)
           } else {
               xAxisGenerator
-                  .tickSize(0)
+                  .tickSizeInner(0)
           }
+
+          xAxisGenerator
+            .tickSizeOuter(0)
   
           const xAxis = group.append("g")
               .call(xAxisGenerator)
                   .style("transform", `translateY(${height}px)`)
                   .attr("class", "x-axis")
-  
-          d3.select(".x-axis .domain")
-              .attr("stroke", "#ccd6eb")
-              .attr("stroke-width", 1)
-  
-          if (config.xticklabels_show == true) {
-              d3.selectAll(".x-axis .tick text")
-                  .style("font-size", "12px")
-                  .style("font-family", "sans-serif")
-                  .style("color", "#3a4245")
-          }
-  
-          if (config.x_gridlines == true) {
-              d3.selectAll(".x-axis .tick line")
-                  .attr("stroke", "#e6e6e6")
-                  .attr("stroke-width", 1)
-                  .attr("opacity", 1)
-          }
+                  .style("font-family", "Roboto")
+
+          if (config.xticklabels_show == false) {
+            d3.selectAll(".x-axis text")
+                .attr("class", "hide")
+        }
+
+          if (config.x_gridlines == false) {
+            d3.selectAll(".x-axis line")
+                .attr("class", "hide")
+        }
   
   
   
@@ -433,59 +531,47 @@ looker.plugins.visualizations.add({
           const yAxis = group.append("g")
               .call(yAxisGenerator)
               .attr("class", "y-axis")
-  
-          d3.select(".y-axis .domain")
-              .attr("stroke", "none")
-  
-          if (config.yticklabels_show == true) {
-               d3.selectAll(".y-axis .tick text")
-                  .style("font-size", "12px")
-                  .style("font-family", "sans-serif")
-                  .style("color", "#3a4245")
-          }
-  
-          if (config.y_gridlines == true) {
-              d3.selectAll(".y-axis .tick line")
-                  .attr("stroke", "#e6e6e6")
-                  .attr("stroke-width", 1)
-                  .attr("opacity", 1)
-          }
+              .style("font-family", "Roboto")
+
+          if (config.yticklabels_show == false) {
+            d3.selectAll(".y-axis text")
+               .attr("class", "hide")
+       }
+
+          if (config.y_gridlines == false) {
+            d3.selectAll(".y-axis line")
+                .attr("class", "hide")
+        }
   
               
           // AXIS LABELS
           if (config.show_xaxis_name == true) {
               const xAxisLabel = xAxis.append("text")
-                  .attr("x", width/2)
-                  .attr("y", (margin.bottom - 8))
-                  .attr("fill", "#3a4245")
-                  .style("font-size", "12px")
-                  .style("font-family", "sans-serif")
-                  .text(function() {
-                      if (config.xaxis_label) {
-                          return config.xaxis_label
-                      } else {
-                          return buckets.label
-                      }
-                  })
-                  .style("text-anchor", "middle")
+                .attr("class", "axis-label")
+                .attr("x", width/2)
+                .attr("y", (margin.bottom - 8))
+                .text(function() {
+                    if (config.xaxis_label) {
+                        return config.xaxis_label
+                    } else {
+                        return buckets.label
+                    }
+                 })
           }
   
           if (config.show_yaxis_name == true) {
               const yAxisLabel = yAxis.append("text")
-                  .attr("x", (-height/2))
-                  .attr("y", -margin.left + 18)
-                  .attr("fill", "#3a4245")
-                  .style("font-size", "12px")
-                  .style("font-family", "Roboto")
-                  .text(function() {
-                      if (config.yaxis_label) {
-                          return config.yaxis_label
-                      } else {
-                          return measure.label
-                      }
-                  })
-                  .style("transform", "rotate(-90deg)")
-                  .style("text-anchor", "middle")
+                .attr("class", "axis-label")
+                .attr("x", (-height/2))
+                .attr("y", -margin.left + 18)
+                .style("transform", "rotate(-90deg)")
+                .text(function() {
+                    if (config.yaxis_label) {
+                        return config.yaxis_label
+                    } else {
+                        return measure.label
+                    }
+                })
           }
   
           // -------------------------------------------------------
@@ -534,7 +620,15 @@ looker.plugins.visualizations.add({
                           return yScale(d[config.statistics])
                       })
                       .attr("width", xScale.bandwidth()/2)
-                      .attr("height", 2)
+                      .attr("height", 1.75)
+                      .attr("stroke", d => {
+                          if (config.statistics == "none") {
+                              return "none"
+                          } else {
+                              return "#c6cccf"
+                          }
+                      })
+                      .attr("stroke-width", .75)
                       .attr("fill", d => {
                           if (config.statistics == "none") {
                               return "none"

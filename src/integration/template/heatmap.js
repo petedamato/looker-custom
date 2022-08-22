@@ -53,7 +53,7 @@ export const object = {
           label: 'Binning method',
           display: "select",
           values: [
-              {"Quantiles": "0"},
+              {"Equal width binning": "0"},
               {"Set breakpoints": "1"},
               {"Equal frequency binning": "2"}
           ],
@@ -63,7 +63,7 @@ export const object = {
           section: 'Binning',
           order:2,
           type:'string',
-          label: 'Number of quantiles',
+          label: 'Number of bins',
           display: "select",
           values: [
               {"Four": "4"},
@@ -104,6 +104,22 @@ export const object = {
           type: 'string',
           display:'text',
           label: 'Margin - left',
+          default: ''
+        },
+        label_bottom: {
+          section: 'Margins',
+          order:3,
+          type: 'string',
+          display:'text',
+          label: 'Label offset - bottom',
+          default: ''
+        },
+        label_left: {
+          section: 'Margins',
+          order:4,
+          type: 'string',
+          display:'text',
+          label: 'Label offset - left',
           default: ''
         },
         wrap_bottom: {
@@ -231,7 +247,7 @@ export const object = {
 
       let fArray = []
       // Get everything into separate arrays
-      if (config.bin_null == false) {
+      if (config.bin_null == "false") {
         array = array.filter((entry) =>{ 
           return entry.value != null
         }).sort((a, b) =>{
@@ -294,17 +310,17 @@ export const object = {
       return fArray.map(ent => d3.max(ent))
     }    
 
-    const options = { ...this.options }
+    // const options = { ...this.options }
 
-    if (config.automatic == "0") {
-      options.breakpoints.hidden = true
-      options.number_quantiles.hidden = false
-      options.breakpoints == ""
-    } else {
-      options.breakpoints.hidden = false
-      options.number_quantiles.hidden = true
-      options.number_quantiles == "5"
-    }
+    // if (config.automatic == "0" || config.automatic == "2") {
+    //   options.breakpoints.hidden = true
+    //   options.number_quantiles.hidden = false
+    //   options.breakpoints == ""
+    // } else {
+    //   options.breakpoints.hidden = false
+    //   options.number_quantiles.hidden = true
+    //   options.number_quantiles == "5"
+    // }
 
     // this.trigger('registerOptions', options)
 
@@ -335,7 +351,7 @@ export const object = {
         //This is just for getting responsive left margin
         let formatRead;
 
-        if (config.transpose == false) {
+        if (config.transpose == "false") {
           formatRead = Object.keys(data[0][measures[0].name]) 
         } else {
             let return_array = []
@@ -354,9 +370,8 @@ export const object = {
           }
         })
 
-
-        let margin = {top: 90, right: 25, bottom: 100, left: (highest*7.5)}
-
+        let margin = {top: 70, right: 25, bottom: 100, left: (highest*4.8)}
+        console.log(margin.left)
         if (config.margin_bottom.length > 0) {
           margin.bottom = +config.margin_bottom
         }
@@ -392,7 +407,7 @@ export const object = {
       data.forEach((entry) => {
         final_dimensions.push(entry[dimensions[0].name].value)
       })
-      final_dimensions = final_dimensions.slice(0,19)
+
       let final_data = []
       data.forEach((entry,i) => {
           // if (config.bin_null == "true") {
@@ -402,7 +417,7 @@ export const object = {
             let dat = {}
             dat['variable'] = ent
             dat['group'] = entry[dimensions[0].name].value 
-            if (config.bin_null == true && entry[measures[0].name][ent].value == null) {
+            if (config.bin_null == "true" && entry[measures[0].name][ent].value == null) {
               dat['value'] = 0
             } else {
               dat['value'] = entry[measures[0].name][ent].value
@@ -460,7 +475,7 @@ export const object = {
       const qScale = d3.scaleQuantize()
       const tScale = d3.scaleThreshold()
 
-      if (config.reverse == false) {
+      if (config.reverse == "false") {
         let qPalette = palette.slice(0,config.number_quantiles).reverse()
         qScale.domain(extent)
           .range(qPalette);
@@ -486,7 +501,7 @@ export const object = {
       // Build Y scales and axis:
       var y = d3.scaleBand()
 
-      if (config.transpose == true) {
+      if (config.transpose == "true") {
         x.range([ 0, width ])
           .domain(myVars)
           .padding(0.05);
@@ -515,7 +530,7 @@ export const object = {
             .attr("dy", ".15em")
             .attr("transform", "rotate(-35)")
 
-      if (config.wrap_bottom == true) {
+      if (config.wrap_bottom == "true") {
          xAxis.selectAll("text").each(wrap); 
       }
             
@@ -525,7 +540,7 @@ export const object = {
       
       yAxis.select(".domain").remove()
 
-      if (config.wrap_left == true) {
+      if (config.wrap_left == "true") {
          yAxis.selectAll("text") .each(wrap); 
       }
 
@@ -575,7 +590,7 @@ export const object = {
       }
 
       // add the squares
-      if (config.transpose == true) {
+      if (config.transpose == "true") {
           const tiles = svg.selectAll(".tile")
             .data(final_data)
             .enter()
@@ -587,14 +602,14 @@ export const object = {
               .attr("y", function(d) { return y(d.group) })
               // Change rounded to square here
               .attr("rx", ()=>{
-                if (config.rounded == true) {
+                if (config.rounded == "true") {
                   return 4
                 } else {
                   return 0
                 }
               })
               .attr("ry", ()=>{
-                if (config.rounded == true) {
+                if (config.rounded == "true") {
                   return 4
                 } else {
                   return 0
@@ -615,7 +630,7 @@ export const object = {
                   .on("mousemove", mousemove)
                   .on("mouseleave", mouseleave)
 
-          if (config.text == true && final_dimensions.length < 25) {
+          if (config.text == "true" && final_dimensions.length < 25) {
             tiles.append("text")
                 .attr("x", function(d) { return x(d.variable) + ((x.bandwidth() /1.967))})
                 .attr("y", function(d) { return y(d.group) + (y.bandwidth() /1.765) })
@@ -625,7 +640,7 @@ export const object = {
                 .attr("opacity", 0.5)
                 .attr("pointer-events", "none")
                 .attr("fill", (d)=>{
-                  if (config.reverse == true) {
+                  if (config.reverse == "true") {
                     if (scales[+config.automatic](+d.value) == scales[+config.automatic].range()[0] || scales[+config.automatic](+d.value) == scales[+config.automatic].range()[1]) {
                       return "white"
                     }
@@ -657,14 +672,14 @@ export const object = {
               .attr("y", function(d) { return y(d.variable) })
               // Change rounded to square here
               .attr("rx", ()=>{
-                if (config.rounded == true) {
+                if (config.rounded == "true") {
                   return 4
                 } else {
                   return 0
                 }
               })
               .attr("ry", ()=>{
-                if (config.rounded == true) {
+                if (config.rounded == "true") {
                   return 4
                 } else {
                   return 0
@@ -685,7 +700,7 @@ export const object = {
                   .on("mousemove", mousemove)
                   .on("mouseleave", mouseleave)
 
-         if (config.text == true && final_dimensions.length < 25) {
+         if (config.text == "true" && final_dimensions.length < 25) {
             tiles.append("text")
                 .attr("x", function(d) { return x(d.group) + ((x.bandwidth() /1.967))})
                 .attr("y", function(d) { return y(d.variable) + (y.bandwidth() /1.77) })
@@ -695,7 +710,7 @@ export const object = {
                 .attr("opacity", 0.5)
                 .attr("pointer-events", "none")
                 .attr("fill", (d)=>{
-                  if (config.reverse == true) {
+                  if (config.reverse == "true") {
                     if (scales[+config.automatic](+d.value) == scales[+config.automatic].range()[0] || scales[+config.automatic](+d.value) == scales[+config.automatic].range()[1]) {
                       return "white"
                     }
@@ -736,25 +751,58 @@ export const object = {
         } else {
           legendGroupData = tScaleDomain
         }
-        console.log(pivots[0])
+
+        // const leftLabel = svg.append("text")
+        //     .attr('y', -154)
+        //     .attr('x', height/-1.7)
+        //     .attr('text-anchor', 'middle')
+        //     .attr('transform','rotate(-90)')
+        //     .style('font-size', 14)
+        //     .style('font-weight', 700)
+        //     .text(pivots[0].label_short);
+
         const leftLabel = svg.append("text")
-            .attr('y', -154)
-            .attr('x', height/-1.7)
+            .attr('y', -120)
+            .attr('x', height/-2)
             .attr('text-anchor', 'middle')
             .attr('transform','rotate(-90)')
             .style('font-size', 14)
             .style('font-weight', 700)
-            .text(pivots[0].label_short);
+ 
 
         const bottomLabel = svg.append("text")
-            .attr('y', (height + margin.bottom))
+            .attr('y', height + margin.top)
             .attr('x', width / 2)
             .attr('text-anchor', 'middle')
             .style('font-size', 14)
             .style('font-weight', 700)
-            .text(dimensions[0].label_short);
 
-        // console.log("Legend data: " ,legendGroupData, "Length: ", legendGroupData)
+        if (config.transpose == "true") {
+          bottomLabel
+              .text(pivots[0].label_short);
+          
+          leftLabel
+              .text(dimensions[0].label_short);
+        } else {
+          leftLabel
+              .text(pivots[0].label_short);
+          
+          bottomLabel
+              .text(dimensions[0].label_short);
+        }
+
+        if (config.label_bottom.length > 0) {
+          var yOffset = height + margin.top + (+config.label_bottom)
+          bottomLabel.attr('y', yOffset)
+        }
+
+        if (config.label_left.length > 0) {
+          console.log(config.label_left, highest)
+          var xOffset = ( (highest * 4.8)/2 + margin.right + (+config.label_left) ) * -1
+          leftLabel.attr('y', xOffset)
+        }
+
+
         if (height < 180) {
           margin.top = 20
           svg
@@ -793,7 +841,7 @@ export const object = {
             .attr('fill', (d,i)=>{
                 return scales[+config.automatic].range()[i]
               })
-            console.log($("svg").width())
+
           const legendText = legendGroup
             .append('text')
             .attr('x', (d,i)=>{

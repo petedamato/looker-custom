@@ -19,7 +19,7 @@ looker.plugins.visualizations.add({
           display: "radio",
           values: [
             {"Gradient": "gradient"},
-            {"Sequential": "sequential"}
+            {"Sequential (Max 5 bins)": "sequential"}
           ],
           default: "gradient"
         },
@@ -105,10 +105,26 @@ looker.plugins.visualizations.add({
         },
         margin_left: {
           section: 'Margins',
-          order:2,
+          order:4,
           type: 'string',
           display:'text',
           label: 'Margin - left',
+          default: ''
+        },
+        label_bottom: {
+          section: 'Margins',
+          order:2,
+          type: 'string',
+          display:'text',
+          label: 'Label offset - bottom',
+          default: ''
+        },
+        label_left: {
+          section: 'Margins',
+          order:5,
+          type: 'string',
+          display:'text',
+          label: 'Label offset - left',
           default: ''
         },
         wrap_bottom: {
@@ -120,11 +136,43 @@ looker.plugins.visualizations.add({
         },
         wrap_left: {
           section: 'Margins',
-          order:4,
+          order:6,
           type: 'boolean',
           label: 'Truncate y-axis labels',
           default: false
-        }
+        },
+        axis_label_bottom: {
+          section: 'Labels',
+          order:1,
+          type: 'string',
+          display:'text',
+          label: 'Custom bottom axis label',
+          default: ''
+        },
+        axis_label_left: {
+          section: 'Labels',
+          order:2,
+          type: 'string',
+          display:'text',
+          label: 'Custom left axis label',
+          default: ''
+        },
+        tooltip_dimension_label: {
+          section: 'Labels',
+          order:3,
+          type: 'string',
+          display:'text',
+          label: 'Custom tooltip label for dimension',
+          default: ''
+        },
+        tooltip_value_label: {
+          section: 'Labels',
+          order:4,
+          type: 'string',
+          display:'text',
+          label: 'Custom tooltip label for value',
+          default: ''
+        },
         
       },
 
@@ -360,7 +408,7 @@ looker.plugins.visualizations.add({
         })
 
 
-        let margin = {top: 90, right: 25, bottom: 100, left: (highest*7.8)}
+        let margin = {top: 70, right: 25, bottom: 100, left: 90}
 
         if (config.margin_bottom.length > 0) {
           margin.bottom = +config.margin_bottom
@@ -542,7 +590,15 @@ looker.plugins.visualizations.add({
         .style("padding", "5px")
         .style("position", "absolute")
 
-      tooltip.html("<h1 id='dimension-header'>" + dimensions[0].name + "</h1><p id='dimension-body'></p><h1 id='value-header'>Value</h1><p id='value-body'></p>")
+      if (config.tooltip_dimension_label.length > 0 && config.tooltip_value_label.length > 0) {
+        tooltip.html("<h1 id='dimension-header'>" + config.tooltip_dimension_label + "</h1><p id='dimension-body'></p><h1 id='value-header'>" + config.tooltip_value_label + "</h1><p id='value-body'></p>")
+      } else if (config.tooltip_dimension_label.length > 0) {
+        tooltip.html("<h1 id='dimension-header'>" + config.tooltip_dimension_label + "</h1><p id='dimension-body'></p><h1 id='value-header'>Value</h1><p id='value-body'></p>")
+      } else if (config.tooltip_value_label.length > 0) {
+        tooltip.html("<h1 id='dimension-header'>" + dimensions[0].name + "</h1><p id='dimension-body'></p><h1 id='value-header'>" + config.tooltip_value_label + "</h1><p id='value-body'></p>")
+      } else {
+        tooltip.html("<h1 id='dimension-header'>" + dimensions[0].name + "</h1><p id='dimension-body'></p><h1 id='value-header'>Value</h1><p id='value-body'></p>")
+      }
 
       var tooltipValueBody = tooltip.select("#value-body")
       var tooltipDimensionBody = tooltip.select("#dimension-body")
@@ -742,38 +798,58 @@ looker.plugins.visualizations.add({
           legendGroupData = tScaleDomain
         }
 
-        // const leftLabel = svg.append("text")
-        //     .attr('y', -154)
-        //     .attr('x', height/-1.7)
-        //     .attr('text-anchor', 'middle')
-        //     .attr('transform','rotate(-90)')
-        //     .style('font-size', 14)
-        //     .style('font-weight', 700)
-        //     .text(pivots[0].label_short);
-
-        const leftLabel = svg.append("text")
-            .attr('y', -120)
-            .attr('x', -150)
+     const leftLabel = svg.append("text")
+            .attr('y', (margin.left - margin.right)/-1)
+            .attr('x', height/-2)
             .attr('text-anchor', 'middle')
             .attr('transform','rotate(-90)')
             .style('font-size', 14)
             .style('font-weight', 700)
-            .text(pivots[0].label_short);
+ 
 
         const bottomLabel = svg.append("text")
-            .attr('y', 370)
+            .attr('y', height + margin.top)
             .attr('x', width / 2)
             .attr('text-anchor', 'middle')
             .style('font-size', 14)
             .style('font-weight', 700)
-            .text(dimensions[0].label_short);
 
-        if (height < 180) {
-          margin.top = 20
-          svg
-            .attr("transform",
-                  "translate(" + margin.left + "," + margin.top + ")");
+        if (config.transpose == false) {
+          leftLabel
+              .text(pivots[0].label_short);
+          
+          bottomLabel
+              .text(dimensions[0].label_short);
         } else {
+          bottomLabel
+              .text(pivots[0].label_short);
+          
+          leftLabel
+              .text(dimensions[0].label_short);
+        }
+
+        if (config.axis_label_bottom.length > 0) {
+            bottomLabel
+              .text(config.axis_label_bottom);
+        }
+
+        if (config.axis_label_left.length > 0) {
+            leftLabel
+              .text(config.axis_label_left);
+        }
+
+        if (config.label_bottom.length > 0) {
+          var yOffset = height + margin.top + (+config.label_bottom)
+          bottomLabel.attr('y', yOffset)
+        }
+
+        if (config.label_left.length > 0) {
+          var xOffset = ( margin.left + (-1*margin.right) + (+config.label_left) ) * -1
+          leftLabel.attr('y', xOffset)
+        }
+
+
+
           const legendContainer = svg.append("g")
             .attr("class", "legendContainer")
             .attr("transform", "translate(30, -30)");
@@ -889,7 +965,7 @@ looker.plugins.visualizations.add({
                 }
               }
             });
-        }
+        
           
       } catch(error) {
         console.log(error)

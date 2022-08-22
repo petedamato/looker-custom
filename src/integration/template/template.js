@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 import * as d3Collection from 'd3-collection'
 import { formatType, handleErrors } from '../common/utils'
-import { object } from './violin'
+import { object } from './heatmap'
 import * as $ from 'jquery'
 
 // Query the element
@@ -79,21 +79,28 @@ keys.forEach(function(entry, i) {
 			}
 			form.append(str)
 		})
-	} // else if (object.options[entry].display == "colors") {
-	// 	const array_values = object.options[entry].default;
+	} else if (object.options[entry].type == "array") {
+		const array_values = object.options[entry].default;
 
-	// 	array_values.forEach(function(ent) {
-	// 		let str;
+		console.log("array_values", array_values)
 
-	// 		if (ent == array_values[0]) {
+		array_values.forEach(function(ent) {
+			let str;
 
-	// 		}
-	// 	})
-	// }
+			console.log("ent", ent)
+
+			if (ent == array_values[0]) {
+				str = "<input type='radio' internal_cat='" + keys[i] + "' internal_value='" + ent + "' id='" + ent + "' name='" + array_name + "' value='" + ent + "' checked></input><label class='form-label' for='" + ent + "'>" + ent + "</label>"
+			} else {
+				str = "<input type='radio' internal_cat='" + keys[i] + "' internal_value='" + ent + "' id='" + ent + "' name='" + array_name + "' value='" + ent + "'></input><label class='form-label' for='" + ent + "'>" + ent + "</label>"
+			}
+			form.append(str)
+		})
+	}
 })
 
 
-d3.json("http://localhost:3001/dataViolin").then(function(data) {
+d3.json("http://localhost:3001/dataHeatmap").then(function(data) {
 	let todays_options = {}
 
 	$('input:radio:checked').each(function() {

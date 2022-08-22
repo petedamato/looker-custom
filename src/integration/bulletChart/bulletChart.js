@@ -2,7 +2,7 @@ import * as d3 from 'd3'
 import * as d3Collection from 'd3-collection'
 import { formatType, handleErrors } from '../common/utils'
 
-export const viz = {
+looker.plugins.visualizations.add({
     // Id and Label are legacy properties that no longer have any function besides documenting
     // what the visualization used to have. The properties are now set via the manifest
     // form within the admin/visualizations page of Looker.
@@ -42,17 +42,6 @@ export const viz = {
           ],
           default: "rgba(0, 115, 181,"
         },
-        index_start: {
-          type: 'string',
-          label: 'Index Option',
-          display: "radio",
-          values: [
-            {"one": "0"},
-            {"two": "1"},
-            {"three": "2"}
-          ],
-          default: "0"
-        }
       },
 
     // Set up the initial state of the visualization
@@ -80,10 +69,12 @@ export const viz = {
             })) return
         }
 try {
+
     function getMonth(d) {
           d = d || new Date();
-          return d.getMonth();
+          return d.getMonth() + 1;
         }
+
     // Update from here
        function getQuarter(d) {
           d = d || new Date();
@@ -95,15 +86,11 @@ try {
     const parseTime = d3.timeParse("%Y-%m");
     const dimension = queryResponse.fields.dimension_like[0]
     const measures = queryResponse.fields.measure_like
+
     let bullet_measures = []
 
     measures.forEach((d,i)=>{
-        //Config index_start here
-        const num = i - config.index_start
-        if (num == 0 || num == 3 || num == 12 || num == 15 || num == 18) {
-            
-            bullet_measures.push(d.name)
-        }
+        bullet_measures.push(d.name)
     })
 
     let budget_forecast_dps = {}
@@ -138,12 +125,12 @@ try {
                 month_dp_fc += data_remix[m][bullet_measures[1]].value
             }
             // Quarter data
-            for (let j = 0; j < ((getQuarter(new Date())*3) - 1); j++) {
+            for (let j = 0; j <= ((getQuarter(new Date())*3) - 1); j++) {
                 quarter_dp_bg += data_remix[j][bullet_measures[0]].value
                 quarter_dp_fc += data_remix[j][bullet_measures[1]].value
             }
             // Year data
-            for (let k = 0; k < 11; k++) {
+            for (let k = 0; k <= 11; k++) {
 
                 year_dp_bg += data_remix[k][bullet_measures[0]].value
                 year_dp_fc += data_remix[k][bullet_measures[1]].value
@@ -772,15 +759,8 @@ try {
             }  else {
             console.log(error)
         }
-
-
+    }
         // Callback at the end of the rendering to let Looker know it's finished
         done()
     }
-  }
-}
-if (something == "something") {
-  looker.plugins.visualizations.add(viz);
-} else {
-  console.log("development")
-}
+})
