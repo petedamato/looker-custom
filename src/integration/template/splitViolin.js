@@ -1,8 +1,4 @@
-import * as d3 from 'd3'
-import * as d3Collection from 'd3-collection'
-import { formatType, handleErrors } from '../common/utils'
-
-looker.plugins.visualizations.add({
+export const object = {
     // Id and Label are legacy properties that no longer have any function besides documenting
     // what the visualization used to have. The properties are now set via the manifest
     // form within the admin/visualizations page of Looker.
@@ -54,7 +50,7 @@ looker.plugins.visualizations.add({
         show_xaxis_name: {
             type: "boolean",
             label: "Show X-Axis Name",
-            default: true,
+            default: "true",
             section: "X"
         },
         xaxis_label: {
@@ -67,7 +63,7 @@ looker.plugins.visualizations.add({
         xticklabels_show: {
             type: "boolean",
             label: "Show X Tick Labels",
-            default: true,
+            default: "true",
             section: "X"
         },
         xticklabel_format: {
@@ -80,13 +76,13 @@ looker.plugins.visualizations.add({
         x_gridlines: {
             type: "boolean",
             label: "Show X Gridlines",
-            default: false,
+            default: "false",
             section: "X"
         },
         show_yaxis_name: {
             type: "boolean",
             label: "Show Y-Axis Name",
-            default: true,
+            default: "true",
             section: "Y"
         },
         yaxis_label: {
@@ -99,7 +95,7 @@ looker.plugins.visualizations.add({
         yticklabels_show: {
             type: "boolean",
             label: "Show Y Tick Labels",
-            default: true,
+            default: "true",
             section: "Y"
         },
         yticklabel_format: {
@@ -113,13 +109,13 @@ looker.plugins.visualizations.add({
         y_gridlines: {
             type: "boolean",
             label: "Show Y Gridlines",
-            default: false,
+            default: "false",
             section: "Y"
         },
         unpin_y: {
             type: "boolean",
             label: "Unpin Y-Axis from 0",
-            default: true,
+            default: "true",
             section: "Y"
         }
       },
@@ -253,13 +249,13 @@ looker.plugins.visualizations.add({
           let left_margin;
           let bottom_margin;
   
-          if (config.show_yaxis_name == true) {
+          if (config.show_yaxis_name == "true") {
               left_margin = 80
           } else {
               left_margin = 60
           }
   
-          if (config.show_xaxis_name == true) {
+          if (config.show_xaxis_name == "true") {
               bottom_margin = 50
           } else {
               bottom_margin = 30
@@ -299,6 +295,15 @@ looker.plugins.visualizations.add({
             console.log("measure", measure)
             console.log("pivots", pivots)
 
+            // let dimensionFormat;
+            // if (dimension.value_format.includes("$")) {
+            //     dimensionFormat = "USD"
+            // } else if (dimension.value_format.includes("%")) {
+            //     dimensionFormat = "Percentage"
+            // } else {
+            //     dimensionFormat = null
+            // }
+
             // determine how to format the time pivot (if there is one)
             const dateDict = {
                 month: "%Y-%m",
@@ -333,7 +338,7 @@ looker.plugins.visualizations.add({
             let pivotSort = []
 
             pivots.forEach((element, index) => {
-                console.log("PIVOT", pivots[index], "sorted" in pivots[index])
+                console.log("sorted" in pivots[index])
                 if ("sorted" in pivots[index]) {
                     if (pivots[index].sorted.desc) {
                         pivotSort.push(true)
@@ -402,6 +407,7 @@ looker.plugins.visualizations.add({
                     data_ready.sort((a,b) => a.group - b.group)
                 }
             }
+            
 
             console.log("data_ready", data_ready)
 
@@ -523,7 +529,7 @@ looker.plugins.visualizations.add({
 
             // -------------------------------------------------------
             // SCALES AGAIN
-            if (config.unpin_y == true) {
+            if (config.unpin_y == "true") {
                 yScale.domain([d3.min(data_ready, (d) => {
                     return d.value
                 }), yMax])
@@ -538,13 +544,17 @@ looker.plugins.visualizations.add({
 
             // -------------------------------------------------------
             // DRAW PERIPHERALS
+
+            console.log("xticklabel format", config.xticklabel_format)
+            console.log("yticklabel format", config.yticklabel_format)
+
             // X axis
             const xAxisGenerator = d3.axisBottom()
                 .scale(xScale)
                 .tickPadding(10)
 
             // x ticklabels
-            if (config.xticklabels_show == true) {
+            if (config.xticklabels_show == "true") {
                 if (pivotDate[0]) {
                 xAxisGenerator
                     .tickFormat(d3.timeFormat(config.xticklabel_format))
@@ -555,7 +565,7 @@ looker.plugins.visualizations.add({
             }
 
             // x gridlines
-            if (config.x_gridlines == true) {
+            if (config.x_gridlines == "true") {
                 xAxisGenerator
                     .tickSizeInner(-height)
             } else {
@@ -571,12 +581,12 @@ looker.plugins.visualizations.add({
                     .style("transform", `translateY(${height}px)`)
                     .attr("class", "x-axis")
 
-            if (config.xticklabels_show == false) {
+            if (config.xticklabels_show == "false") {
                 d3.selectAll(".x-axis text")
                     .attr("class", "hide")
             }
     
-                if (config.x_gridlines == false) {
+                if (config.x_gridlines == "false") {
                 d3.selectAll(".x-axis line")
                     .attr("class", "hide")
             }
@@ -588,7 +598,7 @@ looker.plugins.visualizations.add({
                 .tickPadding(10)
 
             // y ticklabels
-            if (config.yticklabels_show == true) {
+            if (config.yticklabels_show == "true") {
                 yAxisGenerator
                     .tickFormat(d3.format(config.yticklabel_format))
             } else {
@@ -597,7 +607,7 @@ looker.plugins.visualizations.add({
             }
 
             // y gridlines
-            if (config.y_gridlines == true) {
+            if (config.y_gridlines == "true") {
                 yAxisGenerator  
                     .tickSize(-width)
             } else {
@@ -609,18 +619,18 @@ looker.plugins.visualizations.add({
                 .call(yAxisGenerator)
                 .attr("class", "y-axis")
 
-            if (config.yticklabels_show == false) {
+            if (config.yticklabels_show == "false") {
                 d3.selectAll(".y-axis text")
                     .attr("class", "hide")
             }
     
-                if (config.y_gridlines == false) {
+                if (config.y_gridlines == "false") {
                 d3.selectAll(".y-axis line")
                     .attr("class", "hide")
             }
 
             // AXIS LABELS
-            if (config.show_xaxis_name == true) {
+            if (config.show_xaxis_name == "true") {
                 console.log("show x axis")
                 const xAxisLabel = xAxis.append("text")
                     .attr("class", "axis-label")
@@ -637,7 +647,7 @@ looker.plugins.visualizations.add({
                 console.log("don't show x axis")
             }
             
-            if (config.show_yaxis_name == true) {
+            if (config.show_yaxis_name == "true") {
                 const yAxisLabel = yAxis.append("text")
                     .attr("class", "axis-label")
                     .attr("x", -height/2) // + margin.top/2)
@@ -819,24 +829,20 @@ looker.plugins.visualizations.add({
                 });
 
         } catch(error) {
-            if (environment == "prod") {
-                console.log("somehow got in here")
-                if (queryResponse.fields.dimensions.length > 1 ||
-                    queryResponse.fields.dimensions.length < 1 ||
-                    queryResponse.fields.pivots.length > 2 ||
-                    queryResponse.fields.pivots.length < 2 
-                    ) {
-                        this.addError({title: "Dimension/Pivot Error", message: "This chart takes two pivots and one dimension."});
-                        return;
-                    } else {
-                        this.addError({title: "Data Error", message: "Check that your second pivot has only two options"});
-                        return;
-                    }
-            }
-           
+            if (queryResponse.fields.dimensions.length > 1 ||
+                queryResponse.fields.dimensions.length < 1 ||
+                queryResponse.fields.pivots.length > 2 ||
+                queryResponse.fields.pivots.length < 2 
+                ) {
+                    this.addError({title: "Dimension/Pivot Error", message: "This chart takes two pivots and one dimension."});
+                    return;
+                } else {
+                    this.addError({title: "Data Error", message: "Check that your second pivot has only two options"});
+                    return;
+                }
         }
 
         // Callback at the end of the rendering to let Looker know it's finished
         done()
     }
-});
+};
