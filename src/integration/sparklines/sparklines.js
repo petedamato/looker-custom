@@ -145,11 +145,26 @@ looker.plugins.visualizations.add({
           display: "text",
           default: ""
         },
+        label_total_row: {
+          section: 'Labels',
+          order:5,
+          type: 'string',
+          label: 'Total row descriptor',
+          display: "text",
+          default: ""
+        },
         freeze_header: {
           section: 'Formatting',
           order:1,
           type: 'boolean',
           label: 'Freeze header row',
+          default: false
+        },
+        size_to_fit: {
+          section: 'Formatting',
+          order:2,
+          type: 'boolean',
+          label: 'Size-to-fit table width',
           default: false
         }
       },
@@ -230,6 +245,10 @@ looker.plugins.visualizations.add({
                display:block;
                text-align:left;
            }
+           table.size-to-fit {
+            display:table;
+            width:100%;
+           }
             table td, table th {
                 border: 1px solid #bec4c7;
             }
@@ -261,6 +280,9 @@ looker.plugins.visualizations.add({
                 min-width: 120px!important;
                 min-height: 70px!important;
                 text-align:center;
+            }
+            tr:first-child {
+              font-weight:500
             }
             tr:nth-child(even) { background: #f0f1f0; }
               .value-down {
@@ -510,6 +532,35 @@ looker.plugins.visualizations.add({
 
       // build table body
       html += '<tbody>';
+
+     if (queryResponse.has_totals == true) {
+        let descriptor = ""
+        if (config.label_total_row.length>0) {
+          descriptor = " " + config.label_total_row + "s"
+        }
+        if (data[0][Object.keys(data[0])[0]].value.split(" ")[0] != "All") {
+            let insertRow = {}
+
+            insertRow[data_insert[0]] = {}
+
+            insertRow[data_insert[0]]['value'] = "All" + descriptor
+
+            const insertArray = Object.keys(queryResponse.totals_data)
+            
+            insertArray.forEach((entry) => {
+              let fillemup = {}
+              for (const [key, value] of Object.entries(queryResponse.totals_data[entry])) {
+                fillemup[key] = {}
+                fillemup[key]['value'] = value['value']
+                fillemup[key]['rendered'] = value['html']
+              }
+              insertRow[entry] = fillemup
+            })
+
+            data.splice(0,0,insertRow)
+        }
+      }
+
       // use the length of first array to determine how many rows
       for (let i = 0, len = data.length; i < len; i++) {
         html += '<tr><td class="table-index">' + (i + 1) + '</td>';
@@ -643,6 +694,13 @@ looker.plugins.visualizations.add({
     }
 
     function drawOnTable(data_insert,element) {
+
+      if (config.size_to_fit == true) {
+        $("table").addClass("size-to-fit")
+      } else {
+        $("table").removeClass("size-to-fit")
+      }
+
       // Check on element height and width to test responsiveness using getBoundingClientRect
       let width_first;
       let height_first;

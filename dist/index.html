@@ -20,11 +20,29 @@
             @font-face { font-family: Roboto; font-weight: 700; font-style: normal;
                 src: url('https://static-b.lookercdn.com/fonts/vendor/roboto/Roboto-Bold-d919b27e93.woff') format('woff'),url('/fonts/vendor/roboto/Roboto-Bold-d919b27e93.woff') format('woff');
             }
-
+            tr:first-child {
+              font-weight:500
+            }
             body {
                 font-family: 'Roboto';
             }
 
+            text {
+                font-family: 'Roboto';
+            }
+            .domain {
+                display: none;
+            }
+            .gridline {
+                stroke: rgb(230, 230, 230);
+                shape-rendering: crispEdges;
+                stroke-opacity: .1;
+            }
+            .gridline2{
+                stroke: white;
+                shape-rendering: crispEdges;
+                stroke-opacity: 1;
+            }
             #viz-container {
               z-index: 9;
               position: relative;
@@ -34,7 +52,15 @@
               width: 600px;
               height: 360px;
             }
-
+            #dimension-header {
+                font-size: 12px;
+            }
+            .value-headers {
+                font-size: 12px;
+            }
+            .value-headers-body {
+                font-weight: 500;
+            }
             #viz {
               font-family: 'Open Sans', 'Helvetica', 'sans-serif';
               cursor: move;
@@ -64,7 +90,63 @@
             .y-axis, .x-axis {
               font-family: 'Open Sans', 'Helvetica', 'sans-serif';
             }
-
+            #value-header {
+                font-weight: 500;
+            }
+            .textg {
+                visibility: hidden;
+            }
+            .textg.seen.engaged {
+                visibility: visible;
+            }
+            .drop-container {
+                height: 100px!important;
+            }
+            .rules-list {
+                padding-left: 0;
+                text-align: left;
+                list-style-type: none;
+                margin: 0 0;
+                width: 200px;
+                height: 100px;
+                overflow-y: scroll;
+                min-height: 40px;
+            }
+            .rules-list-container {
+                display: inline-block;
+                width: 200px;
+                height: 100%;
+                margin: 0 0;
+            }
+            .rule-entry {
+                margin: 2px 0;
+                text-align: left;
+                overflow: hidden!important;
+                white-space: nowrap;
+                font-size: 10px;
+                user-select: none;
+            }
+              .tooltip {
+                box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 2px 6px 2px;
+                font-size: 11px;
+                color: white;
+                text-transform: uppercase;
+                pointer-events: none;
+                visibility: hidden;
+                opacity: 0;
+              }
+              .tooltip.visible {
+                visibility: visible;
+                opacity: 1;  
+                transition-delay: 0.5s;
+                transition-property: opacity;
+                transition-duration: 0.5s;
+              }
+              .tooltip h1 {
+                font-size: 11px;
+                color: #c3c3c3;
+                text-transform: uppercase;
+              }
             .x-axis .domain {
               stroke: #ccd6eb;
               stroke-width: 1;
@@ -116,6 +198,16 @@
                 background: #a9a9a9;
                 padding: 4px 0;
             }
+            .tooltip {
+                box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 2px 6px 2px;
+                font-size: 11px;
+                pointer-events: none;
+              }
+              .tooltip h1 {
+                font-size: 11px;
+                color: #c3c3c3;
+                text-transform: uppercase;
+              }
             tr:nth-child(even) { background: #EEE; }
               .value-down {
                 color: #D76106;
@@ -140,23 +232,35 @@
                 height: 50px!important;
                 width: 120px!important;
             }
+            .unclicked .rule-entry:not(.clicked) {
+                opacity: .5!important;
+            }
+            .clicked {
+                opacity: 1!important;
+            }
+            path.selected {
+                opacity: 1!important;
+            }
             #menu-options p {
                 font-weight: 500;
             }
-            #viz {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
-}
+            #vis-options-container {
+                display: flex;
+                margin: 12px 8px 4px;
+            }
+            #vis-options-container p {
+                font-size: 14px;
+                margin: 0 4px 0 0;
+            }
+            .backdrop {
+                opacity: .5;
+            }
             .resizer {
                 /* All resizers are positioned absolutely inside the element */
                 background-color: grey;
                 position: absolute;
             }
+
 
             /* Placed at the right side */
             .resizer-r {
@@ -200,12 +304,17 @@
                 <div class="resizer resizer-r"></div>
                 <div class="resizer resizer-b"></div>
                 <div id="vis">
+<!--                     <div id="vis-options-container"><p>Haul length category: </p>
+                        <select name="vis-options" id="vis-options">
+                        </select>
+                    </div> -->
                   <svg></svg>
+                  <div class="tooltip"></div>
                 </div>
 
                 
             </div>
         </div>
-            <script src="./template.js"></script>
+            <script src="./template2.js"></script>
         </body>
 </html>

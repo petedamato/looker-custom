@@ -1,0 +1,3520 @@
+[
+    {
+        "state": "TX",
+        "city": "Tyler, TX",
+        
+        "key": "Abbeville, MS > Tyler, TX",
+        "value": 287
+    },
+    {
+        "state": "VA",
+        "city": "Alexandria, VA",
+        
+        "key": "Aberdeen, MD > Alexandria, VA",
+        "value": 1
+    },
+    {
+        "state": "MA",
+        "city": "Auburn, MA",
+        
+        "key": "Aberdeen, MD > Auburn, MA",
+        "value": 15
+    },
+    {
+        "state": "MA",
+        "city": "Bellingham, MA",
+        
+        "key": "Aberdeen, MD > Bellingham, MA",
+        "value": 5
+    },
+    {
+        "state": "PA",
+        "city": "Berwick, PA",
+        
+        "key": "Aberdeen, MD > Berwick, PA",
+        "value": 2
+    },
+    {
+        "state": "PA",
+        "city": "Bethlehem, PA",
+        
+        "key": "Aberdeen, MD > Bethlehem, PA",
+        "value": 1
+    },
+    {
+        "state": "VA",
+        "city": "Bracey, VA",
+        
+        "key": "Aberdeen, MD > Bracey, VA",
+        "value": 9
+    },
+    {
+        "state": "MA",
+        "city": "Braintree, MA",
+        
+        "key": "Aberdeen, MD > Braintree, MA",
+        "value": 6
+    },
+    {
+        "state": "VT",
+        "city": "Brattleboro, VT",
+        
+        "key": "Aberdeen, MD > Brattleboro, VT",
+        "value": 1
+    },
+    {
+        "state": "CT",
+        "city": "Bridgeport, CT",
+        
+        "key": "Aberdeen, MD > Bridgeport, CT",
+        "value": 18
+    },
+    {
+        "state": "PA",
+        "city": "Brodheadsville, PA",
+        
+        "key": "Aberdeen, MD > Brodheadsville, PA",
+        "value": 2
+    },
+    {
+        "state": "NJ",
+        "city": "Burlington, NJ",
+        
+        "key": "Aberdeen, MD > Burlington, NJ",
+        "value": 122
+    },
+    {
+        "state": "MI",
+        "city": "Cadillac, MI",
+        
+        "key": "Aberdeen, MD > Cadillac, MI",
+        "value": 1
+    },
+    {
+        "state": "NJ",
+        "city": "Carteret, NJ",
+        
+        "key": "Aberdeen, MD > Carteret, NJ",
+        "value": 25
+    },
+    {
+        "state": "NC",
+        "city": "Charlotte, NC",
+        
+        "key": "Aberdeen, MD > Charlotte, NC",
+        "value": 26
+    },
+    {
+        "state": "VA",
+        "city": "Clarksville, VA",
+        
+        "key": "Aberdeen, MD > Clarksville, VA",
+        "value": 4
+    },
+    {
+        "state": "NJ",
+        "city": "Cranbury, NJ",
+        
+        "key": "Aberdeen, MD > Cranbury, NJ",
+        "value": 17
+    },
+    {
+        "state": "CT",
+        "city": "Dayville, CT",
+        
+        "key": "Aberdeen, MD > Dayville, CT",
+        "value": 1
+    },
+    {
+        "state": "NJ",
+        "city": "East Windsor, NJ",
+        
+        "key": "Aberdeen, MD > East Windsor, NJ",
+        "value": 2
+    },
+    {
+        "state": "NJ",
+        "city": "Fairfield, NJ",
+        
+        "key": "Aberdeen, MD > Fairfield, NJ",
+        "value": 6
+    },
+    {
+        "state": "FL",
+        "city": "Fort Lauderdale, FL",
+        
+        "key": "Aberdeen, MD > Fort Lauderdale, FL",
+        "value": 5
+    },
+    {
+        "state": "MA",
+        "city": "Franklin, MA",
+        
+        "key": "Aberdeen, MD > Franklin, MA",
+        "value": 69
+    },
+    {
+        "state": "VA",
+        "city": "Fredericksburg, VA",
+        
+        "key": "Aberdeen, MD > Fredericksburg, VA",
+        "value": 5
+    },
+    {
+        "state": "PA",
+        "city": "Freedom, PA",
+        
+        "key": "Aberdeen, MD > Freedom, PA",
+        "value": 2
+    },
+    {
+        "state": "OH",
+        "city": "Groveport, OH",
+        
+        "key": "Aberdeen, MD > Groveport, OH",
+        "value": 14
+    },
+    {
+        "state": "VA",
+        "city": "Hampton, VA",
+        
+        "key": "Aberdeen, MD > Hampton, VA",
+        "value": 5
+    },
+    {
+        "state": "VA",
+        "city": "Henrico, VA",
+        
+        "key": "Aberdeen, MD > Henrico, VA",
+        "value": 1
+    },
+    {
+        "state": "ME",
+        "city": "Hermon, ME",
+        
+        "key": "Aberdeen, MD > Hermon, ME",
+        "value": 2
+    },
+    {
+        "state": "NC",
+        "city": "Hope Mills, NC",
+        
+        "key": "Aberdeen, MD > Hope Mills, NC",
+        "value": 5
+    },
+    {
+        "state": "MA",
+        "city": "Hyde Park, MA",
+        
+        "key": "Aberdeen, MD > Hyde Park, MA",
+        "value": 13
+    },
+    {
+        "state": "PA",
+        "city": "Imperial, PA",
+        
+        "key": "Aberdeen, MD > Imperial, PA",
+        "value": 30
+    },
+    {
+        "state": "MD",
+        "city": "Jessup, MD",
+        
+        "key": "Aberdeen, MD > Jessup, MD",
+        "value": 1
+    },
+    {
+        "state": "NY",
+        "city": "Latham, NY",
+        
+        "key": "Aberdeen, MD > Latham, NY",
+        "value": 7
+    },
+    {
+        "state": "PA",
+        "city": "Lewistown, PA",
+        
+        "key": "Aberdeen, MD > Lewistown, PA",
+        "value": 1
+    },
+    {
+        "state": "VA",
+        "city": "Lynchburg, VA",
+        
+        "key": "Aberdeen, MD > Lynchburg, VA",
+        "value": 22
+    },
+    {
+        "state": "NY",
+        "city": "Lyons, NY",
+        
+        "key": "Aberdeen, MD > Lyons, NY",
+        "value": 3
+    },
+    {
+        "state": "NY",
+        "city": "Marcy, NY",
+        
+        "key": "Aberdeen, MD > Marcy, NY",
+        "value": 42
+    },
+    {
+        "state": "TN",
+        "city": "Midway, TN",
+        
+        "key": "Aberdeen, MD > Midway, TN",
+        "value": 15
+    },
+    {
+        "state": "NJ",
+        "city": "Monroe Township, NJ",
+        
+        "key": "Aberdeen, MD > Monroe Township, NJ",
+        "value": 78
+    },
+    {
+        "state": "OH",
+        "shipper_keys.delivery_city_state": {
+            "value": "N. Canton(Green), OH",
+            "filterable_value": "\"N. Canton(Green), OH\""
+        },
+        
+        "shipper_keys.key_city_state": {
+            "value": "Aberdeen, MD > N. Canton(Green), OH",
+            "filterable_value": "\"Aberdeen, MD > N. Canton(Green), OH\""
+        },
+        "value": 29
+    },
+    {
+        "state": "VA",
+        "city": "Newport News, VA",
+        
+        "key": "Aberdeen, MD > Newport News, VA",
+        "value": 10
+    },
+    {
+        "state": "MI",
+        "city": "Niles, MI",
+        
+        "key": "Aberdeen, MD > Niles, MI",
+        "value": 4
+    },
+    {
+        "state": "VA",
+        "city": "Norfolk, VA",
+        
+        "key": "Aberdeen, MD > Norfolk, VA",
+        "value": 12
+    },
+    {
+        "state": "PA",
+        "city": "Oakdale, PA",
+        
+        "key": "Aberdeen, MD > Oakdale, PA",
+        "value": 70
+    },
+    {
+        "state": "NJ",
+        "city": "Orange, NJ",
+        
+        "key": "Aberdeen, MD > Orange, NJ",
+        "value": 2
+    },
+    {
+        "state": "PA",
+        "city": "Philadelphia, PA",
+        
+        "key": "Aberdeen, MD > Philadelphia, PA",
+        "value": 38
+    },
+    {
+        "state": "NJ",
+        "city": "Piscataway, NJ",
+        
+        "key": "Aberdeen, MD > Piscataway, NJ",
+        "value": 10
+    },
+    {
+        "state": "PA",
+        "city": "Pittsburgh, PA",
+        
+        "key": "Aberdeen, MD > Pittsburgh, PA",
+        "value": 7
+    },
+    {
+        "state": "WV",
+        "city": "Prichard, WV",
+        
+        "key": "Aberdeen, MD > Prichard, WV",
+        "value": 20
+    },
+    {
+        "state": "CT",
+        "city": "Putnam, CT",
+        
+        "key": "Aberdeen, MD > Putnam, CT",
+        "value": 148
+    },
+    {
+        "state": "NH",
+        "city": "Raymond, NH",
+        
+        "key": "Aberdeen, MD > Raymond, NH",
+        "value": 39
+    },
+    {
+        "state": "VA",
+        "city": "Richmond, VA",
+        
+        "key": "Aberdeen, MD > Richmond, VA",
+        "value": 57
+    },
+    {
+        "state": "NY",
+        "city": "Rochester, NY",
+        
+        "key": "Aberdeen, MD > Rochester, NY",
+        "value": 10
+    },
+    {
+        "state": "NY",
+        "city": "Schenectady, NY",
+        
+        "key": "Aberdeen, MD > Schenectady, NY",
+        "value": 12
+    },
+    {
+        "state": "NJ",
+        "city": "Secaucus, NJ",
+        
+        "key": "Aberdeen, MD > Secaucus, NJ",
+        "value": 4
+    },
+    {
+        "state": "NC",
+        "city": "Shelby, NC",
+        
+        "key": "Aberdeen, MD > Shelby, NC",
+        "value": 1
+    },
+    {
+        "state": "DE",
+        "city": "Smyrna, DE",
+        
+        "key": "Aberdeen, MD > Smyrna, DE",
+        "value": 3
+    },
+    {
+        "state": "VA",
+        "city": "South Hill, VA",
+        
+        "key": "Aberdeen, MD > South Hill, VA",
+        "value": 1
+    },
+    {
+        "state": "PA",
+        "city": "State College, PA",
+        
+        "key": "Aberdeen, MD > State College, PA",
+        "value": 1
+    },
+    {
+        "state": "VA",
+        "city": "Sutherland, VA",
+        
+        "key": "Aberdeen, MD > Sutherland, VA",
+        "value": 3
+    },
+    {
+        "state": "FL",
+        "city": "Tampa, FL",
+        
+        "key": "Aberdeen, MD > Tampa, FL",
+        "value": 1
+    },
+    {
+        "state": "PA",
+        "city": "Tobyhanna, PA",
+        
+        "key": "Aberdeen, MD > Tobyhanna, PA",
+        "value": 4
+    },
+    {
+        "state": "NJ",
+        "city": "Trenton, NJ",
+        
+        "key": "Aberdeen, MD > Trenton, NJ",
+        "value": 54
+    },
+    {
+        "state": "MA",
+        "city": "Uxbridge, MA",
+        
+        "key": "Aberdeen, MD > Uxbridge, MA",
+        "value": 135
+    },
+    {
+        "state": "NY",
+        "city": "Wayland, NY",
+        
+        "key": "Aberdeen, MD > Wayland, NY",
+        "value": 2
+    },
+    {
+        "state": "NY",
+        "city": "West Coxsackie, NY",
+        
+        "key": "Aberdeen, MD > West Coxsackie, NY",
+        "value": 9
+    },
+    {
+        "state": "MA",
+        "city": "Westwood, MA",
+        
+        "key": "Aberdeen, MD > Westwood, MA",
+        "value": 2
+    },
+    {
+        "state": "PA",
+        "city": "Woodland, PA",
+        
+        "key": "Aberdeen, MD > Woodland, PA",
+        "value": 2
+    },
+    {
+        "state": "FL",
+        "city": "Alachua, FL",
+        
+        "key": "Aberdeen, NC > Alachua, FL",
+        "value": 48
+    },
+    {
+        "state": "FL",
+        "city": "Brooksville, FL",
+        
+        "key": "Aberdeen, NC > Brooksville, FL",
+        "value": 14
+    },
+    {
+        "state": "NC",
+        "city": "Charlotte, NC",
+        
+        "key": "Aberdeen, NC > Charlotte, NC",
+        "value": 100
+    },
+    {
+        "state": "FL",
+        "city": "Fort Pierce, FL",
+        
+        "key": "Aberdeen, NC > Fort Pierce, FL",
+        "value": 24
+    },
+    {
+        "state": "NC",
+        "city": "Hope Mills, NC",
+        
+        "key": "Aberdeen, NC > Hope Mills, NC",
+        "value": 10
+    },
+    {
+        "state": "GA",
+        "city": "La Grange, GA",
+        
+        "key": "Aberdeen, NC > La Grange, GA",
+        "value": 12
+    },
+    {
+        "state": "FL",
+        "city": "Lakeland, FL",
+        
+        "key": "Aberdeen, NC > Lakeland, FL",
+        "value": 1
+    },
+    {
+        "state": "CA",
+        "city": "Rialto, CA",
+        
+        "key": "Aberdeen, NC > Rialto, CA",
+        "value": 1
+    },
+    {
+        "state": "NM",
+        "city": "Albuquerque, NM",
+        
+        "key": "Abilene, TX > Albuquerque, NM",
+        "value": 44
+    },
+    {
+        "state": "FL",
+        "city": "Alachua, FL",
+        
+        "key": "Acworth, GA > Alachua, FL",
+        "value": 4
+    },
+    {
+        "state": "AL",
+        "city": "Anniston, AL",
+        
+        "key": "Acworth, GA > Anniston, AL",
+        "value": 8
+    },
+    {
+        "state": "AL",
+        "city": "Anniston, AL",
+        
+        "key": "Acworth, GA > Anniston, AL",
+        "value": 2
+    },
+    {
+        "state": "AL",
+        "city": "Bessemer, AL",
+        
+        "key": "Acworth, GA > Bessemer, AL",
+        "value": 6
+    },
+    {
+        "state": "GA",
+        "city": "Blackshear, GA",
+        
+        "key": "Acworth, GA > Blackshear, GA",
+        "value": 5
+    },
+    {
+        "state": "MS",
+        "city": "Brookhaven, MS",
+        
+        "key": "Acworth, GA > Brookhaven, MS",
+        "value": 5
+    },
+    {
+        "state": "MS",
+        "city": "Brookhaven, MS",
+        
+        "key": "Acworth, GA > Brookhaven, MS",
+        "value": 3
+    },
+    {
+        "state": "FL",
+        "city": "Brooksville, FL",
+        
+        "key": "Acworth, GA > Brooksville, FL",
+        "value": 6
+    },
+    {
+        "state": "GA",
+        "city": "College Park, GA",
+        
+        "key": "Acworth, GA > College Park, GA",
+        "value": 1
+    },
+    {
+        "state": "GA",
+        "city": "College Park, GA",
+        
+        "key": "Acworth, GA > College Park, GA",
+        "value": 5
+    },
+    {
+        "state": "SC",
+        "city": "Cowpens, SC",
+        
+        "key": "Acworth, GA > Cowpens, SC",
+        "value": 4
+    },
+    {
+        "state": "SC",
+        "city": "Cowpens, SC",
+        
+        "key": "Acworth, GA > Cowpens, SC",
+        "value": 2
+    },
+    {
+        "state": "AL",
+        "city": "Cullman, AL",
+        
+        "key": "Acworth, GA > Cullman, AL",
+        "value": 4
+    },
+    {
+        "state": "AL",
+        "city": "Cullman, AL",
+        
+        "key": "Acworth, GA > Cullman, AL",
+        "value": 3
+    },
+    {
+        "state": "TX",
+        "city": "Dayton, TX",
+        
+        "key": "Acworth, GA > Dayton, TX",
+        "value": 1
+    },
+    {
+        "state": "TX",
+        "city": "Denton, TX",
+        
+        "key": "Acworth, GA > Denton, TX",
+        "value": 2
+    },
+    {
+        "state": "IL",
+        "city": "Des Plaines, IL",
+        
+        "key": "Acworth, GA > Des Plaines, IL",
+        "value": 2
+    },
+    {
+        "state": "IL",
+        "city": "Des Plaines, IL",
+        
+        "key": "Acworth, GA > Des Plaines, IL",
+        "value": 1
+    },
+    {
+        "state": "GA",
+        "city": "Douglas, GA",
+        
+        "key": "Acworth, GA > Douglas, GA",
+        "value": 2
+    },
+    {
+        "state": "GA",
+        "city": "Douglas, GA",
+        
+        "key": "Acworth, GA > Douglas, GA",
+        "value": 2
+    },
+    {
+        "state": "FL",
+        "city": "Fort Lauderdale, FL",
+        
+        "key": "Acworth, GA > Fort Lauderdale, FL",
+        "value": 2
+    },
+    {
+        "state": "FL",
+        "city": "Fort Pierce, FL",
+        
+        "key": "Acworth, GA > Fort Pierce, FL",
+        "value": 8
+    },
+    {
+        "state": "FL",
+        "city": "Fort Pierce, FL",
+        
+        "key": "Acworth, GA > Fort Pierce, FL",
+        "value": 9
+    },
+    {
+        "state": "TN",
+        "city": "Goodlettsville, TN",
+        
+        "key": "Acworth, GA > Goodlettsville, TN",
+        "value": 2
+    },
+    {
+        "state": "FL",
+        "city": "Haines City, FL",
+        
+        "key": "Acworth, GA > Haines City, FL",
+        "value": 1
+    },
+    {
+        "state": "LA",
+        "city": "Hammond, LA",
+        
+        "key": "Acworth, GA > Hammond, LA",
+        "value": 3
+    },
+    {
+        "state": "FL",
+        "city": "Hialeah, FL",
+        
+        "key": "Acworth, GA > Hialeah, FL",
+        "value": 2
+    },
+    {
+        "state": "TX",
+        "city": "Houston, TX",
+        
+        "key": "Acworth, GA > Houston, TX",
+        "value": 3
+    },
+    {
+        "state": "TX",
+        "city": "Huntsville, TX",
+        
+        "key": "Acworth, GA > Huntsville, TX",
+        "value": 2
+    },
+    {
+        "state": "NJ",
+        "city": "Jamesburg, NJ",
+        
+        "key": "Acworth, GA > Jamesburg, NJ",
+        "value": 1
+    },
+    {
+        "state": "NJ",
+        "city": "Jamesburg, NJ",
+        
+        "key": "Acworth, GA > Jamesburg, NJ",
+        "value": 4
+    },
+    {
+        "state": "FL",
+        "city": "Jupiter, FL",
+        
+        "key": "Acworth, GA > Jupiter, FL",
+        "value": 2
+    },
+    {
+        "state": "TX",
+        "city": "Katy, TX",
+        
+        "key": "Acworth, GA > Katy, TX",
+        "value": 1
+    },
+    {
+        "state": "GA",
+        "city": "Lagrange, GA",
+        
+        "key": "Acworth, GA > Lagrange, GA",
+        "value": 5
+    },
+    {
+        "state": "OK",
+        "city": "Marietta, OK",
+        
+        "key": "Acworth, GA > Marietta, OK",
+        "value": 3
+    },
+    {
+        "state": "OK",
+        "city": "Marietta, OK",
+        
+        "key": "Acworth, GA > Marietta, OK",
+        "value": 2
+    },
+    {
+        "state": "TN",
+        "city": "Memphis, TN",
+        
+        "key": "Acworth, GA > Memphis, TN",
+        "value": 1
+    },
+    {
+        "state": "TX",
+        "city": "New Braunfels, TX",
+        
+        "key": "Acworth, GA > New Braunfels, TX",
+        "value": 2
+    },
+    {
+        "state": "FL",
+        "city": "Ocala, FL",
+        
+        "key": "Acworth, GA > Ocala, FL",
+        "value": 2
+    },
+    {
+        "state": "FL",
+        "city": "Ocala, FL",
+        
+        "key": "Acworth, GA > Ocala, FL",
+        "value": 1
+    },
+    {
+        "state": "LA",
+        "city": "Opelousas, LA",
+        
+        "key": "Acworth, GA > Opelousas, LA",
+        "value": 1
+    },
+    {
+        "state": "TX",
+        "city": "Palestine, TX",
+        
+        "key": "Acworth, GA > Palestine, TX",
+        "value": 3
+    },
+    {
+        "state": "TX",
+        "city": "Palestine, TX",
+        
+        "key": "Acworth, GA > Palestine, TX",
+        "value": 3
+    },
+    {
+        "state": "LA",
+        "city": "Pearl River, LA",
+        
+        "key": "Acworth, GA > Pearl River, LA",
+        "value": 1
+    },
+    {
+        "state": "LA",
+        "city": "Pearl River, LA",
+        
+        "key": "Acworth, GA > Pearl River, LA",
+        "value": 10
+    },
+    {
+        "state": "FL",
+        "city": "Plant City, FL",
+        
+        "key": "Acworth, GA > Plant City, FL",
+        "value": 3
+    },
+    {
+        "state": "FL",
+        "city": "Riviera Beach, FL",
+        
+        "key": "Acworth, GA > Riviera Beach, FL",
+        "value": 3
+    },
+    {
+        "state": "FL",
+        "city": "Riviera Beach, FL",
+        
+        "key": "Acworth, GA > Riviera Beach, FL",
+        "value": 1
+    },
+    {
+        "state": "TX",
+        "city": "Roanoke, TX",
+        
+        "key": "Acworth, GA > Roanoke, TX",
+        "value": 1
+    },
+    {
+        "state": "TX",
+        "city": "Rosenberg, TX",
+        
+        "key": "Acworth, GA > Rosenberg, TX",
+        "value": 1
+    },
+    {
+        "state": "TX",
+        "city": "Rosenberg, TX",
+        
+        "key": "Acworth, GA > Rosenberg, TX",
+        "value": 4
+    },
+    {
+        "state": "TX",
+        "city": "San Antonio, TX",
+        
+        "key": "Acworth, GA > San Antonio, TX",
+        "value": 9
+    },
+    {
+        "state": "TX",
+        "city": "San Antonio, TX",
+        
+        "key": "Acworth, GA > San Antonio, TX",
+        "value": 10
+    },
+    {
+        "state": "TX",
+        "city": "San Antonio, TX",
+        
+        "key": "Acworth, GA > San Antonio, TX",
+        "value": 15
+    },
+    {
+        "state": "TX",
+        "city": "Sanger, TX",
+        
+        "key": "Acworth, GA > Sanger, TX",
+        "value": 10
+    },
+    {
+        "state": "TX",
+        "city": "Sanger, TX",
+        
+        "key": "Acworth, GA > Sanger, TX",
+        "value": 6
+    },
+    {
+        "state": "GA",
+        "city": "Savannah, GA",
+        
+        "key": "Acworth, GA > Savannah, GA",
+        "value": 3
+    },
+    {
+        "state": "SC",
+        "city": "Scranton, SC",
+        
+        "key": "Acworth, GA > Scranton, SC",
+        "value": 2
+    },
+    {
+        "state": "SC",
+        "city": "Scranton, SC",
+        
+        "key": "Acworth, GA > Scranton, SC",
+        "value": 1
+    },
+    {
+        "state": "AR",
+        "city": "Searcy, AR",
+        
+        "key": "Acworth, GA > Searcy, AR",
+        "value": 3
+    },
+    {
+        "state": "MS",
+        "city": "Southaven, MS",
+        
+        "key": "Acworth, GA > Southaven, MS",
+        "value": 2
+    },
+    {
+        "state": "GA",
+        "city": "Villa Rica, GA",
+        
+        "key": "Acworth, GA > Villa Rica, GA",
+        "value": 2
+    },
+    {
+        "state": "FL",
+        "city": "West Palm Beach, FL",
+        
+        "key": "Acworth, GA > West Palm Beach, FL",
+        "value": 2
+    },
+    {
+        "state": "FL",
+        "city": "West Palm Beach, FL",
+        
+        "key": "Acworth, GA > West Palm Beach, FL",
+        "value": 3
+    },
+    {
+        "state": "GA",
+        "city": "Mcdonough, GA",
+        
+        "key": "Adairsville, GA > Mcdonough, GA",
+        "value": 95
+    },
+    {
+        "state": "GA",
+        "city": "Mcdonough, GA",
+        
+        "key": "Adairsville, GA > Mcdonough, GA",
+        "value": 56
+    },
+    {
+        "state": "NJ",
+        "city": "Newark, NJ",
+        
+        "key": "Adams, MA > Newark, NJ",
+        "value": 24
+    },
+    {
+        "state": "AL",
+        "city": "Pell City, AL",
+        
+        "key": "Adams, MA > Pell City, AL",
+        "value": 50
+    },
+    {
+        "state": "OH",
+        "city": "Grove City, OH",
+        
+        "key": "Addison, IL > Grove City, OH",
+        "value": 1
+    },
+    {
+        "state": "OH",
+        "city": "London, OH",
+        
+        "key": "Addison, IL > London, OH",
+        "value": 4
+    },
+    {
+        "state": "WI",
+        "city": "Milwaukee, WI",
+        
+        "key": "Addison, IL > Milwaukee, WI",
+        "value": 10
+    },
+    {
+        "state": "CA",
+        "city": "Rialto, CA",
+        
+        "key": "Adelanto, CA > Rialto, CA",
+        "value": 1537
+    },
+    {
+        "state": "CA",
+        "city": "Woodland, CA",
+        
+        "key": "Adelanto, CA > Woodland, CA",
+        "value": 729
+    },
+    {
+        "state": "GA",
+        "city": "Midway, GA",
+        
+        "key": "Afton, TN > Midway, GA",
+        "value": 14
+    },
+    {
+        "state": "OH",
+        "city": "Akron, OH",
+        
+        "key": "Akron, OH > Akron, OH",
+        "value": 161
+    },
+    {
+        "state": "MI",
+        "city": "Battle Creek, MI",
+        
+        "key": "Akron, OH > Battle Creek, MI",
+        "value": 11
+    },
+    {
+        "state": "MI",
+        "city": "Battle Creek, MI",
+        
+        "key": "Akron, OH > Battle Creek, MI",
+        "value": 2
+    },
+    {
+        "state": "NJ",
+        "city": "Burlington, NJ",
+        
+        "key": "Akron, OH > Burlington, NJ",
+        "value": 4
+    },
+    {
+        "state": "MI",
+        "city": "Dundee, MI",
+        
+        "key": "Akron, OH > Dundee, MI",
+        "value": 1
+    },
+    {
+        "state": "OH",
+        "city": "Grove City, OH",
+        
+        "key": "Akron, OH > Grove City, OH",
+        "value": 1
+    },
+    {
+        "state": "NY",
+        "city": "Johnstown, NY",
+        
+        "key": "Akron, OH > Johnstown, NY",
+        "value": 5
+    },
+    {
+        "state": "MI",
+        "city": "Kalamazoo, MI",
+        
+        "key": "Akron, OH > Kalamazoo, MI",
+        "value": 6
+    },
+    {
+        "state": "PA",
+        "city": "New Kensington, PA",
+        
+        "key": "Akron, OH > New Kensington, PA",
+        "value": 40
+    },
+    {
+        "state": "MA",
+        "city": "Uxbridge, MA",
+        
+        "key": "Akron, OH > Uxbridge, MA",
+        "value": 1
+    },
+    {
+        "state": "GA",
+        "city": "Athens, GA",
+        
+        "key": "Albany, GA > Athens, GA",
+        "value": 28
+    },
+    {
+        "state": "FL",
+        "city": "Fort Myers, FL",
+        
+        "key": "Albany, GA > Fort Myers, FL",
+        "value": 17
+    },
+    {
+        "state": "FL",
+        "city": "Fort Pierce, FL",
+        
+        "key": "Albany, GA > Fort Pierce, FL",
+        "value": 6
+    },
+    {
+        "state": "NC",
+        "city": "Hope Mills, NC",
+        
+        "key": "Albany, GA > Hope Mills, NC",
+        "value": 4
+    },
+    {
+        "state": "TX",
+        "city": "Houston, TX",
+        
+        "key": "Albany, GA > Houston, TX",
+        "value": 454
+    },
+    {
+        "state": "NC",
+        "city": "Kernersville, NC",
+        
+        "key": "Albany, GA > Kernersville, NC",
+        "value": 27
+    },
+    {
+        "state": "FL",
+        "city": "Lakeland, FL",
+        
+        "key": "Albany, GA > Lakeland, FL",
+        "value": 4
+    },
+    {
+        "state": "FL",
+        "city": "Macclenny, FL",
+        
+        "key": "Albany, GA > Macclenny, FL",
+        "value": 14
+    },
+    {
+        "state": "AR",
+        "city": "North Little Rock, AR",
+        
+        "key": "Albany, GA > North Little Rock, AR",
+        "value": 1
+    },
+    {
+        "state": "AL",
+        "city": "Opelika, AL",
+        
+        "key": "Albany, GA > Opelika, AL",
+        "value": 9
+    },
+    {
+        "state": "GA",
+        "city": "Rome, GA",
+        
+        "key": "Albany, GA > Rome, GA",
+        "value": 150
+    },
+    {
+        "state": "GA",
+        "city": "Smyrna, GA",
+        
+        "key": "Albany, GA > Smyrna, GA",
+        "value": 226
+    },
+    {
+        "state": "AL",
+        "city": "Tanner, AL",
+        
+        "key": "Albany, GA > Tanner, AL",
+        "value": 4
+    },
+    {
+        "state": "MI",
+        "city": "Dundee, MI",
+        
+        "key": "Albany, NY > Dundee, MI",
+        "value": 3
+    },
+    {
+        "state": "WA",
+        "city": "Lakewood, WA",
+        
+        "key": "Albany, OR > Lakewood, WA",
+        "value": 1
+    },
+    {
+        "state": "RI",
+        "city": "Ashaway, RI",
+        
+        "key": "Albertville, AL > Ashaway, RI",
+        "value": 1
+    },
+    {
+        "state": "AZ",
+        "city": "Tolleson, AZ",
+        
+        "key": "Albertville, AL > Tolleson, AZ",
+        "value": 25
+    },
+    {
+        "state": "CA",
+        "city": "Fontana, CA",
+        
+        "key": "Albuquerque, NM > Fontana, CA",
+        "value": 15
+    },
+    {
+        "state": "TX",
+        "city": "Irving, TX",
+        
+        "key": "Albuquerque, NM > Irving, TX",
+        "value": 2
+    },
+    {
+        "state": "CA",
+        "city": "Rialto, CA",
+        
+        "key": "Albuquerque, NM > Rialto, CA",
+        "value": 109
+    },
+    {
+        "state": "NJ",
+        "city": "Burlington, NJ",
+        
+        "key": "Alburtis, PA > Burlington, NJ",
+        "value": 13
+    },
+    {
+        "state": "NJ",
+        "city": "Burlington, NJ",
+        
+        "key": "Alburtis, PA > Burlington, NJ",
+        "value": 107
+    },
+    {
+        "state": "PA",
+        "city": "Muncy, PA",
+        
+        "key": "Alburtis, PA > Muncy, PA",
+        "value": 231
+    },
+    {
+        "state": "PA",
+        "city": "Nottingham, PA",
+        
+        "key": "Alburtis, PA > Nottingham, PA",
+        "value": 1
+    },
+    {
+        "state": "NJ",
+        "city": "Piscataway, NJ",
+        
+        "key": "Alburtis, PA > Piscataway, NJ",
+        "value": 10
+    },
+    {
+        "state": "PA",
+        "city": "Taylor, PA",
+        
+        "key": "Alburtis, PA > Taylor, PA",
+        "value": 89
+    },
+    {
+        "state": "MA",
+        "city": "Uxbridge, MA",
+        
+        "key": "Alburtis, PA > Uxbridge, MA",
+        "value": 67
+    },
+    {
+        "state": "MA",
+        "city": "Uxbridge, MA",
+        
+        "key": "Alburtis, PA > Uxbridge, MA",
+        "value": 8
+    },
+    {
+        "state": "OH",
+        "city": "Hinckley, OH",
+        
+        "key": "Alexandria, IN > Hinckley, OH",
+        "value": 14
+    },
+    {
+        "state": "WI",
+        "city": "Oconomowoc, WI",
+        
+        "key": "Alexandria, IN > Oconomowoc, WI",
+        "value": 196
+    },
+    {
+        "state": "CO",
+        "city": "Fort Collins, CO",
+        
+        "key": "Alexandria, MN > Fort Collins, CO",
+        "value": 55
+    },
+    {
+        "state": "CO",
+        "city": "Fort Collins, CO",
+        
+        "key": "Alexandria, ND > Fort Collins, CO",
+        "value": 4
+    },
+    {
+        "state": "CT",
+        "city": "Dayville, CT",
+        
+        "key": "Alexandria, PA > Dayville, CT",
+        "value": 20
+    },
+    {
+        "state": "IN",
+        "city": "Terre Haute, IN",
+        
+        "key": "Alexandria, PA > Terre Haute, IN",
+        "value": 21
+    },
+    {
+        "state": "MD",
+        "city": "Beltsville, MD",
+        
+        "key": "Alexandria, VA > Beltsville, MD",
+        "value": 5
+    },
+    {
+        "state": "PA",
+        "city": "Bristol, PA",
+        
+        "key": "Alexandria, VA > Bristol, PA",
+        "value": 4
+    },
+    {
+        "state": "IA",
+        "city": "Des Moines, IA",
+        
+        "key": "Alexandria, VA > Des Moines, IA",
+        "value": 1
+    },
+    {
+        "state": "CA",
+        "city": "Fremont, CA",
+        
+        "key": "Alexandria, VA > Fremont, CA",
+        "value": 1
+    },
+    {
+        "state": "MS",
+        "city": "Myrtle, MS",
+        
+        "key": "Alexandria, VA > Myrtle, MS",
+        "value": 2
+    },
+    {
+        "state": "AZ",
+        "city": "Casa Grande, AZ",
+        
+        "key": "Alhambra, CA > Casa Grande, AZ",
+        "value": 10
+    },
+    {
+        "state": "OH",
+        "city": "Grove City, OH",
+        
+        "key": "Alhambra, CA > Grove City, OH",
+        "value": 5
+    },
+    {
+        "state": "OR",
+        "city": "Hermiston, OR",
+        
+        "key": "Alhambra, CA > Hermiston, OR",
+        "value": 9
+    },
+    {
+        "state": "CO",
+        "city": "Loveland, CO",
+        
+        "key": "Alhambra, CA > Loveland, CO",
+        "value": 68
+    },
+    {
+        "state": "TX",
+        "city": "New Braunfels, TX",
+        
+        "key": "Alhambra, CA > New Braunfels, TX",
+        "value": 5
+    },
+    {
+        "state": "CA",
+        "city": "Porterville, CA",
+        
+        "key": "Alhambra, CA > Porterville, CA",
+        "value": 3
+    },
+    {
+        "state": "OR",
+        "city": "Portland, OR",
+        
+        "key": "Alhambra, CA > Portland, OR",
+        "value": 30
+    },
+    {
+        "state": "CA",
+        "city": "Stockton, CA",
+        
+        "key": "Alhambra, CA > Stockton, CA",
+        "value": 54
+    },
+    {
+        "state": "PA",
+        "city": "Tobyhanna, PA",
+        
+        "key": "Alhambra, CA > Tobyhanna, PA",
+        "value": 14
+    },
+    {
+        "state": "AZ",
+        "city": "Tolleson, AZ",
+        
+        "key": "Alhambra, CA > Tolleson, AZ",
+        "value": 2
+    },
+    {
+        "state": "GA",
+        "city": "Austell, GA",
+        
+        "key": "Allegan, MI > Austell, GA",
+        "value": 2
+    },
+    {
+        "state": "PA",
+        "city": "Bethlehem, PA",
+        
+        "key": "Allegan, MI > Bethlehem, PA",
+        "value": 1
+    },
+    {
+        "state": "PA",
+        "city": "Bethlehem, PA",
+        
+        "key": "Allegan, MI > Bethlehem, PA",
+        "value": 12
+    },
+    {
+        "state": "TX",
+        "city": "Hutchins, TX",
+        
+        "key": "Allegan, MI > Hutchins, TX",
+        "value": 11
+    },
+    {
+        "state": "NY",
+        "city": "Marcy, NY",
+        
+        "key": "Allegan, MI > Marcy, NY",
+        "value": 11
+    },
+    {
+        "state": "WI",
+        "city": "Menomonie, WI",
+        
+        "key": "Allegan, MI > Menomonie, WI",
+        "value": 5
+    },
+    {
+        "state": "NH",
+        "city": "Raymond, NH",
+        
+        "key": "Allegan, MI > Raymond, NH",
+        "value": 3
+    },
+    {
+        "state": "PA",
+        "city": "Taylor, PA",
+        
+        "key": "Allegan, MI > Taylor, PA",
+        "value": 1
+    },
+    {
+        "state": "PA",
+        "city": "Tobyhanna, PA",
+        
+        "key": "Allegan, MI > Tobyhanna, PA",
+        "value": 28
+    },
+    {
+        "state": "PA",
+        "city": "Woodland, PA",
+        
+        "key": "Allegan, MI > Woodland, PA",
+        "value": 1
+    },
+    {
+        "state": "MI",
+        "city": "Battle Creek, MI",
+        
+        "key": "Allen Park, MI > Battle Creek, MI",
+        "value": 1
+    },
+    {
+        "state": "SC",
+        "city": "Laurens, SC",
+        
+        "key": "Allen, IN > Laurens, SC",
+        "value": 2
+    },
+    {
+        "state": "NY",
+        "city": "Amsterdam, NY",
+        
+        "key": "Allentown, PA > Amsterdam, NY",
+        "value": 162
+    },
+    {
+        "state": "NY",
+        "city": "Baldwinsville, NY",
+        
+        "key": "Allentown, PA > Baldwinsville, NY",
+        "value": 310
+    },
+    {
+        "state": "NC",
+        "city": "Battleboro, NC",
+        
+        "key": "Allentown, PA > Battleboro, NC",
+        "value": 284
+    },
+    {
+        "state": "PA",
+        "city": "Bethlehem, PA",
+        
+        "key": "Allentown, PA > Bethlehem, PA",
+        "value": 49
+    },
+    {
+        "state": "PA",
+        "city": "Breinigsvi, PA",
+        
+        "key": "Allentown, PA > Breinigsvi, PA",
+        "value": 40
+    },
+    {
+        "state": "TX",
+        "city": "Brookshire, TX",
+        
+        "key": "Allentown, PA > Brookshire, TX",
+        "value": 1
+    },
+    {
+        "state": "NJ",
+        "city": "Burlington, NJ",
+        
+        "key": "Allentown, PA > Burlington, NJ",
+        "value": 191
+    },
+    {
+        "state": "NJ",
+        "city": "Burlington, NJ",
+        
+        "key": "Allentown, PA > Burlington, NJ",
+        "value": 77
+    },
+    {
+        "state": "PA",
+        "city": "Chambersburg, PA",
+        
+        "key": "Allentown, PA > Chambersburg, PA",
+        "value": 200
+    },
+    {
+        "state": "NJ",
+        "city": "Cherry Hill, NJ",
+        
+        "key": "Allentown, PA > Cherry Hill, NJ",
+        "value": 1
+    },
+    {
+        "state": "NH",
+        "city": "Contoocook, NH",
+        
+        "key": "Allentown, PA > Contoocook, NH",
+        "value": 62
+    },
+    {
+        "state": "IL",
+        "city": "Danville, IL",
+        
+        "key": "Allentown, PA > Danville, IL",
+        "value": 98
+    },
+    {
+        "state": "PA",
+        "city": "Denver, PA",
+        
+        "key": "Allentown, PA > Denver, PA",
+        "value": 14
+    },
+    {
+        "state": "PA",
+        "city": "Denver, PA",
+        
+        "key": "Allentown, PA > Denver, PA",
+        "value": 82
+    },
+    {
+        "state": "NJ",
+        "city": "Deptford, NJ",
+        
+        "key": "Allentown, PA > Deptford, NJ",
+        "value": 2
+    },
+    {
+        "state": "NC",
+        "city": "Dunn, NC",
+        
+        "key": "Allentown, PA > Dunn, NC",
+        "value": 59
+    },
+    {
+        "state": "WI",
+        "city": "Eau Claire, WI",
+        
+        "key": "Allentown, PA > Eau Claire, WI",
+        "value": 26
+    },
+    {
+        "state": "NJ",
+        "city": "Edison, NJ",
+        
+        "key": "Allentown, PA > Edison, NJ",
+        "value": 1179
+    },
+    {
+        "state": "NJ",
+        "city": "Elizabeth, NJ",
+        
+        "key": "Allentown, PA > Elizabeth, NJ",
+        "value": 4032
+    },
+    {
+        "state": "OH",
+        "city": "Findlay, OH",
+        
+        "key": "Allentown, PA > Findlay, OH",
+        "value": 113
+    },
+    {
+        "state": "NJ",
+        "city": "Flemington, NJ",
+        
+        "key": "Allentown, PA > Flemington, NJ",
+        "value": 215
+    },
+    {
+        "state": "MD",
+        "city": "Frederick, MD",
+        
+        "key": "Allentown, PA > Frederick, MD",
+        "value": 8
+    },
+    {
+        "state": "VA",
+        "city": "Fredericksburg, VA",
+        
+        "key": "Allentown, PA > Fredericksburg, VA",
+        "value": 268
+    },
+    {
+        "state": "FL",
+        "shipper_keys.delivery_city_state": {
+            "value": "Ft. Meyers, FL",
+            "filterable_value": "\"Ft. Meyers, FL\""
+        },
+        
+        "shipper_keys.key_city_state": {
+            "value": "Allentown, PA > Ft. Meyers, FL",
+            "filterable_value": "\"Allentown, PA > Ft. Meyers, FL\""
+        },
+        "value": 2
+    },
+    {
+        "state": "NJ",
+        "city": "Gibbstown, NJ",
+        
+        "key": "Allentown, PA > Gibbstown, NJ",
+        "value": 8
+    },
+    {
+        "state": "PA",
+        "city": "Greencastle, PA",
+        
+        "key": "Allentown, PA > Greencastle, PA",
+        "value": 252
+    },
+    {
+        "state": "NJ",
+        "city": "Hamilton, NJ",
+        
+        "key": "Allentown, PA > Hamilton, NJ",
+        "value": 119
+    },
+    {
+        "state": "TX",
+        "city": "Houston, TX",
+        
+        "key": "Allentown, PA > Houston, TX",
+        "value": 35
+    },
+    {
+        "state": "PA",
+        "city": "Jessup, PA",
+        
+        "key": "Allentown, PA > Jessup, PA",
+        "value": 185
+    },
+    {
+        "state": "FL",
+        "city": "Kissimmee, FL",
+        
+        "key": "Allentown, PA > Kissimmee, FL",
+        "value": 112
+    },
+    {
+        "state": "FL",
+        "city": "Lakeland, FL",
+        
+        "key": "Allentown, PA > Lakeland, FL",
+        "value": 2
+    },
+    {
+        "state": "FL",
+        "city": "Lakeland, FL",
+        
+        "key": "Allentown, PA > Lakeland, FL",
+        "value": 16
+    },
+    {
+        "state": "NJ",
+        "city": "Linden, NJ",
+        
+        "key": "Allentown, PA > Linden, NJ",
+        "value": 639
+    },
+    {
+        "state": "NY",
+        "city": "Liverpool, NY",
+        
+        "key": "Allentown, PA > Liverpool, NY",
+        "value": 5
+    },
+    {
+        "state": "OH",
+        "city": "London, OH",
+        
+        "key": "Allentown, PA > London, OH",
+        "value": 25
+    },
+    {
+        "state": "NJ",
+        "city": "Manahawkin, NJ",
+        
+        "key": "Allentown, PA > Manahawkin, NJ",
+        "value": 1
+    },
+    {
+        "state": "CT",
+        "city": "Manchester, CT",
+        
+        "key": "Allentown, PA > Manchester, CT",
+        "value": 1
+    },
+    {
+        "state": "TX",
+        "city": "Midlothian, TX",
+        
+        "key": "Allentown, PA > Midlothian, TX",
+        "value": 56
+    },
+    {
+        "state": "PA",
+        "city": "Milton, PA",
+        
+        "key": "Allentown, PA > Milton, PA",
+        "value": 535
+    },
+    {
+        "state": "PA",
+        "city": "Milton, PA",
+        
+        "key": "Allentown, PA > Milton, PA",
+        "value": 123
+    },
+    {
+        "state": "DE",
+        "city": "Newark, DE",
+        
+        "key": "Allentown, PA > Newark, DE",
+        "value": 440
+    },
+    {
+        "state": "KY",
+        "city": "Nicholasville, KY",
+        
+        "key": "Allentown, PA > Nicholasville, KY",
+        "value": 48
+    },
+    {
+        "state": "NJ",
+        "city": "North Brunswick, NJ",
+        
+        "key": "Allentown, PA > North Brunswick, NJ",
+        "value": 578
+    },
+    {
+        "state": "MN",
+        "city": "Northfield, MN",
+        
+        "key": "Allentown, PA > Northfield, MN",
+        "value": 69
+    },
+    {
+        "state": "NJ",
+        "city": "Oakhurst, NJ",
+        
+        "key": "Allentown, PA > Oakhurst, NJ",
+        "value": 1
+    },
+    {
+        "state": "FL",
+        "city": "Ocala, FL",
+        
+        "key": "Allentown, PA > Ocala, FL",
+        "value": 37
+    },
+    {
+        "state": "NJ",
+        "city": "Ocean, NJ",
+        
+        "key": "Allentown, PA > Ocean, NJ",
+        "value": 1
+    },
+    {
+        "state": "LA",
+        "city": "Pearl River, LA",
+        
+        "key": "Allentown, PA > Pearl River, LA",
+        "value": 2
+    },
+    {
+        "state": "NJ",
+        "city": "Pleasantville, NJ",
+        
+        "key": "Allentown, PA > Pleasantville, NJ",
+        "value": 5
+    },
+    {
+        "state": "PA",
+        "city": "Pottsville, PA",
+        
+        "key": "Allentown, PA > Pottsville, PA",
+        "value": 39
+    },
+    {
+        "state": "MO",
+        "city": "Republic, MO",
+        
+        "key": "Allentown, PA > Republic, MO",
+        "value": 29
+    },
+    {
+        "state": "CA",
+        "city": "Riverside, CA",
+        
+        "key": "Allentown, PA > Riverside, CA",
+        "value": 1
+    },
+    {
+        "state": "NY",
+        "city": "Rochester, NY",
+        
+        "key": "Allentown, PA > Rochester, NY",
+        "value": 204
+    },
+    {
+        "state": "PA",
+        "city": "Scranton, PA",
+        
+        "key": "Allentown, PA > Scranton, PA",
+        "value": 213
+    },
+    {
+        "state": "NJ",
+        "city": "Secaucus, NJ",
+        
+        "key": "Allentown, PA > Secaucus, NJ",
+        "value": 13
+    },
+    {
+        "state": "NC",
+        "city": "Shelby, NC",
+        
+        "key": "Allentown, PA > Shelby, NC",
+        "value": 1
+    },
+    {
+        "state": "VA",
+        "city": "Stuarts Draft, VA",
+        
+        "key": "Allentown, PA > Stuarts Draft, VA",
+        "value": 41
+    },
+    {
+        "state": "NY",
+        "city": "Suffern, NY",
+        
+        "key": "Allentown, PA > Suffern, NY",
+        "value": 10
+    },
+    {
+        "state": "GA",
+        "city": "Suwanee, GA",
+        
+        "key": "Allentown, PA > Suwanee, GA",
+        "value": 5
+    },
+    {
+        "state": "NJ",
+        "city": "Toms River, NJ",
+        
+        "key": "Allentown, PA > Toms River, NJ",
+        "value": 154
+    },
+    {
+        "state": "TX",
+        "city": "Tyler, TX",
+        
+        "key": "Allentown, PA > Tyler, TX",
+        "value": 31
+    },
+    {
+        "state": "NJ",
+        "city": "Union, NJ",
+        
+        "key": "Allentown, PA > Union, NJ",
+        "value": 543
+    },
+    {
+        "state": "MA",
+        "city": "Uxbridge, MA",
+        
+        "key": "Allentown, PA > Uxbridge, MA",
+        "value": 25
+    },
+    {
+        "state": "MA",
+        "city": "Westfield, MA",
+        
+        "key": "Allentown, PA > Westfield, MA",
+        "value": 129
+    },
+    {
+        "state": "PA",
+        "city": "Wilkes Barre, PA",
+        
+        "key": "Allentown, PA > Wilkes Barre, PA",
+        "value": 203
+    },
+    {
+        "state": "NJ",
+        "city": "Williamstown, NJ",
+        
+        "key": "Allentown, PA > Williamstown, NJ",
+        "value": 1
+    },
+    {
+        "state": "DE",
+        "city": "Wilmington, DE",
+        
+        "key": "Allentown, PA > Wilmington, DE",
+        "value": 195
+    },
+    {
+        "state": "PA",
+        "city": "York, PA",
+        
+        "key": "Allentown, PA > York, PA",
+        "value": 104
+    },
+    {
+        "state": "OH",
+        "city": "Zanesville, OH",
+        
+        "key": "Allentown, PA > Zanesville, OH",
+        "value": 121
+    },
+    {
+        "state": "OH",
+        "city": "Obetz, OH",
+        
+        "key": "Alpena, MI > Obetz, OH",
+        "value": 2
+    },
+    {
+        "state": "GA",
+        "city": "Lavonia, GA",
+        
+        "key": "Alpharetta, GA > Lavonia, GA",
+        "value": 2
+    },
+    {
+        "state": "PA",
+        "city": "Leetsdale, PA",
+        
+        "key": "Alpharetta, GA > Leetsdale, PA",
+        "value": 5
+    },
+    {
+        "state": "AZ",
+        "city": "Phoenix, AZ",
+        
+        "key": "Alpharetta, GA > Phoenix, AZ",
+        "value": 5
+    },
+    {
+        "state": "IN",
+        "city": "Whitestown, IN",
+        
+        "key": "Alpharetta, GA > Whitestown, IN",
+        "value": 8
+    },
+    {
+        "state": "MI",
+        "city": "Battle Creek, MI",
+        
+        "key": "Alsip, IL > Battle Creek, MI",
+        "value": 4
+    },
+    {
+        "state": "PA",
+        "city": "Carlisle, PA",
+        
+        "key": "Alsip, IL > Carlisle, PA",
+        "value": 34
+    },
+    {
+        "state": "IL",
+        "city": "Chicago, IL",
+        
+        "key": "Alsip, IL > Chicago, IL",
+        "value": 4
+    },
+    {
+        "state": "MA",
+        "city": "Clinton, MA",
+        
+        "key": "Alsip, IL > Clinton, MA",
+        "value": 6
+    },
+    {
+        "state": "IL",
+        "city": "Edwardsville, IL",
+        
+        "key": "Alsip, IL > Edwardsville, IL",
+        "value": 42
+    },
+    {
+        "state": "NJ",
+        "city": "Elizabeth, NJ",
+        
+        "key": "Alsip, IL > Elizabeth, NJ",
+        "value": 36
+    },
+    {
+        "state": "MA",
+        "city": "Franklin, MA",
+        
+        "key": "Alsip, IL > Franklin, MA",
+        "value": 21
+    },
+    {
+        "state": "WI",
+        "city": "Green Bay, WI",
+        
+        "key": "Alsip, IL > Green Bay, WI",
+        "value": 7
+    },
+    {
+        "state": "FL",
+        "city": "Medley, FL",
+        
+        "key": "Alsip, IL > Medley, FL",
+        "value": 24
+    },
+    {
+        "state": "IL",
+        "city": "Morris, IL",
+        
+        "key": "Alsip, IL > Morris, IL",
+        "value": 61
+    },
+    {
+        "state": "CA",
+        "city": "Ontario, CA",
+        
+        "key": "Alsip, IL > Ontario, CA",
+        "value": 19
+    },
+    {
+        "state": "FL",
+        "city": "Orlando, FL",
+        
+        "key": "Alsip, IL > Orlando, FL",
+        "value": 8
+    },
+    {
+        "state": "NJ",
+        "city": "Burlington, NJ",
+        
+        "key": "Altavista, VA > Burlington, NJ",
+        "value": 5
+    },
+    {
+        "state": "FL",
+        "city": "Lakeland, FL",
+        
+        "key": "Altavista, VA > Lakeland, FL",
+        "value": 2
+    },
+    {
+        "state": "OH",
+        "city": "New Philadelphia, OH",
+        
+        "key": "Altavista, VA > New Philadelphia, OH",
+        "value": 5
+    },
+    {
+        "state": "TX",
+        "city": "Wilmer, TX",
+        
+        "key": "Altavista, VA > Wilmer, TX",
+        "value": 4
+    },
+    {
+        "state": "KS",
+        "city": "Olathe, KS",
+        
+        "key": "Altoona, PA > Olathe, KS",
+        "value": 6
+    },
+    {
+        "state": "IL",
+        "city": "Bolingbrook, IL",
+        
+        "key": "Amarillo, TX > Bolingbrook, IL",
+        "value": 15
+    },
+    {
+        "state": "AZ",
+        "city": "Casa Grande, AZ",
+        
+        "key": "Amarillo, TX > Casa Grande, AZ",
+        "value": 2
+    },
+    {
+        "state": "NC",
+        "city": "Charlotte, NC",
+        
+        "key": "Amarillo, TX > Charlotte, NC",
+        "value": 2
+    },
+    {
+        "state": "WY",
+        "city": "Cheyenne, WY",
+        
+        "key": "Amarillo, TX > Cheyenne, WY",
+        "value": 1
+    },
+    {
+        "state": "UT",
+        "city": "Corinne, UT",
+        
+        "key": "Amarillo, TX > Corinne, UT",
+        "value": 7
+    },
+    {
+        "state": "MS",
+        "city": "Hattiesburg, MS",
+        
+        "key": "Amarillo, TX > Hattiesburg, MS",
+        "value": 2
+    },
+    {
+        "state": "KS",
+        "city": "Kansas City, KS",
+        
+        "key": "Amarillo, TX > Kansas City, KS",
+        "value": 17
+    },
+    {
+        "state": "KS",
+        "city": "Ottawa, KS",
+        
+        "key": "Amarillo, TX > Ottawa, KS",
+        "value": 7
+    },
+    {
+        "state": "AR",
+        "city": "Searcy, AR",
+        
+        "key": "Amarillo, TX > Searcy, AR",
+        "value": 63
+    },
+    {
+        "state": "CA",
+        "city": "Brea, CA",
+        
+        "key": "American Canyon, CA > Brea, CA",
+        "value": 18
+    },
+    {
+        "state": "SC",
+        "city": "Anderson, SC",
+        
+        "key": "Americus, GA > Anderson, SC",
+        "value": 7
+    },
+    {
+        "state": "MA",
+        "city": "Milford, MA",
+        
+        "key": "Amsterdam, NY > Milford, MA",
+        "value": 8
+    },
+    {
+        "state": "NJ",
+        "city": "Newark, NJ",
+        
+        "key": "Amsterdam, NY > Newark, NJ",
+        "value": 337
+    },
+    {
+        "state": "WI",
+        "city": "Sturtevant, WI",
+        
+        "key": "Anacortes, WA > Sturtevant, WI",
+        "value": 5
+    },
+    {
+        "state": "CA",
+        "city": "Apple Valley, CA",
+        
+        "key": "Anaheim, CA > Apple Valley, CA",
+        "value": 4
+    },
+    {
+        "state": "AZ",
+        "city": "Buckeye, AZ",
+        
+        "key": "Anaheim, CA > Buckeye, AZ",
+        "value": 17
+    },
+    {
+        "state": "CA",
+        "city": "Fontana, CA",
+        
+        "key": "Anaheim, CA > Fontana, CA",
+        "value": 87
+    },
+    {
+        "state": "CA",
+        "city": "Jurupa Valley, CA",
+        
+        "key": "Anaheim, CA > Jurupa Valley, CA",
+        "value": 2
+    },
+    {
+        "state": "CA",
+        "city": "Moreno Valley, CA",
+        
+        "key": "Anaheim, CA > Moreno Valley, CA",
+        "value": 51
+    },
+    {
+        "state": "CA",
+        "city": "Ontario, CA",
+        
+        "key": "Anaheim, CA > Ontario, CA",
+        "value": 2
+    },
+    {
+        "state": "AZ",
+        "city": "Phoenix, AZ",
+        
+        "key": "Anaheim, CA > Phoenix, AZ",
+        "value": 173
+    },
+    {
+        "state": "AZ",
+        "city": "Phoenix, AZ",
+        
+        "key": "Anaheim, CA > Phoenix, AZ",
+        "value": 169
+    },
+    {
+        "state": "CA",
+        "city": "Porterville, CA",
+        
+        "key": "Anaheim, CA > Porterville, CA",
+        "value": 1
+    },
+    {
+        "state": "CA",
+        "city": "Rialto, CA",
+        
+        "key": "Anaheim, CA > Rialto, CA",
+        "value": 142
+    },
+    {
+        "state": "CA",
+        "city": "Rialto, CA",
+        
+        "key": "Anaheim, CA > Rialto, CA",
+        "value": 56
+    },
+    {
+        "state": "AR",
+        "city": "Bentonville, AR",
+        
+        "key": "Anderson, IN > Bentonville, AR",
+        "value": 19
+    },
+    {
+        "state": "IN",
+        "city": "Greenfield, IN",
+        
+        "key": "Anderson, IN > Greenfield, IN",
+        "value": 11
+    },
+    {
+        "state": "MD",
+        "city": "Beltsville, MD",
+        
+        "key": "Anderson, SC > Beltsville, MD",
+        "value": 12
+    },
+    {
+        "state": "CA",
+        "city": "Carson, CA",
+        
+        "key": "Anderson, SC > Carson, CA",
+        "value": 18
+    },
+    {
+        "state": "NJ",
+        "city": "Carteret, NJ",
+        
+        "key": "Anderson, SC > Carteret, NJ",
+        "value": 48
+    },
+    {
+        "state": "TN",
+        "city": "Carthage, TN",
+        
+        "key": "Anderson, SC > Carthage, TN",
+        "value": 6
+    },
+    {
+        "state": "TX",
+        "city": "Denton, TX",
+        
+        "key": "Anderson, SC > Denton, TX",
+        "value": 21
+    },
+    {
+        "state": "AL",
+        "city": "Dothan, AL",
+        
+        "key": "Anderson, SC > Dothan, AL",
+        "value": 2
+    },
+    {
+        "state": "GA",
+        "city": "Dublin, GA",
+        
+        "key": "Anderson, SC > Dublin, GA",
+        "value": 22
+    },
+    {
+        "state": "FL",
+        "city": "Fort Lauderdale, FL",
+        
+        "key": "Anderson, SC > Fort Lauderdale, FL",
+        "value": 68
+    },
+    {
+        "state": "TX",
+        "city": "Fort Worth, TX",
+        
+        "key": "Anderson, SC > Fort Worth, TX",
+        "value": 2
+    },
+    {
+        "state": "IL",
+        "city": "Glenview, IL",
+        
+        "key": "Anderson, SC > Glenview, IL",
+        "value": 42
+    },
+    {
+        "state": "NC",
+        "city": "Greensboro, NC",
+        
+        "key": "Anderson, SC > Greensboro, NC",
+        "value": 1
+    },
+    {
+        "state": "OH",
+        "city": "Groveport, OH",
+        
+        "key": "Anderson, SC > Groveport, OH",
+        "value": 1
+    },
+    {
+        "state": "FL",
+        "city": "Hialeah, FL",
+        
+        "key": "Anderson, SC > Hialeah, FL",
+        "value": 2
+    },
+    {
+        "state": "IL",
+        "city": "Itasca, IL",
+        
+        "key": "Anderson, SC > Itasca, IL",
+        "value": 4
+    },
+    {
+        "state": "MS",
+        "city": "Jackson, MS",
+        
+        "key": "Anderson, SC > Jackson, MS",
+        "value": 13
+    },
+    {
+        "state": "FL",
+        "city": "Jacksonville, FL",
+        
+        "key": "Anderson, SC > Jacksonville, FL",
+        "value": 16
+    },
+    {
+        "state": "MI",
+        "city": "Lansing, MI",
+        
+        "key": "Anderson, SC > Lansing, MI",
+        "value": 3
+    },
+    {
+        "state": "PA",
+        "city": "Leetsdale, PA",
+        
+        "key": "Anderson, SC > Leetsdale, PA",
+        "value": 47
+    },
+    {
+        "state": "PA",
+        "city": "Leetsdale, PA",
+        
+        "key": "Anderson, SC > Leetsdale, PA",
+        "value": 2
+    },
+    {
+        "state": "NY",
+        "city": "Liverpool, NY",
+        
+        "key": "Anderson, SC > Liverpool, NY",
+        "value": 14
+    },
+    {
+        "state": "KY",
+        "city": "London, KY",
+        
+        "key": "Anderson, SC > London, KY",
+        "value": 1
+    },
+    {
+        "state": "TX",
+        "city": "Lubbock, TX",
+        
+        "key": "Anderson, SC > Lubbock, TX",
+        "value": 8
+    },
+    {
+        "state": "SC",
+        "city": "Lugoff, SC",
+        
+        "key": "Anderson, SC > Lugoff, SC",
+        "value": 29
+    },
+    {
+        "state": "VA",
+        "city": "Lynchburg, VA",
+        
+        "key": "Anderson, SC > Lynchburg, VA",
+        "value": 6
+    },
+    {
+        "state": "NC",
+        "city": "Mebane, NC",
+        
+        "key": "Anderson, SC > Mebane, NC",
+        "value": 14
+    },
+    {
+        "state": "NY",
+        "city": "Medford, NY",
+        
+        "key": "Anderson, SC > Medford, NY",
+        "value": 3
+    },
+    {
+        "state": "TN",
+        "city": "Memphis, TN",
+        
+        "key": "Anderson, SC > Memphis, TN",
+        "value": 16
+    },
+    {
+        "state": "MS",
+        "city": "Meridian, MS",
+        
+        "key": "Anderson, SC > Meridian, MS",
+        "value": 2
+    },
+    {
+        "state": "FL",
+        "city": "Miami, FL",
+        
+        "key": "Anderson, SC > Miami, FL",
+        "value": 11
+    },
+    {
+        "state": "NJ",
+        "city": "Monroe Township, NJ",
+        
+        "key": "Anderson, SC > Monroe Township, NJ",
+        "value": 54
+    },
+    {
+        "state": "FL",
+        "city": "Mulberry, FL",
+        
+        "key": "Anderson, SC > Mulberry, FL",
+        "value": 14
+    },
+    {
+        "state": "MS",
+        "city": "New Albany, MS",
+        
+        "key": "Anderson, SC > New Albany, MS",
+        "value": 55
+    },
+    {
+        "state": "DE",
+        "city": "Newark, DE",
+        
+        "key": "Anderson, SC > Newark, DE",
+        "value": 1
+    },
+    {
+        "state": "NC",
+        "city": "Newton, NC",
+        
+        "key": "Anderson, SC > Newton, NC",
+        "value": 55
+    },
+    {
+        "state": "GA",
+        "city": "Norcross, GA",
+        
+        "key": "Anderson, SC > Norcross, GA",
+        "value": 9
+    },
+    {
+        "state": "SC",
+        "city": "Pageland, SC",
+        
+        "key": "Anderson, SC > Pageland, SC",
+        "value": 1
+    },
+    {
+        "state": "PA",
+        "city": "Philadelphia, PA",
+        
+        "key": "Anderson, SC > Philadelphia, PA",
+        "value": 8
+    },
+    {
+        "state": "AZ",
+        "city": "Phoenix, AZ",
+        
+        "key": "Anderson, SC > Phoenix, AZ",
+        "value": 47
+    },
+    {
+        "state": "AZ",
+        "city": "Phoenix, AZ",
+        
+        "key": "Anderson, SC > Phoenix, AZ",
+        "value": 32
+    },
+    {
+        "state": "WV",
+        "city": "Prichard, WV",
+        
+        "key": "Anderson, SC > Prichard, WV",
+        "value": 2
+    },
+    {
+        "state": "NV",
+        "city": "Reno, NV",
+        
+        "key": "Anderson, SC > Reno, NV",
+        "value": 1
+    },
+    {
+        "state": "VA",
+        "city": "Richmond, VA",
+        
+        "key": "Anderson, SC > Richmond, VA",
+        "value": 41
+    },
+    {
+        "state": "TX",
+        "city": "Rosenberg, TX",
+        
+        "key": "Anderson, SC > Rosenberg, TX",
+        "value": 33
+    },
+    {
+        "state": "MO",
+        "city": "Saint Charles, MO",
+        
+        "key": "Anderson, SC > Saint Charles, MO",
+        "value": 81
+    },
+    {
+        "state": "NC",
+        "city": "Salisbury, NC",
+        
+        "key": "Anderson, SC > Salisbury, NC",
+        "value": 1
+    },
+    {
+        "state": "PA",
+        "city": "Shippensburg, PA",
+        
+        "key": "Anderson, SC > Shippensburg, PA",
+        "value": 146
+    },
+    {
+        "state": "PA",
+        "city": "Tobyhanna, PA",
+        
+        "key": "Anderson, SC > Tobyhanna, PA",
+        "value": 9
+    },
+    {
+        "state": "NJ",
+        "city": "Trenton, NJ",
+        
+        "key": "Anderson, SC > Trenton, NJ",
+        "value": 42
+    },
+    {
+        "state": "WI",
+        "city": "Viroqua, WI",
+        
+        "key": "Anderson, SC > Viroqua, WI",
+        "value": 1
+    },
+    {
+        "state": "IN",
+        "city": "Whitestown, IN",
+        
+        "key": "Anderson, SC > Whitestown, IN",
+        "value": 213
+    },
+    {
+        "state": "IN",
+        "city": "Whitestown, IN",
+        
+        "key": "Anderson, SC > Whitestown, IN",
+        "value": 248
+    },
+    {
+        "state": "CA",
+        "city": "Woodland, CA",
+        
+        "key": "Anderson, SC > Woodland, CA",
+        "value": 15
+    },
+    {
+        "state": "AZ",
+        "city": "Phoenix, AZ",
+        
+        "key": "Andover, NJ > Phoenix, AZ",
+        "value": 3
+    },
+    {
+        "state": "IL",
+        "city": "Edwardsville, IL",
+        
+        "key": "Ankeny, IA > Edwardsville, IL",
+        "value": 248
+    },
+    {
+        "state": "CA",
+        "city": "Rialto, CA",
+        
+        "key": "Ankeny, IA > Rialto, CA",
+        "value": 10
+    },
+    {
+        "state": "IL",
+        "city": "Morris, IL",
+        
+        "key": "Anoka, MN > Morris, IL",
+        "value": 5
+    },
+    {
+        "state": "CA",
+        "city": "Moreno Valley, CA",
+        
+        "key": "Anthony, TX > Moreno Valley, CA",
+        "value": 1
+    },
+    {
+        "state": "MO",
+        "city": "Ofallon, MO",
+        
+        "key": "Anthony, TX > Ofallon, MO",
+        "value": 12
+    },
+    {
+        "state": "TX",
+        "city": "Rosenberg, TX",
+        
+        "key": "Anthony, TX > Rosenberg, TX",
+        "value": 7
+    },
+    {
+        "state": "WI",
+        "city": "Appleton, WI",
+        
+        "key": "Antigo, WI > Appleton, WI",
+        "value": 2
+    },
+    {
+        "state": "WI",
+        "city": "Neenah, WI",
+        
+        "key": "Antigo, WI > Neenah, WI",
+        "value": 1
+    },
+    {
+        "state": "IN",
+        "city": "Indianapolis, IN",
+        
+        "key": "Antioch, IL > Indianapolis, IN",
+        "value": 2
+    },
+    {
+        "state": "PA",
+        "city": "Taylor, PA",
+        
+        "key": "Antioch, IL > Taylor, PA",
+        "value": 106
+    },
+    {
+        "state": "TX",
+        "city": "Dallas, TX",
+        
+        "key": "Antioch, TN > Dallas, TX",
+        "value": 26
+    },
+    {
+        "state": "CA",
+        "city": "Lancaster, CA",
+        
+        "key": "Apopka, FL > Lancaster, CA",
+        "value": 34
+    },
+    {
+        "state": "NY",
+        "city": "Liverpool, NY",
+        
+        "key": "Apopka, FL > Liverpool, NY",
+        "value": 6
+    },
+    {
+        "state": "MI",
+        "city": "Waterford, MI",
+        
+        "key": "Apopka, FL > Waterford, MI",
+        "value": 3
+    },
+    {
+        "state": "OR",
+        "city": "Wilsonville, OR",
+        
+        "key": "Apopka, FL > Wilsonville, OR",
+        "value": 31
+    },
+    {
+        "state": "CA",
+        "city": "Woodland, CA",
+        
+        "key": "Apopka, FL > Woodland, CA",
+        "value": 22
+    },
+    {
+        "state": "CA",
+        "city": "Apple Valley, CA",
+        
+        "key": "Apple Valley, CA > Apple Valley, CA",
+        "value": 117
+    },
+    {
+        "state": "CA",
+        "city": "Apple Valley, CA",
+        
+        "key": "Apple Valley, CA > Apple Valley, CA",
+        "value": 184
+    },
+    {
+        "state": "DE",
+        "city": "Dover, DE",
+        
+        "key": "Apple Valley, CA > Dover, DE",
+        "value": 11
+    },
+    {
+        "state": "PA",
+        "city": "Pottstown, PA",
+        
+        "key": "Apple Valley, CA > Pottstown, PA",
+        "value": 2
+    },
+    {
+        "state": "IN",
+        "city": "Greenwood, IN",
+        
+        "key": "Appleton, WI > Greenwood, IN",
+        "value": 3
+    },
+    {
+        "state": "OH",
+        "city": "Hinckley, OH",
+        
+        "key": "Appleton, WI > Hinckley, OH",
+        "value": 1
+    },
+    {
+        "state": "MI",
+        "city": "Kalamazoo, MI",
+        
+        "key": "Appleton, WI > Kalamazoo, MI",
+        "value": 1
+    },
+    {
+        "state": "CA",
+        "city": "City Of Industry, CA",
+        
+        "key": "Arbuckle, CA > City Of Industry, CA",
+        "value": 3
+    },
+    {
+        "state": "AZ",
+        "city": "Buckeye, AZ",
+        
+        "key": "Archbold, OH > Buckeye, AZ",
+        "value": 5
+    },
+    {
+        "state": "GA",
+        "city": "Buford, GA",
+        
+        "key": "Archbold, OH > Buford, GA",
+        "value": 4
+    },
+    {
+        "state": "GA",
+        "city": "Buford, GA",
+        
+        "key": "Archbold, OH > Buford, GA",
+        "value": 9
+    },
+    {
+        "state": "OR",
+        "city": "Hermiston, OR",
+        
+        "key": "Archbold, OH > Hermiston, OR",
+        "value": 8
+    },
+    {
+        "state": "NC",
+        "city": "Hope Mills, NC",
+        
+        "key": "Archbold, OH > Hope Mills, NC",
+        "value": 1
+    },
+    {
+        "state": "WI",
+        "city": "Menomonie, WI",
+        
+        "key": "Archbold, OH > Menomonie, WI",
+        "value": 2
+    },
+    {
+        "state": "TN",
+        "city": "Midway, TN",
+        
+        "key": "Archbold, OH > Midway, TN",
+        "value": 1
+    },
+    {
+        "state": "IA",
+        "city": "Mount Pleasant, IA",
+        
+        "key": "Archbold, OH > Mount Pleasant, IA",
+        "value": 1
+    },
+    {
+        "state": "PA",
+        "city": "Newville, PA",
+        
+        "key": "Archbold, OH > Newville, PA",
+        "value": 10
+    },
+    {
+        "state": "PA",
+        "city": "Newville, PA",
+        
+        "key": "Archbold, OH > Newville, PA",
+        "value": 1
+    },
+    {
+        "state": "FL",
+        "city": "Orlando, FL",
+        
+        "key": "Archbold, OH > Orlando, FL",
+        "value": 1
+    },
+    {
+        "state": "TX",
+        "city": "Palestine, TX",
+        
+        "key": "Archbold, OH > Palestine, TX",
+        "value": 1
+    },
+    {
+        "state": "MO",
+        "city": "Saint James, MO",
+        
+        "key": "Archbold, OH > Saint James, MO",
+        "value": 1
+    },
+    {
+        "state": "TX",
+        "city": "Sanger, TX",
+        
+        "key": "Archbold, OH > Sanger, TX",
+        "value": 6
+    },
+    {
+        "state": "PA",
+        "city": "Tobyhanna, PA",
+        
+        "key": "Archbold, OH > Tobyhanna, PA",
+        "value": 5
+    },
+    {
+        "state": "PA",
+        "shipper_keys.delivery_city_state": {
+            "value": "Allentown,, PA",
+            "filterable_value": "\"Allentown,, PA\""
+        },
+        
+        "shipper_keys.key_city_state": {
+            "value": "Archdale, NC > Allentown,, PA",
+            "filterable_value": "\"Archdale, NC > Allentown,, PA\""
+        },
+        "value": 4
+    },
+    {
+        "state": "FL",
+        "city": "Brooksville, FL",
+        
+        "key": "Archer, FL > Brooksville, FL",
+        "value": 1
+    },
+    {
+        "state": "TX",
+        "city": "Austin, TX",
+        
+        "key": "Arlington, TX > Austin, TX",
+        "value": 35
+    },
+    {
+        "state": "TX",
+        "city": "El Paso, TX",
+        
+        "key": "Arlington, TX > El Paso, TX",
+        "value": 8
+    },
+    {
+        "state": "TX",
+        "city": "Houston, TX",
+        
+        "key": "Arlington, TX > Houston, TX",
+        "value": 27
+    },
+    {
+        "state": "TX",
+        "city": "Odessa, TX",
+        
+        "key": "Arlington, TX > Odessa, TX",
+        "value": 13
+    },
+    {
+        "state": "TX",
+        "city": "Pecos, TX",
+        
+        "key": "Arlington, TX > Pecos, TX",
+        "value": 8
+    },
+    {
+        "state": "TX",
+        "city": "San Antonio, TX",
+        
+        "key": "Arlington, TX > San Antonio, TX",
+        "value": 48
+    },
+    {
+        "state": "TX",
+        "city": "Tyler, TX",
+        
+        "key": "Arlington, TX > Tyler, TX",
+        "value": 9
+    },
+    {
+        "state": "TX",
+        "city": "Houston, TX",
+        
+        "key": "Arnold, MO > Houston, TX",
+        "value": 63
+    },
+    {
+        "state": "GA",
+        "city": "Villa Rica, GA",
+        
+        "key": "Arnoldsville, GA > Villa Rica, GA",
+        "value": 23
+    },
+    {
+        "state": "PA",
+        "city": "Denver, PA",
+        
+        "key": "Ashaway, RI > Denver, PA",
+        "value": 41
+    },
+    {
+        "state": "PA",
+        "city": "Greencastle, PA",
+        
+        "key": "Ashaway, RI > Greencastle, PA",
+        "value": 12
+    },
+    {
+        "state": "PA",
+        "city": "Harrisburg, PA",
+        
+        "key": "Ashaway, RI > Harrisburg, PA",
+        "value": 16
+    },
+    {
+        "state": "FL",
+        "city": "Alachua, FL",
+        
+        "key": "Asheboro, NC > Alachua, FL",
+        "value": 5
+    },
+    {
+        "state": "WI",
+        "city": "Beaver Dam, WI",
+        
+        "key": "Asheboro, NC > Beaver Dam, WI",
+        "value": 1
+    },
+    {
+        "state": "FL",
+        "city": "Brooksville, FL",
+        
+        "key": "Asheboro, NC > Brooksville, FL",
+        "value": 1
+    },
+    {
+        "state": "NC",
+        "city": "Concord, NC",
+        
+        "key": "Asheboro, NC > Concord, NC",
+        "value": 7
+    },
+    {
+        "state": "GA",
+        "city": "Conley, GA",
+        
+        "key": "Asheboro, NC > Conley, GA",
+        "value": 18
+    },
+    {
+        "state": "AL",
+        "city": "Cullman, AL",
+        
+        "key": "Asheboro, NC > Cullman, AL",
+        "value": 14
+    },
+    {
+        "state": "FL",
+        "city": "Fort Pierce, FL",
+        
+        "key": "Asheboro, NC > Fort Pierce, FL",
+        "value": 68
+    },
+    {
+        "state": "OH",
+        "city": "Grove City, OH",
+        
+        "key": "Asheboro, NC > Grove City, OH",
+        "value": 1
+    },
+    {
+        "state": "NC",
+        "city": "Hope Mills, NC",
+        
+        "key": "Asheboro, NC > Hope Mills, NC",
+        "value": 2
+    },
+    {
+        "state": "GA",
+        "city": "Lagrange, GA",
+        
+        "key": "Asheboro, NC > Lagrange, GA",
+        "value": 21
+    },
+    {
+        "state": "CO",
+        "city": "Loveland, CO",
+        
+        "key": "Asheboro, NC > Loveland, CO",
+        "value": 1
+    },
+    {
+        "state": "OH",
+        "city": "Minster, OH",
+        
+        "key": "Asheboro, NC > Minster, OH",
+        "value": 7
+    },
+    {
+        "state": "IA",
+        "city": "Mount Pleasant, IA",
+        
+        "key": "Asheboro, NC > Mount Pleasant, IA",
+        "value": 33
+    },
+    {
+        "state": "OH",
+        "city": "North Canton, OH",
+        
+        "key": "Asheboro, NC > North Canton, OH",
+        "value": 2
+    },
+    {
+        "state": "TX",
+        "city": "Palestine, TX",
+        
+        "key": "Asheboro, NC > Palestine, TX",
+        "value": 6
+    },
+    {
+        "state": "MO",
+        "city": "Saint James, MO",
+        
+        "key": "Asheboro, NC > Saint James, MO",
+        "value": 6
+    },
+    {
+        "state": "NC",
+        "city": "Shelby, NC",
+        
+        "key": "Asheboro, NC > Shelby, NC",
+        "value": 4
+    },
+    {
+        "state": "DE",
+        "city": "Smyrna, DE",
+        
+        "key": "Asheboro, NC > Smyrna, DE",
+        "value": 1
+    },
+    {
+        "state": "NC",
+        "city": "Spring Hope, NC",
+        
+        "key": "Asheboro, NC > Spring Hope, NC",
+        "value": 2
+    },
+    {
+        "state": "VA",
+        "city": "Weyers Cave, VA",
+        
+        "key": "Asheboro, NC > Weyers Cave, VA",
+        "value": 1
+    },
+    {
+        "state": "AL",
+        "city": "Calera, AL",
+        
+        "key": "Ashland City, TN > Calera, AL",
+        "value": 7
+    },
+    {
+        "state": "IL",
+        "city": "Northlake, IL",
+        
+        "key": "Ashland City, TN > Northlake, IL",
+        "value": 1
+    },
+    {
+        "state": "GA",
+        "city": "Carrollton, GA",
+        
+        "key": "Ashland, OH > Carrollton, GA",
+        "value": 2
+    },
+    {
+        "state": "NC",
+        "city": "Hope Mills, NC",
+        
+        "key": "Ashland, OH > Hope Mills, NC",
+        "value": 141
+    },
+    {
+        "state": "PA",
+        "city": "Hazleton, PA",
+        
+        "key": "Ashley, PA > Hazleton, PA",
+        "value": 8
+    },
+    {
+        "state": "PA",
+        "city": "Pittston, PA",
+        
+        "key": "Ashley, PA > Pittston, PA",
+        "value": 1
+    },
+    {
+        "state": "PA",
+        "city": "Taylor, PA",
+        
+        "key": "Ashley, PA > Taylor, PA",
+        "value": 2
+    },
+    {
+        "state": "FL",
+        "city": "Haines City, FL",
+        
+        "key": "Ashton, IL > Haines City, FL",
+        "value": 23
+    },
+    {
+        "state": "WI",
+        "city": "Oak Creek, WI",
+        
+        "key": "Ashton, IL > Oak Creek, WI",
+        "value": 1
+    },
+    {
+        "state": "IN",
+        "city": "Valparaiso, IN",
+        
+        "key": "Ashton, IL > Valparaiso, IN",
+        "value": 1
+    },
+    {
+        "state": "MD",
+        "city": "Frederick, MD",
+        
+        "key": "Aspers, PA > Frederick, MD",
+        "value": 1
+    },
+    {
+        "state": "GA",
+        "city": "Jefferson, GA",
+        
+        "key": "Aspers, PA > Jefferson, GA",
+        "value": 2
+    },
+    {
+        "state": "VA",
+        "city": "Petersburg, VA",
+        
+        "key": "Aspers, PA > Petersburg, VA",
+        "value": 2
+    },
+    {
+        "state": "FL",
+        "city": "Royal Palm Beach, FL",
+        
+        "key": "Aspers, PA > Royal Palm Beach, FL",
+        "value": 19
+    },
+    {
+        "state": "MI",
+        "city": "Webberville, MI",
+        
+        "key": "Aspers, PA > Webberville, MI",
+        "value": 50
+    },
+    {
+        "state": "RI",
+        "city": "North Smithfield, RI",
+        
+        "key": "Aston, PA > North Smithfield, RI",
+        "value": 25
+    },
+    {
+        "state": "TX",
+        "city": "Huntsville, TX",
+        
+        "key": "Athens, GA > Huntsville, TX",
+        "value": 2
+    },
+    {
+        "state": "AR",
+        "city": "Bentonville, AR",
+        
+        "key": "Athens, TX > Bentonville, AR",
+        "value": 5
+    },
+    {
+        "state": "AR",
+        "city": "Clarksville, AR",
+        
+        "key": "Athens, TX > Clarksville, AR",
+        "value": 2
+    },
+    {
+        "state": "TX",
+        "city": "Cleburne, TX",
+        
+        "key": "Athens, TX > Cleburne, TX",
+        "value": 2
+    },
+    {
+        "state": "TX",
+        "city": "Desoto, TX",
+        
+        "key": "Athens, TX > Desoto, TX",
+        "value": 49
+    },
+    {
+        "state": "OK",
+        "city": "Pauls Valley, OK",
+        
+        "key": "Athens, TX > Pauls Valley, OK",
+        "value": 1
+    },
+    {
+        "state": "PA",
+        "city": "Taylor, PA",
+        
+        "key": "Athens, TX > Taylor, PA",
+        "value": 6
+    },
+    {
+        "state": "LA",
+        "city": "Baton Rouge, LA",
+        
+        "key": "Atlanta , GA > Baton Rouge, LA",
+        "value": 9
+    },
+    {
+        "state": "AL",
+        "city": "Bessemer, AL",
+        
+        "key": "Atlanta , GA > Bessemer, AL",
+        "value": 19
+    },
+    {
+        "state": "FL",
+        "city": "Alachua, FL",
+        
+        "key": "Atlanta, GA > Alachua, FL",
+        "value": 4
+    },
+    {
+        "state": "AL",
+        "city": "Anniston, AL",
+        
+        "key": "Atlanta, GA > Anniston, AL",
+        "value": 6
+    },
+    {
+        "state": "CA",
+        "city": "Apple Valley, CA",
+        
+        "key": "Atlanta, GA > Apple Valley, CA",
+        "value": 9
+    },
+    {
+        "state": "GA",
+        "city": "Atlanta, GA",
+        
+        "key": "Atlanta, GA > Atlanta, GA",
+        "value": 9
+    },
+    {
+        "state": "GA",
+        "city": "Atlanta, GA",
+        
+        "key": "Atlanta, GA > Atlanta, GA",
+        "value": 6
+    },
+    {
+        "state": "GA",
+        "city": "Austell, GA",
+        
+        "key": "Atlanta, GA > Austell, GA",
+        "value": 53
+    },
+    {
+        "state": "SC",
+        "city": "Beech Island, SC",
+        
+        "key": "Atlanta, GA > Beech Island, SC",
+        "value": 2
+    },
+    {
+        "state": "AL",
+        "city": "Birmingham, AL",
+        
+        "key": "Atlanta, GA > Birmingham, AL",
+        "value": 45
+    },
+    {
+        "state": "KY",
+        "city": "Bowling Green, KY",
+        
+        "key": "Atlanta, GA > Bowling Green, KY",
+        "value": 236
+    }
+]

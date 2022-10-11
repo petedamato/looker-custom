@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+        <style>
+          @font-face {
+                font-family: Roboto;
+                font-weight: 300;
+                font-style: normal;
+                src: url('https://static-a.lookercdn.com/fonts/vendor/roboto/Roboto-Light-d6f2f0b9bd.woff') format('woff'),url('/fonts/vendor/roboto/Roboto-Light-d6f2f0b9bd.woff') format('woff');
+            }
+            @font-face { font-family: Roboto; font-weight: 400; font-style: normal;
+                src: url('https://static-b.lookercdn.com/fonts/vendor/roboto/Roboto-Regular-5997dd0407.woff') format('woff'),url('/fonts/vendor/roboto/Roboto-Regular-5997dd0407.woff') format('woff');
+            }
+                @font-face { font-family: Roboto; font-weight: 500; font-style: normal;
+                src: url('https://static-b.lookercdn.com/fonts/vendor/roboto/Roboto-Medium-e153a64ccc.woff') format('woff'),url('/fonts/vendor/roboto/Roboto-Medium-e153a64ccc.woff') format('woff');
+            }
+            @font-face { font-family: Roboto; font-weight: 700; font-style: normal;
+                src: url('https://static-b.lookercdn.com/fonts/vendor/roboto/Roboto-Bold-d919b27e93.woff') format('woff'),url('/fonts/vendor/roboto/Roboto-Bold-d919b27e93.woff') format('woff');
+            }
+            tr:first-child {
+              font-weight:500
+            }
+            body {
+                font-family: 'Roboto';
+            }
+
+            text {
+                font-family: 'Roboto';
+            }
+            .domain {
+                display: none;
+            }
+            .gridline {
+                stroke: rgb(230, 230, 230);
+                shape-rendering: crispEdges;
+                stroke-opacity: .1;
+            }
+            .gridline2{
+                stroke: white;
+                shape-rendering: crispEdges;
+                stroke-opacity: 1;
+            }
+            #viz-container {
+              z-index: 9;
+              position: relative;
+              background-color: none;
+              border: 1px solid #d3d3d3;
+              text-align: center;
+              width: 600px;
+              height: 360px;
+            }
+            #dimension-header {
+                font-size: 12px;
+            }
+            .value-headers {
+                font-size: 12px;
+            }
+            .value-headers-body {
+                font-weight: 500;
+            }
+            #viz {
+              font-family: 'Open Sans', 'Helvetica', 'sans-serif';
+              cursor: move;
+              z-index: 10;
+              background-color: none;
+              color: #fff;
+              height: 100%;
+              width: 100%;
+              fill: black;
+              color: black;
+            }
+
+            .line {
+              fill: none;
+              stroke-width: 2px;
+            }
+
+            /* ---Cheryl's Stuff: Start--- */
+
+            .axis-label {
+              fill: #3a4245;
+              font-size: 12px;
+              font-family: 'Open Sans', 'Helvetica', 'sans-serif';
+              text-anchor: middle;
+            }
+
+            .y-axis, .x-axis {
+              font-family: 'Open Sans', 'Helvetica', 'sans-serif';
+            }
+              .tooltip {
+                box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 2px 6px 2px;
+                font-size: 11px;
+                pointer-events: none;
+              }
+              .tooltip h1 {
+                font-size: 11px;
+                color: #c3c3c3;
+                text-transform: uppercase;
+              }
+            .x-axis .domain {
+              stroke: #ccd6eb;
+              stroke-width: 1;
+            }
+
+            .zero-line {
+              stroke: #ccd6eb;
+              stroke-width: 1.0;
+            }
+
+            .y-axis .domain {
+              stroke: none;
+            }
+
+            .x-axis text, .y-axis text {
+              font-size: 12px;
+              color: #3a4245;
+              visibility: visible;
+            }
+
+            .x-axis text .hide, .y-axis text .hide {
+              visibility: hidden;
+            }
+
+            .x-axis line, .y-axis line {
+              stroke: #e6e6e6;
+              stroke-width: 1;
+              opacity: 1;
+            }
+
+            .x-axis line .hide, .y-axis line .hide {
+              opacity: 0;
+            }
+
+            /* ---Cheryl's Stuff: End--- */
+
+            .axis text {
+              /* fill: green;  */
+              font-size: 12px;
+            }
+
+                        /* design */
+            table {
+               overflow-y:scroll;
+               height:100%;
+               font-size: 14px;
+               display:block;}
+            th {
+                background: #a9a9a9;
+                padding: 4px 0;
+            }
+            .tooltip {
+                color: white;
+                /*box-shadow: 2px 2px 5px;*/
+            }
+            tr:nth-child(even) { background: #EEE; }
+              .value-down {
+                color: #D76106;
+                font-weight:500;
+                                display:flex;
+                justify-content: center;
+              }
+              .value-up {
+                color: #0072b5;
+                font-weight:500;
+                                display:flex;
+                justify-content: center;
+              }
+              .change-figure {
+                line-height: 36px;
+              }
+            .first-svg {
+                height: 50px!important;
+                width: 120px!important;
+            }
+            .second-svg {
+                height: 50px!important;
+                width: 120px!important;
+            }
+            #menu-options p {
+                font-weight: 500;
+            }
+            #vis-options-container {
+                display: flex;
+                margin: 12px 8px 4px;
+            }
+            #vis-options-container p {
+                font-size: 14px;
+                margin: 0 4px 0 0;
+            }
+            .backdrop {
+                opacity: .5;
+            }
+            .resizer {
+                /* All resizers are positioned absolutely inside the element */
+                background-color: grey;
+                position: absolute;
+            }
+
+
+            /* Placed at the right side */
+            .resizer-r {
+                cursor: col-resize;
+                height: 100%;
+                right: 0;
+                top: 0;
+                width: 2px;
+            }
+
+            /* Placed at the bottom side */
+            .resizer-b {
+                bottom: 0;
+                cursor: row-resize;
+                height: 2px;
+                left: 0;
+                width: 100%;
+            }
+
+        </style>
+        <script
+          src="https://code.jquery.com/jquery-3.6.0.min.js"
+          integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+          crossorigin="anonymous"></script>
+        <meta charset="utf-8"/>
+        <!-- <link rel="stylesheet" href="./styles.css"></link> -->
+        <title>My Template Plot</title>
+        </head>
+        <body>
+
+            <script src="https://d3js.org/d3.v5.min.js"></script>
+            <!-- <script src="lodash.js"></script> -->
+
+            <h2 class = "title">
+                Looker Sandbox
+            </h2>
+
+            <div id="container-container">
+
+            <div id="viz-container">
+                <div class="resizer resizer-r"></div>
+                <div class="resizer resizer-b"></div>
+                <div id="vis">
+<!--                     <div id="vis-options-container"><p>Haul length category: </p>
+                        <select name="vis-options" id="vis-options">
+                        </select>
+                    </div> -->
+                  <svg></svg>
+                  <!-- <div class="tooltip"></div> -->
+                </div>
+
+                
+            </div>
+        </div>
+            <script src="./template2.js"></script>
+        </body>
+</html>

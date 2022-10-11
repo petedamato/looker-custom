@@ -324,14 +324,16 @@ export const object = {
 
     // this.trigger('registerOptions', options)
 
+    console.log(queryResponse, data)
 
 
     // Custom error handling
-    if (queryResponse.fields.dimension_like.length != 1 || queryResponse.fields.measure_like.length != 1 || queryResponse.fields.pivots.length != 1) {
-      $('#vis').contents(':not(style)').remove();
-      const error = '<div class="error-container"><div class="error-header">Incorrect data inputs</div><div class="error">Heatmap requires one dimension, one measure and one pivot.</div></div>'
-      $('#vis').append(error);
-    } else if ((config.color_palette == "gradient" && config.breakpoints.split(",").length > 8) || (config.color_palette == "sequential" && config.breakpoints.split(",").length > 5)) {
+    // if (queryResponse.fields.dimension_like.length != 1 || queryResponse.fields.measure_like.length != 1 || queryResponse.fields.pivots.length != 1) {
+    //   $('#vis').contents(':not(style)').remove();
+    //   const error = '<div class="error-container"><div class="error-header">Incorrect data inputs</div><div class="error">Heatmap requires one dimension, one measure and one pivot.</div></div>'
+    //   $('#vis').append(error);
+    // } else 
+    if ((config.color_palette == "gradient" && config.breakpoints.split(",").length > 8) || (config.color_palette == "sequential" && config.breakpoints.split(",").length > 5)) {
       $('#vis').contents(':not(style)').remove();
       const error = '<div class="error-container"><div class="error-header">Too many buckets</div><div class="error">The gradient palette can manage 8 bins while the sequential palette manages 5 bins.</div></div>'
       $('#vis').append(error);
@@ -356,6 +358,7 @@ export const object = {
         } else {
             let return_array = []
             data.forEach((entry) =>{
+              console.log(entry, dimensions)
               return_array.push(entry[dimensions[0].name].value)
             })
             formatRead = return_array
@@ -797,7 +800,6 @@ export const object = {
         }
 
         if (config.label_left.length > 0) {
-          console.log(config.label_left, highest)
           var xOffset = ( (highest * 4.8)/2 + margin.right + (+config.label_left) ) * -1
           leftLabel.attr('y', xOffset)
         }

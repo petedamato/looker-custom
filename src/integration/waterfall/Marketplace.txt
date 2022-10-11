@@ -1,0 +1,2411 @@
+#connection: "snowflake"
+include: "../views/*"
+include: "../models/datagroups.model"
+include: "../../lookml_dashboards/*.dashboard.lookml"  # include all dashboards in this project
+include: "../explores/*"
+include: "../ironheart_poc/*"
+persist_for: "30 minutes"
+
+label: "Marketplace"
+
+include: "/key_market_areas.map"
+
+
+# EXPLORES -----------------------------------------------------------------------------------------------------------------------
+#
+#   List of Explores defined in this model file
+#
+#   Carrier Assignments
+#   Carriers
+#   Shipments
+#   Shipment Stops
+#   Tasks
+#   Shipper Rates
+#   Shipment Issues
+#   Carrier Experience Assignments
+#   Accessorials
+#   Dates
+#   Notes
+#   Shipment State Transitions
+#   RFP Quotes
+#   Carrier Contract Lanes
+#   DAT API Rates
+#   SMS Messages
+#   Netsuite Invoices
+#   Netsuite Bills
+
+# # # # #
+#
+# CUSTOMER HEALTH --------------------------------------------------------------------------------------------------------------
+#
+#
+
+explore: customer_health_scores {
+  label: "Customer Health Scores"
+  from: customer_health_scores_shipper_dates
+  view_label: "Dates"
+
+  join: shipper_applications {
+    view_label: "Shipper"
+    fields: [shipper_applications.id, shipper_applications.name]
+    type: inner
+    relationship: many_to_one
+    sql_on: ${shipper_applications.id}=${customer_health_scores.shipper_id} ;;
+  }
+
+  join: customer_health_scores_shipments_agg {
+    view_label: "Shipments Summary"
+    type: left_outer
+    relationship: one_to_one
+    sql_on:
+      ${customer_health_scores_shipments_agg.shipper_id} = ${customer_health_scores.shipper_id} and
+      ${customer_health_scores_shipments_agg.left_date} = ${customer_health_scores.date_date} ;;
+  }
+
+  join: customer_health_scores_shipper_rates_agg {
+    view_label: "Contract Summary"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${customer_health_scores.shipper_id} = ${customer_health_scores_shipper_rates_agg.shipper_id}
+      and ${customer_health_scores.date_date} = ${customer_health_scores_shipper_rates_agg.date_date};;
+  }
+}
+
+
+# # # # #
+#
+# LANE ACQUISITION STRATEGY --------------------------------------------------------------------------------------------------------------
+#
+#
+
+explore: lane_acquisition_strategy {
+  from: core_carriers
+  label: "Lane Acquisition Strategy | Core Carriers"
+  description: "Houses data related to LAS and Core Carrier categories: Core, Repeat, Transactional"
+
+  join: previously_dense_lane {
+    view_label: "Previously Dense Lane"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${lane_acquisition_strategy.lane_key} = ${previously_dense_lane.lane_key} ;;
+  }
+}
+
+
+# # # # #
+#
+# LOAD CHAINING --------------------------------------------------------------------------------------------------------------
+#
+#
+
+explore: shipment_chaining {
+  label: "Chaining Opportunities"
+  description: "Houses data related to load chaining"
+  view_label: "First Chain"
+
+  join:second_chain  {
+    from: shipment_chaining
+    view_label: "Second Chain"
+    type: inner
+    relationship: one_to_many
+    sql_on: ${second_chain.pickup_latitude}<= ${shipment_chaining.delivery_lat_plus_50} AND ${second_chain.pickup_latitude}>= ${shipment_chaining.delivery_lat_minus_50}
+              AND ${second_chain.pickup_longitude}<= ${shipment_chaining.delivery_lon_plus_50} AND ${second_chain.pickup_longitude}>= ${shipment_chaining.delivery_lon_minus_50}
+              AND ${shipment_chaining.delivery_appointment_end_date}=${second_chain.pickup_appointment_end_date}
+              AND ${second_chain.id} != ${shipment_chaining.id};;
+  }
+  join: first_lane_rate_30_agg {
+    from:  shipments_lane_assigned_date_agg
+    view_label: "Historical Lane Haul Rate|30 days|1st Leg"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: datediff('days',${first_lane_rate_30_agg.assigned_date},${shipment_chaining.assigned_date})<=30
+              AND datediff('days',${first_lane_rate_30_agg.assigned_date},${shipment_chaining.assigned_date})>=0
+              AND ${first_lane_rate_30_agg.lane_city_state} = ${shipment_chaining.lane_city_state};;
+  }
+  join: second_lane_rate_30_agg {
+    from:  shipments_lane_assigned_date_agg
+    view_label: "Historical Lane Haul Rate|30 days|2nd Leg"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: datediff('days',${second_lane_rate_30_agg.assigned_date},${second_chain.assigned_date})<=30
+              AND datediff('days',${second_lane_rate_30_agg.assigned_date},${second_chain.assigned_date})>=0
+              AND ${second_lane_rate_30_agg.lane_city_state} = ${second_chain.lane_city_state};;
+  }
+  join: first_shipments {
+    from:  shipments
+    fields: [first_shipments.carrier_rate,first_shipments.carrier_rate_sum]
+    view_label: "First Shipment Info"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipment_chaining.id}=${first_shipments.id} ;;
+  }
+  join: second_shipments {
+    from:  shipments
+    fields: [second_shipments.carrier_rate,second_shipments.carrier_rate_sum]
+    view_label: "Second Shipment Info"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${second_chain.id}=${second_shipments.id} ;;
+  }
+  # PICKUP RELATED FOR SECOND CHAIN
+  join: second_chain_pickup {
+    # Only join first pickup
+    fields: []
+    view_label: "Second Chain | Pickup"
+    from: shipment_stops
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${second_chain_pickup.shipment_id}=${second_shipments.id} and ${second_chain_pickup.is_first_stop} and ${second_chain_pickup.deprecated_time} is null ;;
+  }
+  join: second_chain_pickup_appointment {
+    view_label: "Second Chain | Pickup Appointment"
+    from: shipment_stop_appointments
+    fields: [second_chain_pickup_appointment.is_first_come_first_serve]
+    type: inner
+    relationship: one_to_one
+    sql_on: ${second_chain_pickup_appointment.shipment_stop_id}=${second_chain_pickup.id} and NOT ${second_chain_pickup_appointment.is_rescheduled} ;;
+  }
+  # DELIVERY RELATED FOR FIRST CHAIN
+  join: first_chain_last_delivery {
+    # Only join last delivery
+    fields: []
+    view_label: "First Chain | Delivery"
+    from: shipment_stops
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${first_chain_last_delivery.shipment_id}=${shipment_chaining.id} and ${first_chain_last_delivery.is_last_stop} and ${first_chain_last_delivery.deprecated_time} is null ;;
+  }
+  join: first_chain_last_delivery_appointment {
+    view_label: "First Chain | Delivery Appointment"
+    from: shipment_stop_appointments
+    fields: [first_chain_last_delivery_appointment.is_first_come_first_serve]
+    type: inner
+    relationship: one_to_one
+    sql_on: ${first_chain_last_delivery_appointment.shipment_stop_id}=${first_chain_last_delivery.id} and NOT ${first_chain_last_delivery_appointment.is_rescheduled} ;;
+  }
+}
+
+
+
+# # # # #
+#
+# TASKS ---------------------------------------------------------------------------------------------------------------------------
+#
+
+explore: tasks {
+  label: "Tasks"
+  description: "To be used for analysis and visualization of tasks"
+  always_filter: {
+    filters: [tasks.is_expired: "No", tasks.is_canceled: "No"]
+  }
+  # Task History
+  join: gamma_ray_task_history {
+    view_label: "Task History"
+    relationship: one_to_many
+    type: left_outer
+    sql_on: ${tasks.id} = ${gamma_ray_task_history.task_id} ;;
+  }
+
+  join: tasks_join_identifiers {
+    fields: []
+    relationship: one_to_one
+    type: inner
+    sql_on: ${tasks_join_identifiers.id}=${tasks.id} ;;
+  }
+
+  join: shipment_stops {
+    view_label: "Shipment Stop"
+    fields: [shipment_stops.is_drop_trailer, shipment_stops.stop_type, shipment_stops.shipment_stop_count]
+    relationship: many_to_one
+    sql_on: ${tasks_join_identifiers.shipment_stop_id} = ${shipment_stops.id} ;;
+  }
+
+  join: reschedule_requests {
+    view_label: "Reschedule Requests"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${shipment_stops.id} = ${reschedule_requests.shipment_stop_id} ;;
+  }
+
+  join: reschedule_request_og_shipment_stop_appt {
+    view_label: "Reschedule Requests"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${reschedule_request_og_shipment_stop_appt.reschedule_request_id} = ${reschedule_requests.id} ;;
+  }
+
+  join: shipments {
+    view_label: "Shipment"
+    fields: [
+      shipments.include_in_company_margin,
+      shipments.include_in_company_revenue,
+      shipments.id,
+      shipments.is_delivered,
+      shipments.is_picked_up,
+      shipments.is_tonu,
+      shipments.shipment_count,
+      shipments.state,
+      shipments.has_claims,
+      shipments.is_tracking_required,
+      shipments.is_tracking_eligible
+    ]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${tasks_join_identifiers.shipment_id} = ${shipments.id} ;;
+  }
+
+  join: auto_checkin_failure_event {
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${tasks_join_identifiers.shipment_id} = ${auto_checkin_failure_event.shipment_id} ;;
+  }
+  join: auto_checkout_failure_event {
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${tasks_join_identifiers.shipment_id} = ${auto_checkout_failure_event.shipment_id} ;;
+  }
+
+  join: auto_dispatch_failure_event {
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${tasks_join_identifiers.shipment_id} = ${auto_dispatch_failure_event.shipment_id} ;;
+  }
+
+  join: auto_eta_failure_event {
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${tasks_join_identifiers.shipment_id} = ${auto_eta_failure_event.shipment_id} ;;
+  }
+
+  join: auto_multiday_eta_failure_event {
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${tasks_join_identifiers.shipment_id} = ${auto_multiday_eta_failure_event.shipment_id};;
+  }
+
+  join: tasks_shipments_agg {
+    view_label: "Shipment"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipments.id} = ${tasks_shipments_agg.shipment_id} ;;
+  }
+
+  join: shipment_shipment_stop_appointments_agg {
+    view_label: "Shipment Stop Summary"
+    fields: [shipment_shipment_stop_appointments_agg.has_rolled,
+      shipment_shipment_stop_appointments_agg.shipments_rolled_count,
+      shipment_shipment_stop_appointments_agg.delivery_on_time_percent,
+      shipment_shipment_stop_appointments_agg.pickup_on_time_percent,
+      shipment_shipment_stop_appointments_agg.delivery_weighted_on_time_percent,
+      shipment_shipment_stop_appointments_agg.pickup_weighted_on_time_percent]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipment_shipment_stop_appointments_agg.shipment_id} = ${shipments.id} ;;
+  }
+  join: shipment_current_assignment {
+    view_label: "Shipment Assigned"
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipment_current_assignment.shipment_id}=${shipments.id} ;;
+  }
+
+  join: carrier_applications {
+    view_label: "Carrier"
+    fields: [carrier_applications.dba_name]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${shipments.carrier_application_id} = ${carrier_applications.id};;
+  }
+
+  join: shipment_driver_unresponsive_counts {
+    view_label: "Driver Unresponsiveness"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${shipment_driver_unresponsive_counts.shipment_id}=${shipments.id} and ${shipment_driver_unresponsive_counts.driver_id}=${shipments.driver_id} ;;
+  }
+  # PICKUP
+  join: first_pickup {
+    # Only join first pickup
+    view_label: "Pickup"
+    from: shipment_stops
+    fields: []
+    type: inner
+    relationship: one_to_one
+    sql_on: ${first_pickup.shipment_id}=${shipments.id} and ${first_pickup.is_first_stop} and ${first_pickup.deprecated_time} is null ;;
+  }
+  join: first_pickup_appointment {
+    view_label: "Pickup Appointment"
+    from: shipment_stop_appointments
+    fields: [first_pickup_appointment.start_date, first_pickup_appointment.start_day_of_week_index, first_pickup_appointment.status, first_pickup_appointment.is_non_business_hours, first_pickup_appointment.is_work_in]
+    type: inner
+    relationship: one_to_one
+    sql_on: ${first_pickup_appointment.shipment_stop_id}=${first_pickup.id} and NOT ${first_pickup_appointment.is_rescheduled} ;;
+  }
+  join: first_pickup_region {
+    view_label: "Pickup Region"
+    from: lk_regions
+    fields: [first_pickup_region.name]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${first_pickup_region.state_code}=${first_pickup.state_code} ;;
+  }
+
+
+  # DELIVERY
+  join: last_delivery {
+    # Only join last delivery
+    view_label: "Delivery"
+    from: shipment_stops
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${last_delivery.shipment_id}=${shipments.id} and ${last_delivery.is_last_stop} and ${last_delivery.deprecated_time} is null ;;
+  }
+  join: last_delivery_appointment {
+    view_label: "Delivery Appointment"
+    from: shipment_stop_appointments
+    fields: [last_delivery_appointment.end_date, last_delivery_appointment.is_work_in]
+    type: inner
+    relationship: one_to_one
+    sql_on: ${last_delivery_appointment.shipment_stop_id}=${last_delivery.id} and NOT ${last_delivery_appointment.is_rescheduled} ;;
+  }
+
+  # TRACKING
+  join: shipment_quality_tracking {
+    view_label: "Shipment Quality Tracking"
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipments.id} = ${shipment_quality_tracking.shipment_id} ;;
+  }
+
+  join: shipment_tracking_pings {
+    view_label: "Tracking"
+    fields: [shipment_tracking_pings.is_tracking, shipment_tracking_pings.is_tracking_tracking_required]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipments.id}=${shipment_tracking_pings.shipment_id} ;;
+  }
+
+  join: driver_locations {
+    view_label: "Driver Locations"
+    fields: [driver_locations.source_type]
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${shipments.id} = ${driver_locations.shipment_id} ;;
+  }
+
+  # SHIPPER RELATED
+  join: shipper_applications {
+    view_label: "Shipper Entity"
+    fields: [shipper_applications.name]
+    relationship: many_to_one
+    type: left_outer
+    sql_on: ${shipper_applications.id}=${shipments.shipper_application_id} ;;
+  }
+  join: shipper_parents {
+    view_label: "Shipper Parent"
+    fields: [shipper_parents.parent_shipper_name]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: array_contains(${shipments.shipper_application_id}, ${shipper_parents.shipper_entity_id_array}) ;;
+  }
+  join: shipper_parent_shipment_agg {
+    view_label: "Shipper Parent"
+    type: left_outer
+    fields: [rank]
+    relationship: one_to_one
+    sql_on: ${shipper_parent_shipment_agg.parent_shipper_name}=${shipper_parents.parent_shipper_name} ;;
+  }
+  join: shipper_pod_groups {
+    view_label: "Pod"
+    relationship: many_to_one
+    sql_on: ${shipper_pod_groups.shipper_application_id}=${shipments.shipper_application_id} ;;
+  }
+  join: shipper_kpi_targets {
+    view_label: "Shipper KPI Targets"
+    #fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipper_kpi_targets.shipper_application_id}=${shipper_applications.id} ;;
+  }
+  # USERS
+  join: completed_by {
+    fields: [completed_by.user_type, completed_by.operations_group]
+    from: users
+    relationship: one_to_one
+    sql_on: ${tasks.completed_by_id} = ${completed_by.id};;
+  }
+  join: completed_by_parent {
+    from: user_parents
+    view_label: "Completed By"
+    fields: [completed_by_parent.name, completed_by_parent.is_transfix, completed_by_parent.application_type]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${completed_by_parent.id}=${completed_by.parent_user_id} ;;
+  }
+  join: group_memberships {
+    fields: []
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${group_memberships.member_id} = ${completed_by.id}
+      and ${group_memberships.member_type} = 'User';;
+  }
+  join: groups {
+    view_label: "Completed By POD SMILES Group"
+    fields: [groups.name]
+    type: inner
+    relationship: many_to_one
+    sql_on: ${group_memberships.group_id} = ${groups.id}
+      and ${groups.key} ilike 'pod%smiles';;
+  }
+  join: assigned_to {
+    fields: [assigned_to.operations_group]
+    from: users
+    relationship: one_to_one
+    sql_on: ${tasks.assigned_to_id} = ${assigned_to.id};;
+  }
+  join: assigned_to_parent {
+    from: user_parents
+    view_label: "Assigned To"
+    fields: [assigned_to_parent.name, assigned_to_parent.is_transfix]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${assigned_to_parent.id}=${assigned_to.parent_user_id} ;;
+  }
+  join: group_memberships_assigned {
+    from: group_memberships
+    fields: []
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${group_memberships_assigned.member_id} = ${assigned_to.id}
+      and ${group_memberships_assigned.member_type} = 'User';;
+  }
+  join: groups_assigned {
+    from: groups
+    view_label: "Assigned To POD SMILES Group"
+    fields: [groups_assigned.name]
+    type: inner
+    relationship: many_to_one
+    sql_on: ${group_memberships_assigned.group_id} = ${groups_assigned.id}
+      and ${groups_assigned.key} ilike 'pod%smiles';;
+  }
+  join: old_assignment {
+    fields: []
+    from: users
+    relationship: one_to_one
+    sql_on: ${gamma_ray_task_history.old_assignment} = ${old_assignment.id};;
+  }
+  join: old_assignment_parent {
+    from: user_parents
+    view_label: "Old Assignment"
+    fields: [old_assignment_parent.name, old_assignment_parent.is_transfix]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${old_assignment_parent.id}=${old_assignment.parent_user_id} ;;
+  }
+  join: new_assignment {
+    fields: []
+    from: users
+    relationship: one_to_one
+    sql_on: ${gamma_ray_task_history.new_assignment} = ${new_assignment.id};;
+  }
+  join: new_assignment_parent {
+    from: user_parents
+    view_label: "New Assignment"
+    fields: [new_assignment_parent.name, new_assignment_parent.is_transfix]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${new_assignment_parent.id}=${new_assignment.parent_user_id} ;;
+  }
+  ## ACCESSORIALS
+  join: shipment_accessorials_agg {
+    view_label: "Accessorial Summary"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipment_accessorials_agg.shipment_id}=${shipments.id} ;;
+  }
+
+}
+
+# # # # #
+#
+# SHIPPER RATES INDEX -----------------------------------------------------------------------------------------------------
+#
+
+explore: shipper_rate_index {
+  label: "Shipper Rates Index"
+  description: "Houses norm files for a standard set of lanes. For Pricing Team analysis."
+
+  join: shipper_rate_index_fuel_rates {
+    view_label: "Fuel Rates"
+    fields: [shipper_rate_index_fuel_rates.dot_rpm,
+      shipper_rate_index_fuel_rates.dot_price_per_gallon,
+      shipper_rate_index_fuel_rates.btf_price_per_gallon,
+      shipper_rate_index_fuel_rates.btf_rpm]
+    relationship: many_to_one
+    type: left_outer
+    sql_on:
+        ${shipper_rate_index_fuel_rates.lane_id}=${shipper_rate_index.lane_id} and
+        ${shipper_rate_index_fuel_rates.date_date}=${shipper_rate_index.priced_date} ;;
+  }
+}
+
+# # # # #
+#
+# CARRIER EXPERIENCE ASSIGNMENTS ----------------------------------------------------------------------------------------------
+#
+
+explore: shipment_ce_reps {
+  hidden: yes
+  view_label: "Carrier Experience Assignments"
+  label: "Carrier Experience Assignments"
+  description: "Houses all information related to CE Assignments"
+  fields: [
+    ALL_FIELDS*,
+    -first_pickup.shipment_id,
+    -first_pickup.shipment_count,
+    -first_pickup.shipment_stop_count,
+    -first_pickup.detention_fields*,
+    -first_pickup.confirmation_fields*,
+    -first_pickup.loading_time_hours,
+    -first_pickup.pickup_loading_time_hours_average,
+    -first_pickup.delivery_loading_time_hours_average,
+    -last_delivery.shipment_id,
+    -last_delivery.shipment_count,
+    -last_delivery.shipment_stop_count,
+    -last_delivery.detention_fields*,
+    -last_delivery.confirmation_fields*,
+    -last_delivery.loading_time_hours,
+    -last_delivery.pickup_loading_time_hours_average,
+    -last_delivery.delivery_loading_time_hours_average,
+  ]
+  sql_always_where: ${deprecated_raw} is null ;;
+
+  join: carrier_experience_rep {
+    from: users
+    fields: [carrier_experience_rep.operations_group]
+    type: inner
+    relationship: many_to_one
+    sql_on: ${shipment_ce_reps.ce_rep_id}=${carrier_experience_rep.id} ;;
+  }
+  join: carrier_experience_rep_parent {
+    from: user_parents
+    view_label: "Carrier Experience Rep"
+    fields: [carrier_experience_rep_parent.name]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${carrier_experience_rep_parent.id}=${carrier_experience_rep.parent_user_id} ;;
+  }
+
+
+  join: shipments {
+    type: inner
+    fields:
+    [
+      shipments.include_in_company_margin, shipments.include_in_company_revenue,
+      shipments.state, shipments.is_covered, shipments.is_tonu
+    ]
+    relationship: many_to_one
+    sql_on: ${shipments.id}=${shipment_ce_reps.shipment_id} ;;
+  }
+  join: shipment_current_assignment {
+    view_label: "Shipment Assigned"
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipment_current_assignment.shipment_id}=${shipments.id} ;;
+  }
+  # PICKUP RELATED
+  join: first_pickup {
+    # Only join first pickup
+    from: shipment_stops
+    type: inner
+    relationship: one_to_one
+    sql_on: ${first_pickup.shipment_id}=${shipment_ce_reps.shipment_id} and ${first_pickup.is_first_stop} and ${first_pickup.deprecated_time} is null ;;
+  }
+  join: pickup_market {
+    view_label: "First Pickup Market"
+    fields: [pickup_market.city_state, pickup_market.zone_name, pickup_market.coordinates]
+    from: lk_kma
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${pickup_market.zip3}=left(${first_pickup.postal_code},3) ;;
+  }
+  join: pickup_region {
+    view_label: "First Pickup Region"
+    from: lk_regions
+    fields: [pickup_region.name]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${first_pickup.state_code}=${pickup_region.state_code} ;;
+  }
+
+  # DELIVERY RELATED
+  join: last_delivery {
+    # Only join last delivery
+    from: shipment_stops
+    type: inner
+    relationship: one_to_one
+    sql_on: ${last_delivery.shipment_id}=${shipment_ce_reps.shipment_id} and ${last_delivery.is_last_stop} and ${last_delivery.deprecated_time} is null ;;
+  }
+  join: delivery_market {
+    view_label: "Last Delivery Market"
+    fields: [delivery_market.city_state,delivery_market.zone_name, delivery_market.coordinates]
+    from: lk_kma
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${delivery_market.zip3}=left(${last_delivery.postal_code},3) ;;
+  }
+  join: delivery_region {
+    view_label: "Last Delivery Region"
+    from: lk_regions
+    fields: [delivery_region.name]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${last_delivery.state_code}=${delivery_region.state_code} ;;
+  }
+
+  # POD
+  join: shipper_pod_groups {
+    view_label: "Pod"
+    type: left_outer
+    fields: [shipper_pod_groups.pod_name]
+    relationship: many_to_one
+    sql_on: ${shipments.shipper_application_id}=${shipper_pod_groups.shipper_application_id} ;;
+  }
+
+# ACCESSORIAL POLICIES
+  join: accessorial_policies_transfix {
+    view_label: "Transfix Accessorial Policies"
+    fields: []
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${shipments.assigned_date} >= ${accessorial_policies_transfix.start_at_date} and ${shipments.assigned_date} < ${accessorial_policies_transfix.end_at_date};;
+  }
+
+}
+
+
+# # # # #
+#
+# PHONE CALLS ------------------------------------------------------------------------------------------------------
+#
+
+explore: phone_calls {
+  hidden: yes
+}
+
+# # # # #
+#
+# DATES ------------------------------------------------------------------------------------------------------
+#
+
+explore: dates {
+  hidden: yes
+  fields: [ALL_FIELDS*, -dates.date_type]
+}
+
+# # # # #
+#
+# SHIPMENT STATE TRANSITIONS ----------------------------------------------------------------------------------------
+#
+
+explore: shipment_state_transitions {
+  view_label: "Status Transitions"
+  description: "To be used for analysis related to the shifting of shipment statuses"
+
+  # DATES
+  join: dates {
+    view_label: "Old State Timeframe"
+    relationship: many_to_one
+    type: inner
+    fields: [dates.date_date, dates.business_day_count, dates.count, dates.date_day_of_month, dates.date_day_of_week_index, dates.date_day_of_year,
+      dates.date_month, dates.date_year, dates.date_quarter, dates.is_workdays]
+    sql_on: ${dates.date_date} between ${shipment_state_transitions.previous_state_updated_date} and ${shipment_state_transitions.updated_date} ;;
+  }
+
+  # USERS
+  join: updated_by {
+    from: users
+    view_label: "State Updated By"
+    fields: [updated_by.user_type]
+    relationship: many_to_one
+    type: inner
+    sql_on: ${shipment_state_transitions.updated_by_id}=${updated_by.id} ;;
+  }
+  join: updated_by_parent {
+    from: user_parents
+    view_label: "State Updated By"
+    fields: [updated_by_parent.name, updated_by_parent.is_transfix, updated_by_parent.application_type]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${updated_by_parent.id}=${updated_by.parent_user_id} ;;
+  }
+
+  # SHIPMENTS
+  join: shipments {
+    view_label: "Shipment"
+    fields: [
+      shipments.id,
+      shipments.include_in_company_margin,
+      shipments.include_in_company_revenue,
+      shipments.is_tonu,
+      shipments.is_rejected_tender,
+      shipments.shipment_rate_type,
+      shipments.canceled_reason,
+      shipments.state,
+      shipments.meta_state,
+      shipments.created_time,
+      shipments.canceled_time,
+      shipments.shipment_count,
+      shipments.company_revenue_sum,
+      shipments.company_margin_sum
+    ]
+    relationship: many_to_one
+    type: inner
+    sql_on: ${shipments.id}=${shipment_state_transitions.shipment_id} ;;
+  }
+  join: shipment_current_assignment {
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipment_current_assignment.shipment_id} = ${shipments.id} ;;
+  }
+  join: shipment_base_accessorial_rate {
+    # Used in calculation for Company Revenue, Carrier Rate, and Margin
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipment_base_accessorial_rate.shipment_id} = ${shipments.id} ;;
+  }
+
+  # PICKUP RELATED
+  join: first_pickup {
+    # Only join first pickup
+    view_label: "Pickup"
+    from: shipment_stops
+    fields: []
+    type: inner
+    relationship: one_to_one
+    sql_on: ${first_pickup.shipment_id}=${shipments.id} and ${first_pickup.is_first_stop} and ${first_pickup.deprecated_time} is null ;;
+  }
+  join: first_pickup_market {
+    view_label: "Pickup Market"
+    fields: [first_pickup_market.city_state, first_pickup_market.zone_name, first_pickup_market.coordinates]
+    from: lk_kma
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${first_pickup_market.zip3}=left(${first_pickup.postal_code},3) ;;
+  }
+  join: first_pickup_region {
+    view_label: "Pickup Region"
+    from: lk_regions
+    fields: [first_pickup_region.name]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${first_pickup.state_code}=${first_pickup_region.state_code} ;;
+  }
+
+  # DELIVERY RELATED
+  join: last_delivery {
+    # Only join last delivery
+    from: shipment_stops
+    fields: []
+    type: inner
+    relationship: one_to_one
+    sql_on: ${last_delivery.shipment_id}=${shipments.id} and ${last_delivery.is_last_stop} and ${last_delivery.deprecated_time} is null ;;
+  }
+
+  # SHIPPER
+  join: shipper_applications {
+    view_label: "Shipper Entity"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${shipments.shipper_application_id} = ${shipper_applications.id} ;;
+  }
+  join: shipper_parents {
+    view_label: "Shipper Parent"
+    type: inner
+    relationship: many_to_one
+    sql_on: array_contains(${shipments.shipper_application_id}, ${shipper_parents.shipper_entity_id_array}) ;;
+  }
+  join: shipper_parent_shipment_agg {
+    view_label: "Shipper Parent"
+    type: left_outer
+    fields: [rank]
+    relationship: one_to_one
+    sql_on: ${shipper_parent_shipment_agg.parent_shipper_name}=${shipper_parents.parent_shipper_name} ;;
+  }
+  join: shipper_pod_groups {
+    view_label: "Pod"
+    fields: [shipper_pod_groups.pod_name]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${shipper_pod_groups.shipper_application_id}=${shipments.shipper_application_id} ;;
+  }
+
+}
+
+# # # # #
+#
+# TRANSFIX COST PREDICTIONS -----------------------------------------------------------------------------------------
+#
+
+explore: transfix_cost_predictions {
+  from: transfix_marketplace_events
+  label: "Transfix Cost Predictions"
+  description: "To be used for any analysis related to Transfix Cost Predictions by Shipment Status"
+  always_filter: {
+    filters: [event_type: "carrier_manager_target_event, carrier_manager_target_rate_manual_override_event, transfix_cost_prediction_event"]
+  }
+  fields: [ALL_FIELDS*,-bounce_score, -is_bounce_predicted]
+
+  # PREDICTION RANK
+  join: shipment_transfix_cost_predictions {
+    view_label: "Prediction Ranks"
+    fields: [shipment_transfix_cost_predictions.rank_not_assigned, shipment_transfix_cost_predictions.rank]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipment_transfix_cost_predictions.uuid}=${transfix_cost_predictions.uuid} ;;
+  }
+
+  # SHIPMENTS
+  join: shipments {
+    view_label: "Shipments"
+    fields: [shipments.shipment_rate_type, shipments.assigned_date, shipments.assigned_month]
+    type: inner
+    relationship: many_to_one
+    sql_on: ${shipments.id}=${transfix_cost_predictions.shipment_id} ;;
+  }
+
+  # SHIPMENT CURRENT ASSIGNMENT
+  join: shipment_current_assignment {
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipment_current_assignment.shipment_id} = ${shipments.id} ;;
+  }
+}
+
+# # # # #
+#
+# TRANSFIX LANE ASSIGNED DATE AGG -----------------------------------------------------------------------------------------
+#
+
+explore: transfix_lane_assigned_week_agg {
+  hidden: yes
+  label: "Transfix Lane Assigned Week | Aggregate"
+
+  join: transfix_lanes {
+    view_label: "Transfix Lane"
+    fields: [transfix_lanes.lane_key, transfix_lanes.transfix_lane_count]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${transfix_lanes.id}=${transfix_lane_assigned_week_agg.id} ;;
+  }
+  join: transfix_lane_assignments {
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${transfix_lane_assignments.transfix_lane_id}=${transfix_lanes.id} and ${transfix_lane_assignments.deleted_date} is null;;
+  }
+  join: transfix_lane_assigned_to {
+    from: users
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${transfix_lane_assigned_to.id}=${transfix_lane_assignments.user_id} ;;
+  }
+  join: transfix_lane_assigned_to_parent {
+    from: user_parents
+    fields: [transfix_lane_assigned_to_parent.name]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${transfix_lane_assigned_to.parent_user_id}=${transfix_lane_assigned_to_parent.id} ;;
+  }
+  join: unified_lane_strategy_lanes {
+    view_label: "Transfix Lane"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${unified_lane_strategy_lanes.transfix_lane_id}=${transfix_lanes.id} ;;
+  }
+}
+
+# # # # #
+#
+# NetSuite Sync Queue -----------------------------------------------------------------------------------------
+#
+#explore: netsuite_sync_queue {
+#  label: "NetSuite Sync Queue"
+#  description: "List of queued bill and invoices to be synced from Stark to NetSuite"
+#}
+
+
+# # # # #
+#
+# SMS MESSAGES --------------------------------------------------------------------------------------------------------------
+#
+#
+
+explore: sms_messages {
+  label: "SMS Messages"
+  view_label: "SMS Messages"
+  description: "Houses SMS Messaging data from Stark"
+
+  join: sms_messages_agg {
+    view_label: "SMS Messages Summary"
+    fields: [sms_messages_agg.automated_sms_count,
+      sms_messages_agg.download_sms_count,
+      sms_messages_agg.request_app_download_count,
+      sms_messages_agg.nudge_for_location_count]
+    type: inner
+    relationship: many_to_one
+    sql_on: ${sms_messages_agg.shipment_id}=${sms_messages.shipment_id} ;;
+  }
+
+  # SHIPMENT RELATED
+  join: shipments {
+    view_label: "Shipments"
+    fields: [shipments.shipment_count, shipments.is_tonu, shipments.is_tracking_required]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${shipments.id} = ${sms_messages.shipment_id} ;;
+  }
+
+  join: shipment_quality_tracking {
+    view_label: "Shipment Quality Tracking"
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipments.id} = ${shipment_quality_tracking.shipment_id} ;;
+  }
+
+  # TRACKING
+  join: shipment_tracking_pings {
+    view_label: "Shipment Tracking"
+    fields: [shipment_tracking_pings.is_tracking,
+      shipment_tracking_pings.shipment_tracking_count,
+      shipment_tracking_pings.shipment_tracking_percent]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${shipment_tracking_pings.shipment_id} = ${sms_messages.shipment_id} ;;
+  }
+
+  # PICKUP RELATED
+  join: first_pickup {
+    # Only join first pickup
+    view_label: "Pickup"
+    from: shipment_stops
+    fields: [first_pickup.arrived_time,first_pickup.arrived_date,first_pickup.left_time,first_pickup.left_date]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${first_pickup.shipment_id}=${shipments.id} and ${first_pickup.is_first_stop} and ${first_pickup.deprecated_time} is null ;;
+  }
+  join: first_pickup_appointment {
+    view_label: "Pickup Appointment"
+    from: shipment_stop_appointments
+    fields: [first_pickup_appointment.appointment_end_time, first_pickup_appointment.appointment_end_date]
+    type: inner
+    relationship: one_to_one
+    sql_on: ${first_pickup_appointment.shipment_stop_id}=${first_pickup.id} and NOT ${first_pickup_appointment.is_rescheduled} ;;
+  }
+
+  join: sender {
+    fields: []
+    from: users
+    type: inner
+    relationship: many_to_one
+    sql_on: ${sender.id}=${sms_messages.from_id} ;;
+  }
+  join: sender_parents {
+    from: user_parents
+    fields: [sender_parents.name]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${sender_parents.id} = ${sender.parent_user_id} ;;
+  }
+}
+
+# # # # #
+#
+# USERS --------------------------------------------------------------------------------------------------------------
+#
+#
+
+explore: users {
+  hidden: no
+  view_label: "User"
+  description: "Houses all user information from Stark"
+
+  join: user_parents {
+    view_label: "User"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${user_parents.id}=${users.parent_user_id} ;;
+  }
+  join: shipper_applications {
+    view_label: "Shipper"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${shipper_applications.id}=${users.application_id} and ${users.application_type}='ShipperApplication' ;;
+  }
+  join: carrier_applications {
+    view_label: "Carrier"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${carrier_applications.id}=${users.application_id} and ${users.application_type}='CarrierApplication' ;;
+  }
+  join: gamma_ray_carrier_activations {
+    view_label: "Carrier"
+    fields: [gamma_ray_carrier_activations.activated_at_date]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${carrier_applications.id} = ${gamma_ray_carrier_activations.carrier_application_id} ;;
+  }
+  join: users_approved {
+    from: users
+    fields: []
+    type: inner
+    relationship: many_to_one
+    sql_on: ${users.approved_by_id}=${users_approved.id} ;;
+  }
+  join: approved_by {
+    from: user_parents
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${approved_by.id}= ${users_approved.parent_user_id}  ;;
+  }
+  join: group_memberships {
+    fields: [group_memberships.list_groups, group_memberships.group_name]
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${group_memberships.member_id} = ${users.id} ;;
+  }
+  join: user_sms_subscriptions {
+    fields: [user_sms_subscriptions.is_subscribed]
+    view_label: "User"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${users.parent_user_id} = ${user_sms_subscriptions.parent_user_id} ;;
+  }
+}
+
+# # # # #
+#
+# 14 DAY FORECAST --------------------------------------------------------------------------------------------------------------
+#
+
+explore: daily_forecasted_rates_shadow {
+  label: "Forecasted DAT Rates | Daily"
+  view_label: "DAT Daily Forecasted Rates"
+  description: "Forecast of daily DAT rates"
+
+  join: shipment_transfix_lane_id_ndt {
+    view_label: "Shipment Information"
+    type: inner
+    relationship: one_to_many
+    sql_on: ${daily_forecasted_rates_shadow.transfix_lane_id} = ${shipment_transfix_lane_id_ndt.id} ;;
+  }
+  # join: transfix_cost_model_14_day {
+  #   view_label: "TCM 14 Day Forecast"
+  #   type: left_outer
+  #   relationship: one_to_many
+  #   sql_on: ${shipment_transfix_lane_id_ndt.shipment_id} = ${transfix_cost_model_14_day.shipment_id} and ${daily_forecasted_rates_shadow.forecasted_date_date} = ${transfix_cost_model_14_day.date};;
+
+  # }
+
+}
+
+
+# # # # #
+#
+# SPOT CONTROL PANEL CHANGES
+#
+#
+
+explore: gamma_ray_spot_control_panel {
+  hidden: yes
+  label: "Spot Bidding Config Adjustments"
+  description: "To be used for tracking Spot Premiums adjustments in the Spot Quote Control Panel"
+}
+
+
+
+# # # # #
+#
+# SALESFORCE PRICING REQUESTS
+#
+
+explore: salesforce_pricing_request_bucket_c {
+  group_label: "Salesforce"
+  label: "Salesforce Pricing Requests"
+  description: "Houses all information related to pricing records stored in Salesforce"
+  view_label: "Bucket"
+
+  join: salesforce_pricing_request_c {
+    view_label: "Pricing Request"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${salesforce_pricing_request_bucket_c.id} =  ${salesforce_pricing_request_c.pricing_request_bucket_c} ;;
+  }
+
+  join: salesforce_record_type {
+    view_label: "Record Type"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${salesforce_record_type.id} = ${salesforce_pricing_request_c.record_type_id} ;;
+  }
+
+  join: owner {
+    from: salesforce_users
+    view_label: "Owner"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${owner.id} =  ${salesforce_pricing_request_bucket_c.owner_id} ;;
+  }
+
+  join: pricing_owner {
+    from: salesforce_users
+    view_label: "Pricing Owner"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${pricing_owner.id} =  ${salesforce_pricing_request_c.pricing_owner_c} ;;
+  }
+
+  join: salesforce_account {
+    view_label: "Account"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${salesforce_account.id} = ${salesforce_pricing_request_bucket_c.account_c} ;;
+  }
+
+}
+
+# # # # #
+#
+# SALESFORCE ACCOUNT
+#
+
+explore: salesforce_account {
+  group_label: "Salesforce"
+  label: "Salesforce Accounts"
+  view_label: "Account"
+  description: "Used to access Salesforce data in conjunction with Stark data"
+
+  join: salesforce_account_relation{
+    type: left_outer
+    relationship: one_to_many
+    fields: []
+    sql_on: ${salesforce_account_relation.account_id} = ${salesforce_account.id} ;;
+  }
+
+  join: salesforce_contacts {
+    view_label: "Contacts"
+    relationship: one_to_many
+    sql_on: ${salesforce_account_relation.contact_id} = ${salesforce_contacts.id};;
+  }
+
+  join: salesforce_pricing_request_c {
+    view_label: "Pricing Request"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${salesforce_pricing_request_c.account_c} = ${salesforce_account.id} ;;
+  }
+  join: salesforce_pricing_request_bucket_c {
+    view_label: "Pricing Request Bucket"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${salesforce_pricing_request_c.pricing_request_bucket_c} = ${salesforce_pricing_request_bucket_c.bucket_id_c} ;;
+  }
+  join: salesforce_record_type {
+    view_label: "Record Type"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${salesforce_record_type.id} = ${salesforce_pricing_request_c.record_type_id} ;;
+  }
+
+  join: salesforce_opportunity_record_type {
+    from: salesforce_record_type
+    view_label: "Salesforce | Opportunity | Record Type"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${salesforce_record_type.id} = ${salesforce_opportunity.record_type_id} ;;
+
+  }
+  join: salesforce_opportunity_line_item {
+    from: salesforce_opportunity_line_item
+    view_label: "Product"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${salesforce_opportunity.id} = ${salesforce_opportunity_line_item.opportunity_id} ;;
+
+  }
+  join: owner {
+    from: salesforce_users
+    view_label: "Pricing Request | Owner"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${owner.id} =  ${salesforce_pricing_request_c.owner_id} ;;
+  }
+  join: pricing_owner {
+    from: salesforce_users
+    view_label: "Pricing Request | Pricing Owner"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${pricing_owner.id} =  ${salesforce_pricing_request_c.pricing_owner_c} ;;
+  }
+  join: salesforce_opportunity {
+    view_label: "Opportunity"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${salesforce_account.id} = ${salesforce_opportunity.account_id} ;;
+
+  }
+  join: opportunity_owner {
+    from: salesforce_users
+    view_label: "Opportunity | Owner"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${opportunity_owner.id} =  ${salesforce_opportunity.owner_id} ;;
+
+
+  }
+  join: salesforce_onboarding {
+    view_label: "Onboarding"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${salesforce_onboarding.account_c} = ${salesforce_account.id} ;;
+  }
+
+  # STARK TABLES
+  join: shipper_applications {
+    view_label: "Stark | Shipper"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${salesforce_account.stark_shipper_id_c} = ${shipper_applications.id} ;;
+  }
+  join: shipments {
+    view_label: "Stark | Shipments"
+    fields: [shipments.shipment_count,shipments.total_revenue_sum,shipments.is_tonu,shipments.total_margin_sum]
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${shipper_applications.id} = ${shipments.shipper_application_id}  ;;
+  }
+
+}
+
+
+# # # # #
+#
+# CARRIER LANE PREFERENCES
+#
+
+explore: carrier_lane_preferences {
+  hidden: yes
+
+  join: carrier_lane_preference_created_by {
+    from: users
+    fields: []
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${carrier_lane_preference_created_by.id}=${carrier_lane_preferences.created_by_id} ;;
+  }
+  join: created_by_parent {
+    from: user_parents
+    view_label: "Carrier Lane Preference Created By"
+    fields: [created_by_parent.name]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${created_by_parent.id}=${carrier_lane_preference_created_by.parent_user_id} ;;
+  }
+
+  join: carrier_applications {
+    view_label: "Carrier"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${carrier_lane_preferences.carrier_application_id} = ${carrier_applications.id} ;;
+  }
+  join: transfix_lanes {
+    view_label: "Transfix Lane"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${transfix_lanes.id} = ${carrier_lane_preferences.transfix_lane_id} ;;
+  }
+  join: equipment {
+    type: inner
+    fields: [equipment.parent_name, equipment.key]
+    relationship: many_to_one
+    sql_on: ${equipment.id} = ${transfix_lanes.equipment_parent_id} ;;
+  }
+  join: pickup_market {
+    from: lk_kma
+    type: inner
+    relationship: many_to_one
+    sql_on: ${pickup_market.market_id} = ${transfix_lanes.pickup_dat_market} ;;
+  }
+  join: delivery_market {
+    from: lk_kma
+    type: inner
+    relationship: many_to_one
+    sql_on: ${delivery_market.market_id} = ${transfix_lanes.delivery_dat_market} ;;
+  }
+
+}
+
+
+# # # # #
+#
+# NORM FILE GENERATOR STATUSES ---------------------------------------------------------------------------------
+#
+# CAN BE DELETED AFTER 11/1/2021
+#
+# explore: norm_file_generator_statuses {
+#   view_label: "Norm Statuses"
+#   description: "To be used for viewing status of running norms"
+
+#   join: norm_file_generator_row_statuses {
+#     view_label: "Row Statuses"
+#     type: left_outer
+#     relationship: one_to_many
+#     sql_on: ${norm_file_generator_statuses.id}=${norm_file_generator_row_statuses.norm_file_generator_status_id} ;;
+#   }
+# }
+
+
+# # # # #
+#
+# SHIPPER CITY LANES
+#
+
+explore: shipper_city_lanes {
+  hidden: yes
+  label: "Shipper City Lanes"
+  view_label: "Shipper City Lane"
+  description: "Contains aggregate network information to analyze coverage level for Shipper City Lanes"
+
+  join: shipper_applications {
+    view_label: "Shipper Entity"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${shipper_applications.id} = ${shipper_city_lanes.shipper_application_id} ;;
+  }
+
+  join: shipper_city_lane_rates {
+    view_label: "Shipper City Lane | Rates"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipper_city_lane_rates.shipper_city_lane_id} = ${shipper_city_lanes.id} ;;
+  }
+
+  join: shipper_city_lane_carrier_contract_lanes_agg {
+    view_label: "Carrier Contract Lanes Summary"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipper_city_lane_carrier_contract_lanes_agg.id} = ${shipper_city_lanes.id} ;;
+  }
+
+  join: shipper_city_lane_shipper_rates_agg {
+    view_label: "Shipper Rates Summary"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipper_city_lane_shipper_rates_agg.id} = ${shipper_city_lanes.id} ;;
+  }
+
+  # PICKUP LOCATION
+  join: pickup_location {
+    view_label: "Carrier Contract | Pickup"
+    from: locations
+    fields: [
+      pickup_location.city_state,
+      pickup_location.state_code,
+      pickup_location.zipcode,
+      pickup_location.id,
+      pickup_location.latitude,
+      pickup_location.longitude
+    ]
+    type: left_outer
+    relationship: many_to_one
+    sql_on:
+        ${pickup_location.id}=${shipper_city_lanes.pickup_location_id} and
+        ${pickup_location.deleted_by_id} is null ;;
+  }
+  join: pickup_region {
+    view_label: "Carrier Contract | Pickup"
+    from: lk_regions
+    fields: [pickup_region.name]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${pickup_location.state_code}=${pickup_region.state_code} ;;
+  }
+
+  # DELIVERY LOCATION
+  join: delivery_location {
+    view_label: "Carrier Contract | Delivery"
+    from: locations
+    fields: [
+      delivery_location.city_state,
+      delivery_location.state_code,
+      delivery_location.zipcode,
+      delivery_location.id,
+      delivery_location.latitude,
+      delivery_location.longitude,
+    ]
+    type: left_outer
+    relationship: many_to_one
+    sql_on:
+        ${delivery_location.id}=${shipper_city_lanes.delivery_location_id} and
+        ${delivery_location.deleted_by_id} is null ;;
+  }
+  join: delivery_region {
+    view_label: "Carrier Contract | Delivery"
+    from: lk_regions
+    fields: [delivery_region.name]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${delivery_location.state_code}=${delivery_region.state_code} ;;
+  }
+}
+
+# # # # #
+#
+# LATEST DRIVER PING
+#
+
+explore: shipment_latest_driver_ping {
+  hidden: yes
+
+  # PICKUP RELATED
+  join: first_pickup {
+    # Only join first pickup
+    from: shipment_stops
+    fields: []
+    type: inner
+    relationship: one_to_one
+    sql_on: ${first_pickup.shipment_id}=${shipment_latest_driver_ping.shipment_id} and ${first_pickup.is_first_stop} and ${first_pickup.deprecated_time} is null ;;
+  }
+  join: pickup_market {
+    view_label: "First Pickup Market"
+    fields: [pickup_market.city_state, pickup_market.zone_name, pickup_market.coordinates]
+    from: lk_kma
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${pickup_market.zip3}=left(${first_pickup.postal_code},3) ;;
+  }
+  join: pickup_region {
+    view_label: "First Pickup Region"
+    from: lk_regions
+    fields: [pickup_region.name]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${first_pickup.state_code}=${pickup_region.state_code} ;;
+  }
+
+  # DELIVERY RELATED
+  join: last_delivery {
+    # Only join last delivery
+    from: shipment_stops
+    fields: [last_delivery.arrived_date]
+    type: inner
+    relationship: one_to_one
+    sql_on: ${last_delivery.shipment_id}=${shipment_latest_driver_ping.shipment_id} and ${last_delivery.is_last_stop} and ${last_delivery.deprecated_time} is null ;;
+  }
+  join: delivery_market {
+    view_label: "Last Delivery Market"
+    fields: [delivery_market.city_state,delivery_market.zone_name, delivery_market.coordinates]
+    from: lk_kma
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${delivery_market.zip3}=left(${last_delivery.postal_code},3) ;;
+  }
+  join: delivery_region {
+    view_label: "Last Delivery Region"
+    from: lk_regions
+    fields: [delivery_region.name]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${last_delivery.state_code}=${delivery_region.state_code} ;;
+  }
+}
+
+# # # # #
+#
+# DAT LOAD TRUCK -----------------------------------------------------------------------------------------
+#
+
+explore: dat_load_truck_origin_daily {
+  hidden: no
+  label: "DAT Load Truck Origin | Daily"
+  description: "Houses DAT daily load truck values for origin zip3"
+}
+
+# # # # #
+#
+# DAT API RATES -----------------------------------------------------------------------------------------------------------------------------------
+#
+
+explore: lane_market_dat_rates {
+  hidden: yes
+  label: "DAT API Rates | Daily"
+  view_label: "DAT Rates"
+  description: "Houses Daily DAT Rates on TF Lanes. Dry Van rates only. Rates can have varying aggregation period: 3, 7, 30 day"
+
+  join: pickup_market {
+    from: lk_kma
+    fields: [pickup_market.city_state]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${pickup_market.zip3} = left(${lane_market_dat_rates.origin_zip},3) ;;
+  }
+  join: delivery_market {
+    from: lk_kma
+    fields: [delivery_market.city_state]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${delivery_market.zip3} = left(${lane_market_dat_rates.destination_zip},3) ;;
+  }
+  join: transfix_lanes {
+    view_label: "Transfix Lane"
+    fields: [transfix_lanes.id, transfix_lanes.lane_key]
+    type: left_outer
+    relationship: many_to_one
+    sql_on:
+        ${transfix_lanes.pickup_dat_market}=${pickup_market.market_id} and
+        ${transfix_lanes.delivery_dat_market}=${delivery_market.market_id} and
+        ${transfix_lanes.equipment_parent_id}=3 ;; # dryvan lanes only
+  }
+  join: pickup_zip3 {
+    from: lk_kma
+    fields: []
+    relationship: one_to_many
+    sql_on: ${pickup_zip3.zip3_reference} = ${pickup_market.zip3_reference} ;;
+  }
+  join: delivery_zip3 {
+    from: lk_kma
+    fields: []
+    relationship: one_to_many
+    sql_on: ${delivery_zip3.zip3_reference} = ${delivery_market.zip3_reference} ;;
+  }
+  join: pickup_city {
+    from: locations
+    fields: [pickup_city.city_state_zipcode, pickup_city.zipcode, pickup_city.location]
+    relationship: one_to_many
+    sql_on: left(${pickup_city.zipcode},3) = ${pickup_market.zip3} and
+          ${pickup_city.deleted_date} is null and
+          ${pickup_city.city_state_zipcode} is not null;;
+  }
+  join: delivery_city {
+    from: locations
+    fields: [delivery_city.city_state_zipcode, delivery_city.zipcode, delivery_city.location]
+    relationship: one_to_many
+    sql_on: left(${delivery_city.zipcode},3) = ${delivery_zip3.zip3} and
+          ${delivery_city.deleted_date} is null and
+          ${delivery_city.city_state_zipcode} is not null;;
+  }
+  join: pickup_region {
+    from: lk_regions
+    fields: [pickup_region.name]
+    relationship: many_to_many
+    sql_on: ${pickup_market.reference_state} = ${pickup_region.state_code} ;;
+  }
+  join: delivery_region {
+    from: lk_regions
+    fields: [delivery_region.name]
+    relationship: many_to_many
+    sql_on: ${delivery_market.reference_state} = ${delivery_region.state_code} ;;
+  }
+
+  # join: last_delivery {
+  #   # Only join last delivery
+  #   view_label: "Delivery Stop"
+  #   fields: [last_delivery.shipment_id, last_delivery.address]
+  #   from: shipment_stops
+  #   type: left_outer
+  #   relationship: one_to_many
+  #   sql_on:  left(${last_delivery.postal_code}, 3) = ${delivery_market.zip3}
+  #     and ${last_delivery.is_last_stop} and ${last_delivery.deprecated_time} is null ;;
+  # }
+  # join: first_pickup {
+  #   # Only join last delivery
+  #   fields: [first_pickup.shipment_id, first_pickup.address]
+  #   from: shipment_stops
+  #   type: left_outer
+  #   relationship: one_to_many
+  #   sql_on:  left(${first_pickup.postal_code}, 3) = ${pickup_market.zip3}
+  #     and ${first_pickup.is_first_stop} and ${first_pickup.deprecated_time} is null
+  #     and ${first_pickup.shipment_id} = ${last_delivery.shipment_id};;
+  # }
+
+  # join: shipment_current_assignment {
+  #   view_label: "Carrier Assignment"
+  #   fields: [
+  #   ]
+  #   type: left_outer
+  #   relationship: one_to_one
+  #   sql_on: ${shipment_current_assignment.shipment_id} = ${last_delivery.shipment_id}
+  #   and ${shipment_current_assignment.created_date} = ${lane_market_dat_rates.happened_date} ;;
+  # }
+
+  # join: shipments {
+  #   fields: [shipments.id,
+  #     shipments.assigned_date,
+  #     shipments.shipper_total_rate,
+  #     shipments.carrier_rate,
+  #     shipments.dat_rate,
+  #     shipments.spot_or_contract,
+  #     shipments.carrier_manager_target,
+  #     shipments.is_tonu,
+  #     shipments.is_canceled,
+  #     shipments.carrier_dat_ratio_average,
+  #     shipments.carrier_dat_ratio_test_median,
+  #     shipments.carrier_dat_ratio_test_25,
+  #     shipments.carrier_dat_ratio_test_75,
+  #     shipments.carrier_rate_average,
+  #     shipments.carrier_rate_median,
+  #     shipments.carrier_rate_25_percentile,
+  #     shipments.carrier_rate_75_percentile,
+  #     shipments.calculated_miles,
+  #     shipments.haul_length_category,
+  #     shipments.shipment_count
+  #     ]
+  #   type: left_outer
+  #   relationship: one_to_one
+  #   sql_on: ${shipments.id} = ${shipment_current_assignment.shipment_id} ;;
+
+  # }
+
+  # join: shipment_carrier_manager_target {
+  #   view_label: "Carrier Manager Target Link"
+  #   from: shipment_rates
+  #   fields: []
+  #   type: left_outer
+  #   relationship: one_to_one
+  #   sql_on: ${shipment_carrier_manager_target.shipment_id}=${shipments.id}
+  #   and ${shipment_carrier_manager_target.rate_type_key}='transfix_carrier_manager_target'
+  #   and ${shipment_carrier_manager_target.deprecated_time} is null;;
+  # }
+  # join: shipment_carrier_manager_target_rate {
+  #   view_label: "Carrier Manager Target"
+  #   from: rates
+  #   fields: [
+  #     shipment_carrier_manager_target_rate.amount
+  #   ]
+  #   type: left_outer
+  #   relationship: one_to_one
+  #   sql_on: ${shipment_carrier_manager_target_rate.id}=${shipment_carrier_manager_target.rate_id} ;;
+  # }
+  # join: shipment_dat_rate_link {
+  #   view_label: "DAT Rate Link"
+  #   from: shipment_rates
+  #   fields: []
+  #   type: left_outer
+  #   relationship: one_to_one
+  #   sql_on: ${shipment_dat_rate_link.shipment_id}=${shipments.id} and ${shipment_dat_rate_link.rate_type_key}='dat_rate' and ${shipment_dat_rate_link.deprecated_time} is null;;
+  # }
+  # join: shipment_dat_rate {
+  #   view_label: "DAT Rate"
+  #   from: rates
+  #   fields: []
+  #   type: left_outer
+  #   relationship: one_to_one
+  #   sql_on: ${shipment_dat_rate.id}=${shipment_dat_rate_link.rate_id} ;;
+  # }
+
+
+
+
+
+}
+
+# # # # #
+#
+# TRANSFIX LANE FINANCE RECORD MONTH AGG --------------------------------------------------------------------------------------------------------------
+#
+
+explore: transfix_lane_finance_record_month_agg {
+  hidden: yes
+
+  join: transfix_lanes {
+    relationship: many_to_many
+    sql_on: ${transfix_lanes.id} = ${transfix_lane_finance_record_month_agg.id} ;;
+  }
+  join: pickup_market {
+    from: lk_kma
+    fields: [pickup_market.city_state, pickup_market.coordinates]
+    relationship: many_to_one
+    sql_on: ${pickup_market.market_id} = ${transfix_lanes.pickup_dat_market} ;;
+  }
+  join: delivery_market {
+    from: lk_kma
+    fields: [delivery_market.city_state, delivery_market.coordinates]
+    relationship: many_to_many
+    sql_on: ${delivery_market.market_id} = ${transfix_lanes.delivery_dat_market} ;;
+  }
+  join: pickup_region {
+    from: lk_regions
+    fields: [pickup_region.name]
+    relationship: many_to_many
+    sql_on: ${pickup_market.reference_state} = ${pickup_region.state_code} ;;
+  }
+  join: delivery_region {
+    from: lk_regions
+    fields: [delivery_region.name]
+    relationship: many_to_many
+    sql_on: ${delivery_market.reference_state} = ${delivery_region.state_code} ;;
+  }
+}
+
+# # # # #
+#
+# EMPLOYEES -----------------------------------------------------------------------------------------------------------------------------------
+#
+
+explore: employees {
+  hidden: yes
+  label: "Employees"
+  description: "A list of all time employees with active tenure dates"
+
+  join: active_dates {
+    from: dates
+    view_label: "Active Timeframe"
+    fields: [
+      active_dates.date_date,
+      active_dates.date_week,
+      active_dates.date_month,
+      active_dates.date_quarter,
+      active_dates.date_year,
+      active_dates.date_type
+    ]
+    type: inner
+    relationship: one_to_many
+    sql_on: ${active_dates.date_date} between to_timestamp(${employees.start_date}, 'mm/dd/yy') and coalesce(to_timestamp(nullif(${employees.departure_date},''), 'mm/dd/yy'),current_timestamp) ;;
+  }
+
+  join: employees_active_date_agg {
+    view_label: "Employees"
+    fields: [employees_active_date_agg.employee_count_average]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${employees_active_date_agg.date_date} = ${active_dates.date_date} ;;
+  }
+
+  join: shipments {
+    type: inner
+    fields: [shipments.date_dropdown]
+    relationship: one_to_many
+    sql_on: ${shipments.id}=100000 ;;
+  }
+}
+
+# # # # #
+#
+# GOOD FIT LANES -----------------------------------------------------------------------------------------------------------------------------------
+#
+
+explore: good_fit_lanes_city_state {
+  hidden: yes
+  from: good_fit_lanes
+
+  join: good_fit_lanes_shipments_agg {
+    view_label: "Shipments"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${good_fit_lanes_city_state.pickup_city} = ${good_fit_lanes_shipments_agg.pickup_city}
+          and ${good_fit_lanes_city_state.delivery_city} = ${good_fit_lanes_shipments_agg.delivery_city}
+          and ${good_fit_lanes_city_state.pickup_state} = ${good_fit_lanes_shipments_agg.pickup_state_code}
+          and ${good_fit_lanes_city_state.delivery_state} = ${good_fit_lanes_shipments_agg.delivery_state_code};;
+  }
+}
+
+explore: good_fit_lanes_zip3 {
+  hidden: yes
+  from: good_fit_lanes
+
+  join: good_fit_lanes_shipments_agg {
+    view_label: "Shipments"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${good_fit_lanes_zip3.pickup_zip3} = ${good_fit_lanes_shipments_agg.pickup_zip3}
+      and ${good_fit_lanes_zip3.delivery_zip3} = ${good_fit_lanes_shipments_agg.delivery_zip3};;
+  }
+}
+
+# # # # #
+#
+# BACKHAUL NETWORK -----------------------------------------------------------------------------------------------------------------------------------
+#
+
+explore: backhaul_network {
+  hidden: no
+
+  from:  staples_headhaul_lanes
+  view_label: "Backhaul Network | Staples"
+  description: "To Be used for Analysis Relative to Staples Dedicated Fleet"
+  fields: [ALL_FIELDS*,-backhaul_network.is_match]
+  always_filter: {
+    filters:[request_for_proposals.request_for_proposal_type: "data_analysis"]}
+
+  join: backhaul_carrier  {
+    from: carrier_applications
+    fields: []
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${backhaul_carrier.id} = ${backhaul_network.carrier_application_id} ;;
+  }
+
+  join: request_for_proposal_lane_staples_headhaul_lanes {
+    fields: []
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${request_for_proposal_lane_staples_headhaul_lanes.staples_headhaul_lane_id} = ${backhaul_network.id} ;;
+  }
+
+  join: request_for_proposal_lanes {
+    fields: []
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${request_for_proposal_lanes.id} = ${request_for_proposal_lane_staples_headhaul_lanes.request_for_proposal_lane_id} ;;
+  }
+
+  join: request_for_proposals {
+    fields: [request_for_proposals.id,request_for_proposal_type]
+    view_label: "Backhaul Job"
+    relationship: many_to_one
+    type: left_outer
+    sql_on: ${request_for_proposals.id}=${request_for_proposal_lanes.request_for_proposal_id} ;;
+  }
+
+  join: staples_backhaul_matches {
+    view_label: "Staples Matches"
+    relationship: one_to_many
+    type: left_outer
+    sql_on: ${staples_backhaul_matches.staples_headhaul_lane_id} = ${backhaul_network.id};;
+  }
+
+  join: shipper_city_lane_30_days_shipments_agg {
+    view_label: "Summary Opportunities | Last 30 days"
+    relationship: one_to_one
+    type: left_outer
+    sql_on: ${shipper_city_lane_30_days_shipments_agg.id} = ${request_for_proposal_lanes.lane_id} ;;
+  }
+}
+
+# # # # #
+#
+# CM BONUS TRACKER --------------------------------------------------------------------------------------------------------------
+#
+
+explore: carrier_manager_bonus_tracker{
+  from: shipment_carrier_manager_finance_record_month_agg
+  description: "To be used regarding CM MBO and Bonus Tracker"
+  view_label: "Bonus Tracker"
+
+  join: shipments_no_drop_carrier_manager_finance_month_agg {
+    view_label: "Bonus Tracker"
+    relationship: one_to_one
+    type: left_outer
+    sql_on: ${carrier_manager_bonus_tracker.ops_rep_id} = ${shipments_no_drop_carrier_manager_finance_month_agg.ops_rep_id}
+            AND
+            ${carrier_manager_bonus_tracker.finance_record_month} = ${shipments_no_drop_carrier_manager_finance_month_agg.finance_record_month};;
+  }
+
+  join: carrier_manager_level {
+    view_label: "Bonus Tracker"
+    relationship: one_to_one
+    type: inner
+    sql_on: ${carrier_manager_bonus_tracker.ops_rep_id} = ${carrier_manager_level.cm_id}
+            AND
+            ${carrier_manager_bonus_tracker.finance_record_month} >= ${carrier_manager_level.created_date}
+            AND
+            ${carrier_manager_bonus_tracker.finance_record_month} <= ${carrier_manager_level.deprecated_date};;
+  }
+  join: carrier_manager_volume_goals {
+    from: carrier_manager_goals
+    view_label: "Goals | Volume"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${carrier_manager_volume_goals.cm_level} = ${carrier_manager_level.carrier_manager_level}
+            AND
+            ${carrier_manager_bonus_tracker.finance_record_month} >= ${carrier_manager_volume_goals.created_date}
+            AND
+            ${carrier_manager_bonus_tracker.finance_record_month} <= ${carrier_manager_volume_goals.deprecated_date}
+            AND
+            ${carrier_manager_volume_goals.goal_type} = 'Volume';;
+  }
+  join: carrier_manager_service_goals {
+    from: carrier_manager_goals
+    view_label: "Goals | Service"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${carrier_manager_service_goals.cm_level} = ${carrier_manager_level.carrier_manager_level}
+            AND
+            ${carrier_manager_bonus_tracker.finance_record_month} >= ${carrier_manager_service_goals.created_date}
+            AND
+            ${carrier_manager_bonus_tracker.finance_record_month} <= ${carrier_manager_service_goals.deprecated_date}
+            AND
+            ${carrier_manager_service_goals.goal_type} = 'Service';;
+  }
+  join: carrier_manager_service_accelerators {
+    from: carrier_manager_accelerators
+    view_label: "Goals | Service"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${carrier_manager_bonus_tracker.finance_record_month} >= ${carrier_manager_service_accelerators.created_date}
+            AND
+            ${carrier_manager_bonus_tracker.finance_record_month} <= ${carrier_manager_service_accelerators.deprecated_date}
+            AND
+            ${shipments_no_drop_carrier_manager_finance_month_agg.stops_weighted_on_time_30_percent} >= ${carrier_manager_service_accelerators.threshold_low}
+            AND
+            ${shipments_no_drop_carrier_manager_finance_month_agg.stops_weighted_on_time_30_percent} < ${carrier_manager_service_accelerators.threshold_high}
+            AND
+            ${carrier_manager_service_accelerators.goal_type} = 'Service'
+            ;;
+  }
+  join: carrier_manager_buying_goals {
+    from: carrier_manager_goals
+    view_label: "Goals | Buying Power"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${carrier_manager_buying_goals.cm_level} = ${carrier_manager_level.carrier_manager_level}
+            AND
+            ${carrier_manager_bonus_tracker.finance_record_month} >= ${carrier_manager_buying_goals.created_date}
+            AND
+            ${carrier_manager_bonus_tracker.finance_record_month} <= ${carrier_manager_buying_goals.deprecated_date}
+            AND
+            ${carrier_manager_buying_goals.goal_type} = 'Buying Power';;
+  }
+  join: carrier_manager_buying_accelerators {
+    from: carrier_manager_accelerators
+    view_label: "Goals | Buying Power"
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${carrier_manager_bonus_tracker.finance_record_month} >= ${carrier_manager_buying_accelerators.created_date}
+            AND
+            ${carrier_manager_bonus_tracker.finance_record_month} <= ${carrier_manager_buying_accelerators.deprecated_date}
+            AND
+            ${shipments_no_drop_carrier_manager_finance_month_agg.shipment_under_cmt_percent} >= ${carrier_manager_buying_accelerators.threshold_low}
+            AND
+            ${shipments_no_drop_carrier_manager_finance_month_agg.shipment_under_cmt_percent} < ${carrier_manager_buying_accelerators.threshold_high}
+            AND
+            ${carrier_manager_buying_accelerators.goal_type} = 'Buying Power'
+            ;;
+  }
+  join: business_days {
+    from: business_days
+    view_label: "Business Days"
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on:  ${carrier_manager_bonus_tracker.finance_record_month} = ${business_days.month} ;;
+  }
+}
+
+# # # # #
+#
+# LANE CARRIER MATCHES --------------------------------------------------------------------------------------------------------------
+#
+
+explore: lane_carrier_matches {
+  hidden: no
+  label: "Carrier Matches"
+  description: "To used for analysis related to Carrier-Lane and Carrier-Shipment matching"
+
+  join: lane_match_triggers {
+    view_label: "Match Triggers"
+    type: inner
+    relationship: many_to_one
+    sql_on: ${lane_match_triggers.id} = ${lane_carrier_matches.lane_match_trigger_id} ;;
+  }
+  join: carrier_applications {
+    view_label: "Carrier Application"
+    fields: [carrier_applications.dba_name, carrier_applications.carrier_count]
+    type: inner
+    relationship: one_to_one
+    sql_on: ${carrier_applications.id} = ${lane_carrier_matches.carrier_application_id} ;;
+  }
+
+  join: carrier_pickup_date_agg {
+    view_label: "Carrier Application"
+    fields: [carrier_pickup_date_agg.has_load]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${first_pickup_appointment.appointment_end_date} = ${carrier_pickup_date_agg.appointment_end_date}
+      AND ${carrier_applications.id} = ${carrier_pickup_date_agg.id};;
+  }
+
+  # CARRIER RELATED
+  join: shipment_current_assignment {
+    view_label: "Carrier Assignment"
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipment_current_assignment.shipment_id} = ${shipments.id} ;;
+  }
+
+  join: shipments {
+    fields: [
+      shipments.id,
+      shipments.include_in_company_margin,
+      shipments.include_in_company_revenue,
+      shipments.is_tonu,
+      shipments.created_date,
+      shipments.meta_state,
+      shipments.shipment_count,
+      shipments.lane_city_state
+    ]
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${lane_match_triggers.shipment_id} = ${shipments.id} ;;
+  }
+
+  #First Pickup Related
+  join: first_pickup {
+    # Only join first pickup
+    view_label: "Pickup"
+    fields: []
+    from: shipment_stops
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${first_pickup.shipment_id}=${shipments.id} and ${first_pickup.is_first_stop} and ${first_pickup.deprecated_time} is null ;;
+  }
+
+  join: first_pickup_appointment {
+    view_label: "Pickup Appointment"
+    from: shipment_stop_appointments
+    fields: [first_pickup_appointment.appointment_end_date,
+      first_pickup_appointment.appointment_end_day_of_week,
+      first_pickup_appointment.appointment_end_week]
+    type: inner
+    relationship: one_to_one
+    sql_on: ${first_pickup_appointment.shipment_stop_id}=${first_pickup.id} and NOT ${first_pickup_appointment.is_rescheduled} ;;
+  }
+
+  join: first_pickup_market {
+    view_label: "Pickup Market"
+    fields: [first_pickup_market.city_state, first_pickup_market.coordinates, first_pickup_market.reference_city,
+      first_pickup_market.latitude,first_pickup_market.longitude]
+    from: lk_kma
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${first_pickup_market.zip3}=left(${first_pickup.postal_code},3) ;;
+  }
+
+  #Last Delivery Related
+
+  join: last_delivery {
+    # Only join first pickup
+    view_label: "Pickup"
+    fields: []
+    from: shipment_stops
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${last_delivery.shipment_id}=${shipments.id} and ${last_delivery.is_last_stop} and ${last_delivery.deprecated_time} is null ;;
+  }
+
+  join: last_delivery_market {
+    view_label: "Delivery Market"
+    fields: [last_delivery_market.city_state, last_delivery_market.coordinates, last_delivery_market.reference_city,
+      last_delivery_market.latitude,last_delivery_market.longitude]
+    from: lk_kma
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${last_delivery_market.zip3}=left(${last_delivery.postal_code},3) ;;
+  }
+
+  # PRIMARY CARRIER MANAGER
+  join: carrier_manager_relationships {
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${carrier_manager_relationships.carrier_application_id}=${carrier_applications.id} and ${carrier_manager_relationships.deleted_raw} is null and ${carrier_manager_relationships.relationship_type}='owner' ;;
+  }
+  join: carrier_manager {
+    from: users
+    fields: []
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${carrier_manager.id}=${carrier_manager_relationships.user_id} ;;
+  }
+  join: carrier_manager_parent {
+    from: user_parents
+    view_label: "Primary Carrier Manager"
+    fields: [carrier_manager_parent.name]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${carrier_manager_parent.id}=${carrier_manager.parent_user_id} ;;
+  }
+
+  #Bids Related
+
+  join: bids {
+    view_label: "Bids"
+    fields: []
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${shipments.id} = ${bids.shipment_id} ;;
+  }
+
+
+}
+
+# # # # #
+#
+# Niagara Rate to Beat Shipments -----------------------------------------------------------------------------------------------------------------------------------
+#
+explore: niagara_rate_to_beat {
+  label: "Niagara Rate to Beat"
+  description: "All data related to Niagara Rate to Beat shipments and metadata. "
+
+  join: price_requests {
+    relationship: one_to_one
+    sql_on: ${price_requests.external_id}=${niagara_rate_to_beat.external_id} ;;
+  }
+  join: niagara_rate_to_beat_metadata {
+    relationship: many_to_one
+    sql_on: ${niagara_rate_to_beat.uuid}=${niagara_rate_to_beat_metadata.uuid} ;;
+  }
+
+# SHIPMENT-BID MATCHING ALGO
+  join: shipment_price_request_matches {
+    type: left_outer
+    fields: []
+    relationship: one_to_one
+    sql_on: ${shipment_price_request_matches.price_request_id}=${price_requests.id} ;;
+  }
+  join: shipments {
+    type: left_outer
+    fields: [
+      id,
+      shipments.is_tonu,
+      shipments.is_covered,
+      shipments.is_delivered,
+      shipments.carrier_application_id,
+      shipments.include_in_company_revenue,
+      shipments.total_margin_category,
+      shipments.company_revenue,
+      shipments.shipper_line_haul_rate,
+      shipments.shipper_line_haul_plus_fuel,
+      shipments.shipper_fuel_rate,
+      shipments.shipper_per_mile_fuel_rate,
+      shipments.shipper_btf_fuel_rate,
+      shipments.carrier_rate,
+      shipments.company_margin,
+      shipments.all_in_margin,
+      shipments.all_in_margin_sum,
+      shipments.shipper_line_haul_plus_fuel_sum,
+      shipments.shipper_line_haul_plus_fuel,
+      shipments.all_in_revenue_covered,
+      shipments.all_in_margin_percent,
+      shipments.negative_company_margin_load_count,
+      shipments.shipment_negative_total_margin_count,
+      shipments.created_date,
+      shipments.created_time,
+      shipments.negative_company_margin_sum,
+      shipments.total_margin_negative_sum,
+      shipments.shipment_count,
+      shipments.carrier_total_rate,
+      shipments.total_margin_average,
+      shipments.shipper_total_rate,
+      shipments.total_margin,
+      shipments.total_margin_sum
+    ]
+    relationship: one_to_one
+    sql_on: ${shipments.id}=${shipment_price_request_matches.shipment_id} and ${shipments.include_in_company_revenue} ;;
+  }
+
+  join: price_requests_spot_rate_event {
+    view_label: "Spot Rate Event"
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${price_requests_spot_rate_event.price_request_id}=${price_requests.price_request_id} and ${price_requests_spot_rate_event.synthetic_rate} = 'false';;
+  }
+
+  join: price_request_transfix_cost_predictions {
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${price_request_transfix_cost_predictions.price_request_id} = ${price_requests.price_request_id} ;;
+  }
+
+  join: spot_bidding_config_shipper_groups {
+    fields: []
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${spot_bidding_config_shipper_groups.shipper_application_id} = ${price_requests.shipper_application_id} ;;
+  }
+
+  join: spot_bidding_configs {
+    fields: []
+    view_label: "Spot Bidding Config"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${spot_bidding_configs.id}=${spot_bidding_config_shipper_groups.spot_bidding_config_id} ;;
+  }
+
+  join: pickup_coordinates {
+    from: lk_latitude_longitude
+    fields: []
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${pickup_coordinates.zip_code} = ${price_requests.pickup_zipcode} ;;
+  }
+
+  join: pickup_market {
+    view_label: "Pickup Market"
+    fields: [pickup_market.city_state, pickup_market.zone_name, pickup_market.coordinates]
+    from: lk_kma
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${pickup_market.zip3}=left(${price_requests.pickup_zipcode},3) ;;
+  }
+
+  join: delivery_market {
+    view_label: "Delivery Market"
+    fields: [delivery_market.city_state,delivery_market.zone_name, delivery_market.coordinates]
+    from: lk_kma
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${delivery_market.zip3}=left(${price_requests.delivery_zipcode},3) ;;
+  }
+
+  join: delivery_coordinates {
+    from: lk_latitude_longitude
+    fields: []
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${delivery_coordinates.zip_code} = ${price_requests.delivery_zipcode} ;;
+  }
+
+  join: last_delivery {
+    # Only join last delivery
+    view_label: "Delivery"
+    from: shipment_stops
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${last_delivery.shipment_id}=${shipments.id} and ${last_delivery.is_last_stop} and ${last_delivery.deprecated_time} is null ;;
+  }
+
+  join: shipment_base_accessorial_rate {
+    # Used in calculation for Company Revenue, Carrier Rate, and Margin
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipment_base_accessorial_rate.shipment_id} =  ${shipments.id} ;;
+  }
+
+  join: shipment_current_assignment {
+    view_label: "Carrier Assignment"
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${shipment_current_assignment.shipment_id} =  ${shipments.id} ;;
+  }
+
+  join: price_requests_last {
+    fields: []
+    type: inner
+    relationship: one_to_one
+    sql_on:
+      ${price_requests_last.price_request_id} = ${price_requests.price_request_id} and
+      ${price_requests_last.shipper_application_id} = ${price_requests.shipper_application_id} ;;
+  }
+}
+
+# # # # #
+#
+# BACKLOG LEVEL --------------------------------------------------------------------------------------------------------------
+#
+#
+
+
+explore:  backlog {
+  hidden: yes
+  from: dates
+  fields: [ ALL_FIELDS*,
+    -backlog.date_type,
+    -backlog.business_day_count,
+    -backlog.count,
+    -backlog.is_workdays,
+    -backlog.now_date
+  ]
+  label: "Historical Backlog Level"
+  description: "To use for information about historical backlog level about detention, shipments on-hold, shipments in tendered status"
+
+  join: carrier_detention_state_transitions {
+    view_label: "Detention Backlog"
+    fields: [carrier_detention_state_transitions.count_record_id]
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${backlog.date_date} = ${carrier_detention_state_transitions.in_pending_date_date};;
+  }
+}
+
+# # # # #
+#
+# USER PRODUCTIVITY EXPLORE ------------------------------------------------------------------------------------------------------
+#
+
+explore: daily_user_productivity {
+  view_label: "Dates"
+  from: dates
+  hidden: yes
+  fields: [ALL_FIELDS*, -daily_user_productivity.date_type]
+
+  join: cm_working_days_agg {
+    view_label: "Daily Productivity | CM Stats"
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${daily_user_productivity.date_date} = ${cm_working_days_agg.actual_date}   ;;
+  }
+
+  join: cm_user {
+    from: users
+    view_label: "Daily Productivity | CM Stats"
+    fields: [cm_user.id,cm_user.operations_group]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${cm_user.id} = ${cm_working_days_agg.user_id} ;;
+  }
+
+  join: cm_parent_user {
+    from: user_parents
+    view_label: "Daily Productivity | CM Stats"
+    fields: [cm_parent_user.name, cm_parent_user.is_transfix, cm_parent_user.user_type, cm_parent_user.count_users,cm_parent_user.id
+             ]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${cm_parent_user.id}=${cm_user.parent_user_id} ;;
+  }
+}
+
+  # # # # #
+#
+# IMPERSONATION EVENTS ------------------------------------------------------------------------------------------------------
+#
+
+explore: impersonation_events {
+  from: parent_user_impersonation_event
+  view_label: "Impersonation Events"
+  hidden: yes
+
+  join: impersontating_parent_user {
+    from: user_parents
+    view_label: "Impersonating User"
+    fields: [impersontating_parent_user.id,impersontating_parent_user.name, impersontating_parent_user.is_transfix, impersontating_parent_user.user_type, impersontating_parent_user.count_users,impersontating_parent_user.email]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${impersontating_parent_user.id} = ${impersonation_events.impersonating_parent_user_id} ;;
+  }
+
+  join: target_parent_user {
+    from: user_parents
+    view_label: "Target User"
+    fields: [target_parent_user.id,target_parent_user.name, target_parent_user.is_transfix, target_parent_user.user_type, target_parent_user.count_users,target_parent_user.email]
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${target_parent_user.id}=${impersonation_events.target_parent_user_id} ;;
+  }
+}

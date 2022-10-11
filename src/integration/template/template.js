@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 import * as d3Collection from 'd3-collection'
 import { formatType, handleErrors } from '../common/utils'
-import { object } from './coloredBar'
+import { object } from './unquoted'
 import * as $ from 'jquery'
 
 // Query the element
@@ -100,7 +100,8 @@ keys.forEach(function(entry, i) {
 })
 
 
-d3.json("http://localhost:3001/dataColoredBarTwo").then(function(data) {
+
+	d3.json("http://localhost:3001/dataUnquotedSpotFinal").then(function(data) {
 	let todays_options = {}
 
 	$('input:radio:checked').each(function() {
@@ -188,5 +189,6 @@ d3.json("http://localhost:3001/dataColoredBarTwo").then(function(data) {
 	[].forEach.call(resizers, function (resizer) {
 	    resizer.addEventListener('mousedown', mouseDownHandler);
 	});
+
 
 })
